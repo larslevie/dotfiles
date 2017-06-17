@@ -1,0 +1,32 @@
+"*":
+  core:
+    allowPendingPaneItems: false
+    closeEmptyWindows: false
+    destroyEmptyPanes: false
+    projectHome: "/Users/larslevie/workspace"
+    telemetryConsent: "no"
+    titleBar: "custom"
+  editor:
+    fontFamily: "Fira Code"
+    fontSize: 12
+    scrollPastEnd: true
+    showIndentGuide: true
+    showInvisibles: true
+  "exception-reporting":
+    userId: "6e1d0249-4ec9-488e-9ef6-eb08a340860f"
+  minimap:
+    plugins:
+      cursorline: true
+      cursorlineDecorationsZIndex: 0
+      "git-diff": true
+      "git-diffDecorationsZIndex": 0
+      "highlight-selected": true
+      "highlight-selectedDecorationsZIndex": 0
+      linter: true
+      linterDecorationsZIndex: 0
+      pigments: true
+      pigmentsDecorationsZIndex: 0
+      selection: true
+      selectionDecorationsZIndex: 0
+  welcome:
+    showOnStartup: false
