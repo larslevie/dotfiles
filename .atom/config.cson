@@ -14,6 +14,8 @@
     showInvisibles: true
   "exception-reporting":
     userId: "6e1d0249-4ec9-488e-9ef6-eb08a340860f"
+  "linter-ui-default":
+    panelHeight: 69
   minimap:
     plugins:
       cursorline: true
