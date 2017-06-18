@@ -13,3 +13,5 @@ alias cfg "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 set -e SSH_AUTH_SOCK
 set -gx SSH_AUTH_SOCK $HOME/.gnupg/S.gpg-agent.ssh
 set -gx GPG_TTY (tty)
+
+status --is-interactive; and source (rbenv init -|psub)
