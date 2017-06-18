@@ -7,7 +7,7 @@
     telemetryConsent: "no"
     titleBar: "custom"
   editor:
-    fontFamily: "Fira Code"
+    fontFamily: "SFMono-Light"
     fontSize: 12
     scrollPastEnd: true
     showIndentGuide: true
