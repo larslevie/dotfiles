@@ -11,6 +11,10 @@ cd "$DIR"
 
 sudo xcode-select -s /Applications/Xcode-beta.app/Contents/Developer/
 
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew install git
+
 # Package control must be executed first in order for the rest to work
 echo "./packages/setup.sh"
 ./packages/setup.sh

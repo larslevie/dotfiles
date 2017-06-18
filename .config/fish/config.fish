@@ -1,8 +1,7 @@
-set -x -g TERM "xterm-256color"
+set -gx TERM "xterm-256color"
 set -gx EDITOR "atom -w"
 
-fisher eco
-set -g theme_color_scheme terminal2
+set -gx theme_color_scheme terminal2
 
 alias c! "atom $HOME/.config/fish"
 alias r! "source $HOME/.config/fish/config.fish"
