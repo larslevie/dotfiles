@@ -6,10 +6,12 @@ tap 'homebrew/bundle'
 tap 'homebrew/versions'
 
 # brew "duti"
+brew "brew-cask-completion"
 brew "docker-completion"
 brew "docker-compose-completion"
 brew "fish"
 brew "git"
+brew "hub"
 brew "jq"
 brew "kubectl"
 brew "mas"
@@ -17,6 +19,7 @@ brew "node"
 brew "rbenv"
 brew "thefuck"
 brew "vault"
+brew "youtube-dl"
 
 # Essentials
 cask "firefox"
@@ -34,15 +37,18 @@ cask "docker"
 cask "dropbox"
 cask "keybase"
 cask "little-snitch"
+cask "superduper"
 cask "textexpander"
 cask "viscosity"
 cask "vnc-viewer"
 
 # Development
 cask "atom"
+cask "dash"
 cask "datagrip"
 cask "intellij-idea"
 cask "iterm2"
+cask "kaleidoscope"
 
 # Fonts
 cask "font-fira-code"
