@@ -3,19 +3,23 @@
     allowPendingPaneItems: false
     closeEmptyWindows: false
     destroyEmptyPanes: false
+    disabledPackages: [
+      "minimap"
+    ]
     projectHome: "/Users/larslevie/workspace"
     telemetryConsent: "no"
     titleBar: "custom"
   editor:
     fontFamily: "SFMono-Light"
-    fontSize: 12
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true
   "exception-reporting":
     userId: "6e1d0249-4ec9-488e-9ef6-eb08a340860f"
+  "linter-eslint": {}
   "linter-ui-default":
     panelHeight: 69
+    showPanel: true
   minimap:
     plugins:
       cursorline: true
