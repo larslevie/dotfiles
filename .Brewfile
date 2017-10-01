@@ -24,7 +24,7 @@ brew "youtube-dl"
 # Essentials
 cask "firefox"
 cask "google-chrome"
-cask "google-drive"
+# cask "google-drive"
 cask "gpgtools-beta"
 cask "microsoft-office"
 cask "skype-for-business"
