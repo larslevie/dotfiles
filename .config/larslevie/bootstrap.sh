@@ -9,6 +9,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 DIR=$(dirname "$0")
 cd "$DIR"
 
+# Install Xcode to start
+mas install 497799835
+
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer/
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
