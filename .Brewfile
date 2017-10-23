@@ -49,6 +49,8 @@ cask "datagrip"
 cask "intellij-idea"
 cask "iterm2"
 cask "kaleidoscope"
+cask "postman"
+cask "tower"
 
 # Fonts
 cask "font-fira-code"
