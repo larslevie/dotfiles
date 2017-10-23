@@ -1,11 +1,9 @@
 tap 'buo/cask-upgrade'
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
-tap 'caskroom/versions'
 tap 'homebrew/bundle'
 tap 'homebrew/versions'
 
-# brew "duti"
 brew "brew-cask-completion"
 brew "docker-completion"
 brew "docker-compose-completion"
@@ -24,7 +22,6 @@ brew "youtube-dl"
 # Essentials
 cask "firefox"
 cask "google-chrome"
-# cask "google-drive"
 cask "gpgtools-beta"
 cask "microsoft-office"
 cask "skype-for-business"
@@ -49,6 +46,7 @@ cask "datagrip"
 cask "intellij-idea"
 cask "iterm2"
 cask "kaleidoscope"
+cask "tower"
 
 # Fonts
 cask "font-fira-code"
