@@ -13,12 +13,15 @@
     telemetryConsent: "no"
     titleBar: "custom"
   editor:
-    fontFamily: "SFMono-Light"
+    fontFamily: "Fira Code"
+    fontSize: 13
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true
   "exception-reporting":
     userId: "6e1d0249-4ec9-488e-9ef6-eb08a340860f"
+  "isotope-ui":
+    tabSizing: "Minimum"
   "linter-eslint": {}
   "linter-ui-default":
     panelHeight: 69
@@ -36,5 +39,7 @@
       pigmentsDecorationsZIndex: 0
       selection: true
       selectionDecorationsZIndex: 0
+  "one-dark-ui":
+    fontSize: 11
   welcome:
     showOnStartup: false
