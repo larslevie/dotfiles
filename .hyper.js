@@ -9,7 +9,7 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 13,
+    fontSize: 11,
 
     // font family with optional fallbacks
     fontFamily: 'Fira Code, monospace',
@@ -18,10 +18,10 @@ module.exports = {
     cursorColor: 'rgba(248,28,229,0.8)',
 
     // `BEAM` for |, `UNDERLINE` for _, `BLOCK` for █
-    cursorShape: 'BLOCK',
+    cursorShape: 'UNDERLINE',
 
     // set to true for blinking cursor
-    cursorBlink: false,
+    cursorBlink: true,
 
     // color of the text
     foregroundColor: '#fff',
@@ -116,9 +116,10 @@ module.exports = {
   //   `@company/project`
   //   `project#1.0.1`
   plugins: [
-    "hyper-one-dark",
+    "hyperterm-atom-dark",
     "hyperterm-1password",
-    "hyper-statusline"
+    "hyper-statusline",
+    "hyper-tabs-enhanced"
   ],
 
   // in development, you can create a directory under
@@ -129,5 +130,11 @@ module.exports = {
   keymaps: {
     // Example
     // 'window:devtools': 'cmd+alt+o',
+  },
+
+  hyperTabs: {
+    trafficButtons: true,
+    border: true,
+    tabIconsColored: true,
   }
 };
