@@ -1,14 +1,22 @@
 "*":
+  "atom-beautify":
+    js: {}
   "atom-ide-ui":
+    "atom-ide-code-format":
+      formatOnSave: true
     use:
+      "atom-ide-diagnostics": false
       "atom-ide-diagnostics-ui": false
   core:
     allowPendingPaneItems: false
     closeEmptyWindows: false
+    debugLSP: true
     destroyEmptyPanes: false
     disabledPackages: [
       "minimap"
+      "atom-ide-ui"
       "react"
+      "language-gfm"
     ]
     projectHome: "/Users/larslevie/workspace"
     telemetryConsent: "no"
@@ -21,12 +29,18 @@
     showInvisibles: true
   "exception-reporting":
     userId: "6e1d0249-4ec9-488e-9ef6-eb08a340860f"
+  "git-blame":
+    columnWidth: 306
+  "ide-ruby":
+    lintLevel: "0"
   "isotope-ui":
     tabSizing: "Minimum"
   "linter-eslint":
     disableWhenNoEslintConfig: false
     globalNodePath: "/usr/local"
     useGlobalEslint: true
+  "linter-rubocop":
+    command: "/Users/larslevie/.rbenv/versions/2.4.2/bin/rubocop"
   "linter-ui-default":
     panelHeight: 69
   minimap:
@@ -45,5 +59,11 @@
       selectionDecorationsZIndex: 0
   "one-dark-ui":
     fontSize: 11
+  "prettier-atom":
+    formatOnSaveOptions:
+      showInStatusBar: true
+    prettierOptions: {}
+    useEditorConfig: false
+    useEslint: true
   welcome:
     showOnStartup: false
