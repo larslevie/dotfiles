@@ -8,12 +8,13 @@
     destroyEmptyPanes: false
     disabledPackages: [
       "minimap"
+      "react"
     ]
     projectHome: "/Users/larslevie/workspace"
     telemetryConsent: "no"
     titleBar: "custom"
   editor:
-    fontFamily: "Fira Code"
+    fontFamily: "Operator Mono Lig"
     fontSize: 13
     scrollPastEnd: true
     showIndentGuide: true
@@ -22,7 +23,10 @@
     userId: "6e1d0249-4ec9-488e-9ef6-eb08a340860f"
   "isotope-ui":
     tabSizing: "Minimum"
-  "linter-eslint": {}
+  "linter-eslint":
+    disableWhenNoEslintConfig: false
+    globalNodePath: "/usr/local"
+    useGlobalEslint: true
   "linter-ui-default":
     panelHeight: 69
   minimap:
