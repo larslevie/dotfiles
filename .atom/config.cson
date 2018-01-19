@@ -10,6 +10,10 @@
   core:
     allowPendingPaneItems: false
     closeEmptyWindows: false
+    customFileTypes:
+      "source.yaml": [
+        "yaml.ctmpl"
+      ]
     debugLSP: true
     destroyEmptyPanes: false
     disabledPackages: [
@@ -23,7 +27,7 @@
     titleBar: "custom"
   editor:
     fontFamily: "Operator Mono Lig"
-    fontSize: 13
+    fontSize: 18
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true

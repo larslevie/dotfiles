@@ -3,7 +3,7 @@
 	email = larslevie@gmail.com
 	signingkey = 65082D8E
 [commit]
-	gpgsign = true
+	# gpgsign = true
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true
@@ -20,7 +20,7 @@
 [push]
 	default = simple
 [gpg]
-	program = gpg
+	program = /usr/local/MacGPG2/bin/gpg2
 [hub]
 	protocol = ssh
 [core]
