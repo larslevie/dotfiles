@@ -4,9 +4,7 @@
   "atom-ide-ui":
     "atom-ide-code-format":
       formatOnSave: true
-    use:
-      "atom-ide-diagnostics": false
-      "atom-ide-diagnostics-ui": false
+    use: {}
   core:
     allowPendingPaneItems: false
     closeEmptyWindows: false
@@ -17,17 +15,13 @@
     debugLSP: true
     destroyEmptyPanes: false
     disabledPackages: [
-      "minimap"
-      "atom-ide-ui"
-      "react"
-      "language-gfm"
+      "teletype"
     ]
     projectHome: "/Users/larslevie/workspace"
     telemetryConsent: "no"
     titleBar: "custom"
   editor:
     fontFamily: "Operator Mono Lig"
-    fontSize: 18
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true
@@ -39,18 +33,23 @@
     lintLevel: "0"
   "isotope-ui":
     tabSizing: "Minimum"
+  kite:
+    showKiteTourOnStartup: false
   "linter-eslint":
     disableWhenNoEslintConfig: false
     globalNodePath: "/usr/local"
     useGlobalEslint: true
   "linter-rubocop":
-    command: "/Users/larslevie/.rbenv/versions/2.4.2/bin/rubocop"
+    command: "/Users/larslevie/.rbenv/shims/rubocop"
+    disableWhenNoConfigFile: true
   "linter-ui-default":
     panelHeight: 69
   minimap:
     plugins:
       cursorline: true
       cursorlineDecorationsZIndex: 0
+      "find-and-replace": true
+      "find-and-replaceDecorationsZIndex": 0
       "git-diff": true
       "git-diffDecorationsZIndex": 0
       "highlight-selected": true

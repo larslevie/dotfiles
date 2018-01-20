@@ -8,10 +8,14 @@ function setup
   abbr gb git branch
   abbr gc git commit
   abbr gf git fetch
+  abbr gm git merge
   abbr go git checkout
   abbr gs git status -sb
 
   abbr dc docker-compose
+  abbr tc triton-compose
+  abbr td triton-docker
+  abbr te triton-env
 
   abbr kc kubectl
   abbr kcc kubectl --context
