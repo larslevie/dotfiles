@@ -3,7 +3,7 @@
 	email = larslevie@gmail.com
 	signingkey = 65082D8E
 [commit]
-	# gpgsign = true
+	gpgsign = true
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true
@@ -24,4 +24,4 @@
 [hub]
 	protocol = ssh
 [core]
-	excludesfile = /Users/larslevie/.gitignore_global
+	excludesfile = /Users/lars/.gitignore_global

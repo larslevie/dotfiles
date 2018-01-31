@@ -1,8 +1,6 @@
-tap 'buo/cask-upgrade'
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
 tap 'homebrew/bundle'
-tap 'homebrew/versions'
 
 brew "brew-cask-completion"
 brew "docker-completion"
@@ -22,22 +20,22 @@ brew "youtube-dl"
 # Essentials
 cask "firefox"
 cask "google-chrome"
-cask "gpgtools-beta"
-cask "microsoft-office"
-cask "skype-for-business"
 cask "vlc"
 
 # Utilities
 cask "alfred"
+cask "appcleaner"
 cask "bartender"
 cask "docker"
 cask "dropbox"
 cask "keybase"
-cask "little-snitch"
-cask "superduper"
 cask "textexpander"
 cask "viscosity"
 cask "vnc-viewer"
+
+# Design
+cask "adobe-creative-cloud"
+cask "sketch"
 
 # Development
 cask "atom"
@@ -46,6 +44,7 @@ cask "datagrip"
 cask "intellij-idea"
 cask "iterm2"
 cask "kaleidoscope"
+cask "paw"
 cask "postman"
 cask "tower"
 
@@ -55,7 +54,6 @@ cask "font-hack"
 
 # Mac App Store
 mas "1Password", id: 443987910
-mas "Balance", id: 1155714060
 mas "Bear", id: 1091189122
 mas "Deliveries", id: 924726344
 mas "Fantastical 2", id: 975937182
@@ -64,6 +62,7 @@ mas "Moom", id: 419330170
 mas "Numbers", id: 409203825
 mas "OmniGraffle", id: 1142578753
 mas "OneDrive", id: 823766827
+mas "Pages", id: 409201541
 mas "Pastebot", id: 1179623856
 mas "PiPifier", id: 1160374471
 mas "Reeder", id: 880001334

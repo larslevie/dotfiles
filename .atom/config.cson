@@ -5,6 +5,11 @@
     "atom-ide-code-format":
       formatOnSave: true
     use: {}
+  "autocomplete-python":
+    useKite: false
+  "circle-ci":
+    apiToken: "1d3182eeb86d5967c2e1b47bf0495e3b235780b2"
+    iconColor: true
   core:
     allowPendingPaneItems: false
     closeEmptyWindows: false
@@ -19,6 +24,10 @@
     ]
     projectHome: "/Users/larslevie/workspace"
     telemetryConsent: "no"
+    themes: [
+      "one-light-ui"
+      "one-light-syntax"
+    ]
     titleBar: "custom"
   editor:
     fontFamily: "Operator Mono Lig"
@@ -39,6 +48,10 @@
     disableWhenNoEslintConfig: false
     globalNodePath: "/usr/local"
     useGlobalEslint: true
+  "linter-pycodestyle":
+    convertAllErrorsToWarnings: false
+  "linter-python":
+    executablePath: "/usr/local/bin/pylama"
   "linter-rubocop":
     command: "/Users/larslevie/.rbenv/shims/rubocop"
     disableWhenNoConfigFile: true
@@ -68,5 +81,10 @@
     prettierOptions: {}
     useEditorConfig: false
     useEslint: true
+  "tree-view":
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+".python.source":
+  editor:
+    autoIndentOnPaste: true

@@ -15,3 +15,4 @@ eval (gpgconf --launch gpg-agent)
 status --is-interactive; and source (rbenv init -|psub)
 
 eval (hub alias -s)
+thefuck --alias | source
