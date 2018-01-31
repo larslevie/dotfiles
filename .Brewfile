@@ -18,10 +18,11 @@ brew "vault"
 brew "youtube-dl"
 
 # Essentials
+cask "caffeine"
 cask "firefox"
 cask "google-chrome"
-cask "vlc"
 cask "spotify"
+cask "vlc"
 
 # Utilities
 cask "alfred"

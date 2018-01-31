@@ -11,7 +11,9 @@ cd "$DIR"
 
 xcode-select install
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if ! [ -x "$(command -v brew)" ]; then
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 brew install git
 
@@ -20,6 +22,6 @@ echo "./packages/setup.sh"
 ./packages/setup.sh
 
 find * -name "setup.sh" -not -wholename "packages*" | while read setup; do
-    echo "./$setup"
-    ./$setup -chsh
+  echo "./$setup"
+  ./$setup -chsh
 done
