@@ -21,6 +21,7 @@ brew "youtube-dl"
 cask "firefox"
 cask "google-chrome"
 cask "vlc"
+cask "spotify"
 
 # Utilities
 cask "alfred"
