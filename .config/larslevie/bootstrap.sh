@@ -1,4 +1,4 @@
-#! /usr/bin/env sh
+#!/bin/bash
 
 # Ask for the administrator password upfront
 sudo -v
@@ -9,7 +9,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 DIR=$(dirname "$0")
 cd "$DIR"
 
-sudo xcode-select -s /Applications/Xcode.app/Contents/Developer/
+xcode-select install
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
