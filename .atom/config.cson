@@ -4,6 +4,7 @@
   "atom-ide-ui":
     "atom-ide-code-format":
       formatOnSave: true
+    hyperclick: {}
     use: {}
   "autocomplete-python":
     useKite: false
@@ -21,16 +22,18 @@
     destroyEmptyPanes: false
     disabledPackages: [
       "teletype"
+      "linter"
     ]
     projectHome: "/Users/larslevie/workspace"
     telemetryConsent: "no"
     themes: [
-      "one-light-ui"
-      "one-light-syntax"
+      "dracula-ui"
+      "dracula-syntax"
     ]
     titleBar: "custom"
   editor:
     fontFamily: "Operator Mono Lig"
+    fontSize: 13
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true
@@ -43,11 +46,11 @@
   "isotope-ui":
     tabSizing: "Minimum"
   kite:
+    editorMetricsEnabled: "yes"
+    showDocsNotificationOnStartup: false
     showKiteTourOnStartup: false
   "linter-eslint":
-    disableWhenNoEslintConfig: false
     globalNodePath: "/usr/local"
-    useGlobalEslint: true
   "linter-pycodestyle":
     convertAllErrorsToWarnings: false
   "linter-python":
@@ -55,6 +58,7 @@
   "linter-rubocop":
     command: "/Users/larslevie/.rbenv/shims/rubocop"
     disableWhenNoConfigFile: true
+  "linter-stylelint": {}
   "linter-ui-default":
     panelHeight: 69
   minimap:
@@ -78,13 +82,21 @@
   "prettier-atom":
     formatOnSaveOptions:
       showInStatusBar: true
-    prettierOptions: {}
-    useEditorConfig: false
+    prettierOptions:
+      singleQuote: true
     useEslint: true
-  "tree-view":
-    hideVcsIgnoredFiles: true
+    useStylelint: true
+  "tree-view": {}
   welcome:
     showOnStartup: false
+".dockerfile.source":
+  editor:
+    autoIndent: false
+    autoIndentOnPaste: false
+".dockerignore.source":
+  editor:
+    autoIndent: false
+    autoIndentOnPaste: false
 ".python.source":
   editor:
     autoIndentOnPaste: true

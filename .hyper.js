@@ -9,10 +9,10 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 14,
+    fontSize: 11,
 
     // font family with optional fallbacks
-    fontFamily: 'Operator Mono Lig, Fira Code, monospace',
+    fontFamily: 'Operator Mono Lig Book, Fira Code, monospace',
 
     // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
     cursorColor: 'rgba(248,28,229,0.8)',
@@ -123,7 +123,8 @@ module.exports = {
     "hypercwd",
     "hyperterm-1password",
     "hyper-statusline",
-    "hyper-tabs-enhanced"
+    "hyper-tabs-enhanced",
+    "hyper-dracula"
   ],
 
   // in development, you can create a directory under

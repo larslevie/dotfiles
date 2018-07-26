@@ -1,5 +1,5 @@
 function setup
-  abbr c! "atom $HOME/.config"
+  abbr c! "code $HOME/.config"
   abbr r! "source $HOME/.config/fish/config.fish"
 
   abbr wks cd $HOME/workspace
@@ -23,4 +23,6 @@ function setup
   abbr kcp kubectl --context prd
 
   abbr va vault auth -method github
+
+  abbr tf terraform
 end

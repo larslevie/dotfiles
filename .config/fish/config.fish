@@ -16,3 +16,8 @@ status --is-interactive; and source (rbenv init -|psub)
 
 eval (hub alias -s)
 thefuck --alias | source
+
+# Fix for thefuck + git aliased to hub
+set -xg THEFUCK_OVERRIDDEN_ALIASES 'git'
+export PATH="~/.rbenv/shims:$PATH"
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
