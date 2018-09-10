@@ -24,7 +24,6 @@ cask "caffeine"
 cask "firefox"
 cask "google-chrome"
 cask "vlc"
-cask "spotify"
 cask "gpg-suite"
 
 # Utilities
@@ -58,7 +57,7 @@ cask "font-fira-code"
 cask "font-hack"
 
 # Mac App Store
-mas "1Blocker", id: 1107421413
+# mas "1Blocker", id: 1107421413
 mas "1Password", id: 443987910
 mas "Bear", id: 1091189122
 mas "Deliveries", id: 924726344

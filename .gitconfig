@@ -1,7 +1,7 @@
 [user]
 	name = Lars Levie
 	email = larslevie@gmail.com
-	signingkey = 65082D8E
+	signingkey = F166BDB9
 [commit]
 	gpgsign = true
 [mergetool "Kaleidoscope"]

@@ -21,3 +21,6 @@ thefuck --alias | source
 set -xg THEFUCK_OVERRIDDEN_ALIASES 'git'
 export PATH="~/.rbenv/shims:$PATH"
 set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+
+set -xg GOPATH "$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
