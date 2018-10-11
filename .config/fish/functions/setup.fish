@@ -22,6 +22,10 @@ function setup
   abbr kcs kubectl --context stg
   abbr kcp kubectl --context prd
 
+  abbr hms helm --kube-context stg
+  abbr hmp helm --kube-context prd
+  abbr hmc helm --kube-context
+
   abbr va vault auth -method github
 
   abbr tf terraform
