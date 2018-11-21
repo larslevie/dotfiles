@@ -24,3 +24,6 @@ set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 
 set -xg GOPATH "$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
+
+# kubectl krew
+export PATH="$HOME/.krew/bin:$PATH"
