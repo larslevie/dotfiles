@@ -1,1 +1,0 @@
-/Users/lars/.config/fisherman/bass/functions/bass.fish
