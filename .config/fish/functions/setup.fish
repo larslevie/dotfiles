@@ -17,10 +17,7 @@ function setup
   abbr td triton-docker
   abbr te triton-env
 
-  abbr kc kubectl
-  abbr kcc kubectl --context
-  abbr kcs kubectl --context stg
-  abbr kcp kubectl --context prd
+  abbr k kubectl
 
   abbr hms helm --kube-context stg
   abbr hmp helm --kube-context prd
