@@ -1,6 +1,6 @@
 tap 'homebrew/cask-fonts'
 tap 'homebrew/bundle'
-tap heroku/brew
+tap 'heroku/brew'
 
 brew "aws-iam-authenticator"
 brew "awscli"
@@ -43,8 +43,8 @@ cask "textexpander"
 
 # Design
 cask "adobe-creative-cloud"
-cask "monodraw
-cask "skyfonts
+cask "monodraw"
+cask "skyfonts"
 
 # Development
 cask "dash"
