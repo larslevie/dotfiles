@@ -11,6 +11,8 @@ brew "docker-compose-completion"
 brew "docker"
 brew "fish"
 brew "git"
+brew "helm"
+brew "heroku"
 brew "hub"
 brew "jq"
 brew "kubectl"
@@ -23,12 +25,13 @@ brew "terraform"
 brew "thefuck"
 brew "vault"
 brew "youtube-dl"
-brew "heroku"
 
 # Essentials
+cask "discord"
 cask "firefox"
 cask "google-chrome"
 cask "gpg-suite"
+cask "microsoft-edge"
 cask "slack"
 
 # Utilities
@@ -36,11 +39,12 @@ cask "alfred"
 cask "appcleaner"
 cask "bartender"
 cask "dropbox"
-cask "keybase"
 cask "textexpander"
 
 # Design
 cask "adobe-creative-cloud"
+cask "monodraw
+cask "skyfonts
 
 # Development
 cask "dash"
@@ -49,6 +53,7 @@ cask "insomnia"
 cask "intellij-idea"
 cask "iterm2"
 cask "kaleidoscope"
+cask "ngrok"
 cask "paw"
 cask "postman"
 cask "tower"
@@ -76,6 +81,4 @@ mas "Paprika", id: 1303222628
 mas "Pastebot", id: 1179623856
 mas "PiPifier", id: 1160374471
 mas "Reeder 4", id: 1449412482
-# mas "Slack", id: 803453959
-mas "Spark", id: 1176895641
 mas "System Designer", id: 1102494854
