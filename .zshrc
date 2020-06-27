@@ -34,6 +34,7 @@ abbrev-alias -g gs="git status -sb"
 abbrev-alias -g gr="git pull --rebase"
 
 abbrev-alias -g tf="terraform"
+abbrev-alias -g tf11="/usr/local/opt/terraform@0.11/bin/terraform"
 
 abbrev-alias -g kctx="kubectx"
 abbrev-alias -g kns="kubens"
@@ -71,3 +72,6 @@ eval "$(rbenv init - zsh)"
 eval "$(direnv hook zsh)"
 
 export HOMEBREW_NO_INSTALL_CLEANUP=1
+
+export SPACESHIP_KUBECTL_SHOW=false
+export SPACESHIP_KUBECTL_VERSION_SHOW=false

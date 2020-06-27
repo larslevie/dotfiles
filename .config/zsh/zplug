@@ -12,6 +12,7 @@ bindkey '^[[B' history-substring-search-down
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "plugins/dotenv", from:oh-my-zsh
+zplug "plugins/pipenv", from:oh-my-zsh
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "

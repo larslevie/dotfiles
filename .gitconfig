@@ -25,3 +25,5 @@
 	protocol = ssh
 [core]
 	excludesfile = /Users/lars/.gitignore_global
+[pull]
+	rebase = false

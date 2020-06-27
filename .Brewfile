@@ -2,6 +2,7 @@ tap 'homebrew/cask-fonts'
 tap 'homebrew/bundle'
 tap 'heroku/brew'
 
+brew "ansible"
 brew "aws-iam-authenticator"
 brew "awscli"
 brew "awslogs"
@@ -71,7 +72,7 @@ mas "Bear", id: 1091189122
 mas "CardHop", id: 1290358394
 mas "Core Tunnel", id: 1354318707
 mas "Deliveries", id: 924726344
-mas "Fantastical 2", id: 975937182
+mas "Fantastical", id: 975937182
 mas "Keynote", id: 409183694
 mas "Moom", id: 419330170
 mas "Numbers", id: 409203825
