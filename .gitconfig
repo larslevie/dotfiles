@@ -1,9 +1,8 @@
 [user]
 	name = Lars Levie
 	email = larslevie@gmail.com
-	signingkey = EC0E901F2A3DC29D29AE8ABC237F2779F166BDB9
-[commit]
-	gpgsign = true
+# [commit]
+# 	gpgsign = true
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true

@@ -1,4 +1,5 @@
 export ZSH_DOTENV_FILE=$HOME/.config/env
+export ZSH_DOTENV_PROMPT=false
 
 source ~/.config/zsh/zplug
 
@@ -39,6 +40,8 @@ abbrev-alias -g tf11="/usr/local/opt/terraform@0.11/bin/terraform"
 abbrev-alias -g kctx="kubectx"
 abbrev-alias -g kns="kubens"
 
+abbrev-alias -g ecr-login="aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 558529356944.dkr.ecr.us-east-1.amazonaws.com"
+
 export SSH_AUTH_SOCK=$HOME/.gnupg/S.gpg-agent.ssh
 export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent
@@ -72,6 +75,7 @@ eval "$(rbenv init - zsh)"
 eval "$(direnv hook zsh)"
 
 export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 export SPACESHIP_KUBECTL_SHOW=false
 export SPACESHIP_KUBECTL_VERSION_SHOW=false
