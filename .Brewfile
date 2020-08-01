@@ -43,6 +43,7 @@ cask "gpg-suite"
 cask "microsoft-edge"
 cask "microsoft-office"
 cask "slack"
+cask "transmit"
 
 # Utilities
 cask "alfred"
@@ -63,6 +64,7 @@ cask "insomnia"
 cask "intellij-idea"
 cask "iterm2"
 cask "kaleidoscope"
+cask "monodraw"
 cask "ngrok"
 cask "paw"
 cask "postman"
@@ -80,7 +82,7 @@ mas "1Blocker", id: 1107421413
 mas "1Password 7", id: 1333542190
 mas "Amphetamine", id: 937984704
 mas "Bear", id: 1091189122
-mas "CardHop", id: 1290358394
+mas "Cardhop", id: 1290358394
 mas "Core Tunnel", id: 1354318707
 mas "Deliveries", id: 924726344
 mas "Fantastical", id: 975937182
@@ -89,8 +91,11 @@ mas "Moom", id: 419330170
 mas "Numbers", id: 409203825
 mas "OmniGraffle", id: 1142578753
 mas "Pages", id: 409201541
-mas "Paprika", id: 1303222628
+mas "Paprika Recipe Manager 3", id: 1303222628
 mas "Pastebot", id: 1179623856
 mas "PiPifier", id: 1160374471
-mas "Reeder 4", id: 1449412482
+mas "Pixelmator", id: 407963104
+mas "Reeder", id: 1449412482
+mas "Slack", id: 803453959
 mas "System Designer", id: 1102494854
+mas "Things", id: 904280696
