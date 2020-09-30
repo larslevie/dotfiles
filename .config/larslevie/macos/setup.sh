@@ -11,13 +11,13 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Set computer name
-while [[ ! $computername ]]; do
-  read -p "What is this computer's name? " computername
-done
+# while [[ ! $computername ]]; do
+#   read -p "What is this computer's name? " computername
+# done
 
-sudo scutil --set ComputerName $computername
-sudo scutil --set LocalHostName `echo $computername | iconv -t ASCII//TRANSLIT`
-sudo scutil --set HostName $computername
+# sudo scutil --set ComputerName $computername
+# sudo scutil --set LocalHostName `echo $computername | iconv -t ASCII//TRANSLIT`
+# sudo scutil --set HostName $computername
 
 # ###############################################################################
 # # General UI/UX                                                               #
@@ -283,10 +283,10 @@ defaults write com.apple.dock launchanim -bool false
 # defaults write com.apple.dock expose-group-by-app -bool true
 #
 # Disable Dashboard
-defaults write com.apple.dashboard mcx-disabled -bool true
+# defaults write com.apple.dashboard mcx-disabled -bool true
 #
 # Don’t show Dashboard as a Space
-defaults write com.apple.dock dashboard-in-overlay -bool true
+# defaults write com.apple.dock dashboard-in-overlay -bool true
 #
 # Don’t automatically rearrange Spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
@@ -426,7 +426,7 @@ defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 # defaults write -g WebKitDeveloperExtras -bool true
 
 # Copy SF fonts to regular Library
-cp -v /Applications/Utilities/Terminal.app/Contents/Resources/Fonts/SFMono-* ~/Library/Fonts
+cp -v /System/Applications/Utilities/Terminal.app/Contents/Resources/Fonts/SF-Mono-* ~/Library/Fonts
 
 # Play iOS Chime when charging
 defaults write com.apple.PowerChime ChimeOnAllHardware -bool true && \
