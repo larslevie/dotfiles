@@ -1,6 +1,7 @@
 tap 'homebrew/cask-fonts'
 tap 'homebrew/bundle'
 tap 'heroku/brew'
+tap 'derailed/k9s'
 
 brew "ansible"
 brew "aws-iam-authenticator"
