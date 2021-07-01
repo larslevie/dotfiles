@@ -1,8 +1,8 @@
 [user]
 	name = Lars Levie
 	email = larslevie@gmail.com
-# [commit]
-# 	gpgsign = true
+[commit]
+	gpgsign = true
 [mergetool "Kaleidoscope"]
 	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
 	trustexitcode = true

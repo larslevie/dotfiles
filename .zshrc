@@ -48,11 +48,13 @@ gpgconf --launch gpg-agent
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:/usr/local/opt/python/libexec/bin:$PATH"
 
+fpath+=~/.zfunc
+
 eval $(thefuck --alias)
 
 # export NVM_DIR="$HOME/.nvm"
-#   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-#   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
@@ -62,13 +64,13 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
 if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
-eval "$(pyenv virtualenv-init -)"
-
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$HOME/.zsh/completion:$FPATH
 fi
 
 eval "$(rbenv init - zsh)"
@@ -79,3 +81,10 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 export SPACESHIP_KUBECTL_SHOW=false
 export SPACESHIP_KUBECTL_VERSION_SHOW=false
+
+. /usr/local/etc/profile.d/z.sh
+
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
+
+export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
