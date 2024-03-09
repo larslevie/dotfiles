@@ -1,0 +1,5 @@
+.config/gcloud/logs
+.zsh_sessions
+*_credentials/
+.config/gcloud/*.db
+.zsh_history
