@@ -1,34 +1,31 @@
 tap 'homebrew/cask-fonts'
 tap 'derailed/k9s'
 
-# brew "aws-iam-authenticator"
-# brew "awscli"
-# brew "awslogs"
+brew "awscli"
 brew "brew-cask-completion"
 brew "derailed/k9s/k9s"
 brew "direnv"
 brew "git"
 brew "helm"
-# brew "heroku"
 brew "hub"
 brew "jq"
 brew "kubectl"
 brew "kubectx"
 brew "mas"
-# brew "node"
+brew "node"
 brew "pinentry-mac"
-# brew "pyenv-virtualenv"
 brew "pyenv"
-# brew "rbenv"
+brew "spaceship"
+brew "stow"
 brew "terraform"
 brew "vault"
-brew "youtube-dl"
+brew "yt-dlp"
+brew "zoxide"
 brew "zplug"
-# brew "zsh-history-substring-search"
 
 # Essentials
+cask "1password"
 cask "discord"
-cask "docker"
 cask "firefox"
 cask "google-chrome"
 cask "gpg-suite"
@@ -54,8 +51,7 @@ cask "datagrip"
 cask "iterm2"
 cask "kaleidoscope"
 cask "monodraw"
-# cask "ngrok"
-# cask "paw"
+cask "orbstack"
 cask "postman"
 cask "tower"
 cask "visual-studio-code"
@@ -71,6 +67,7 @@ cask "font-monaspace"
 mas "Amphetamine", id: 937984704
 mas "Bear", id: 1091189122
 mas "Cardhop", id: 1290358394
+mas "Drafts", id: 1435957248
 mas "Fantastical", id: 975937182
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
