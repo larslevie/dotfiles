@@ -1,5 +1,10 @@
-.config/gcloud/logs
-.zsh_sessions
-*_credentials/
 .config/gcloud/*.db
+.config/gcloud/logs
+.config/iTerm/AppSupport
+
 .zsh_history
+.zsh_sessions
+
+*_credentials/
+
+*.zwc
