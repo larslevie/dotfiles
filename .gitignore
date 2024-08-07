@@ -10,3 +10,4 @@
 *.zwc
 
 .DS_Store
+env
