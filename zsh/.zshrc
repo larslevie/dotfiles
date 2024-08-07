@@ -1,3 +1,6 @@
+export PATH=/Users/user/bin:$PATH
+
+
 source "/opt/homebrew/opt/spaceship/spaceship.zsh"
 
 
