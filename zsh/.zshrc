@@ -1,3 +1,6 @@
+export PATH=/Users/allen.leviefnf.com/bin:$PATH
+
+
 source "/opt/homebrew/opt/spaceship/spaceship.zsh"
 
 
