@@ -1,6 +1,9 @@
 export PATH=/Users/allen.leviefnf.com/bin:$PATH
 
 
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+
 source "/opt/homebrew/opt/spaceship/spaceship.zsh"
 
 
