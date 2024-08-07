@@ -8,3 +8,5 @@
 *_credentials/
 
 *.zwc
+
+.DS_Store
