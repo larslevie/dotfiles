@@ -37,7 +37,10 @@ setopt NO_BEEP
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
-zplug "momo-lab/zsh-abbrev-alias"
+# zplug "momo-lab/zsh-abbrev-alias"
+zplug "plugins/dotenv", from:oh-my-zsh
+zplug "plugins/direnv", from:oh-my-zsh
+# zplug "plugins/pyenv", from:oh-my-zsh
 
 if ! zplug check; then
     zplug install
@@ -46,24 +49,40 @@ fi
 zplug load
 
 # set up abbreviations
-alias c!="code ~/.zshrc"
-alias r!="source ~/.zshrc"
-alias wks!="cd ~/werk"
+alias "c!"="code ~/dotfiles"
+alias "r!"="source ~/.zshenv && source ~/.zprofile && source ~/.zshrc"
+alias wks="cd ~/werk"
+alias ga="git add"
+alias gb="git branch"
+alias gc="git commit"
+alias gk="git checkout"
+alias gs="git status -sb"
 
-abbrev-alias -g ga="git add"
-abbrev-alias -g gb="git branch"
-abbrev-alias -g gc="git commit"
-abbrev-alias -g gk="git checkout"
-abbrev-alias -g gs="git status -sb"
+alias dc="docker compose"
 
-abbrev-alias -g dc="docker compose"
+alias tower="gittower"
 
-abbrev-alias -g tower="gittower"
+alias tf="terraform"
 
-abbrev-alias -g tf="terraform"
+alias k="kubectl"
+alias kctx="kubectx"
+alias kns="kubens"
 
-abbrev-alias -g k="kubectl"
-abbrev-alias -g kctx="kubectx"
-abbrev-alias -g kns="kubens"
+
+# abbrev-alias -g ga="git add"
+# abbrev-alias -g gb="git branch"
+# abbrev-alias -g gc="git commit"
+# abbrev-alias -g gk="git checkout"
+# abbrev-alias -g gs="git status -sb"
+
+# abbrev-alias -g dc="docker compose"
+
+# abbrev-alias -g tower="gittower"
+
+# abbrev-alias -g tf="terraform"
+
+# abbrev-alias -g k="kubectl"
+# abbrev-alias -g kctx="kubectx"
+# abbrev-alias -g kns="kubens"
 
 export GPG_TTY=$(tty)
