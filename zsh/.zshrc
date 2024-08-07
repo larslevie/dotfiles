@@ -1,3 +1,8 @@
+# Configure dotenv plugin
+export ZSH_DOTENV_FILE=$HOME/.config/env
+export ZSH_DOTENV_PROMPT=false
+
+
 export PATH=/Users/allen.leviefnf.com/bin:$PATH
 
 
