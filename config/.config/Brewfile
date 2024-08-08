@@ -24,6 +24,7 @@ brew "vault"
 brew "yt-dlp"
 brew "zoxide"
 brew "zplug"
+brew "fzf"
 
 # Essentials
 cask "1password"
@@ -64,6 +65,7 @@ cask "font-hack"
 cask "font-ibm-plex"
 cask "font-jetbrains-mono"
 cask "font-monaspace"
+cask "blex-mono-nerd-font"
 
 # Mac App Store
 mas "Amphetamine", id: 937984704
