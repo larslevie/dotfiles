@@ -63,10 +63,6 @@ zinit cdreplay -q
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/config/.p10k.zsh.
 [[ ! -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
 
-# Keybindings
-bindkey "^[[A" history-beginning-search-backward # Up
-bindkey "^[[B" history-beginning-search-forward # Down
-
 # History
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
@@ -79,6 +75,16 @@ setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
+
+# History search functions
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+# Keybindings
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
 
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
