@@ -1,93 +1,91 @@
-# Configure dotenv plugin
-export ZSH_DOTENV_FILE=$HOME/.config/env
-export ZSH_DOTENV_PROMPT=false
-
-
+# add macOS user bin to path
 export PATH=/Users/allen.leviefnf.com/bin:$PATH
 
-
+# add krew to path
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-
-source "/opt/homebrew/opt/spaceship/spaceship.zsh"
-
-
-# initialize autocompletion
-autoload -U compinit && compinit
-
-
-# history setup
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=50000
-SAVEHIST=10000
-
-setopt extended_history       # record timestamp of command in HISTFILE
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
-setopt share_history          # share command history data
-
-
-# # autocompletion using arrow keys (based on history)
-# bindkey '\e[A' history-search-backward
-# bindkey '\e[B' history-search-forward
-
 
 # never beep
 setopt NO_BEEP
 
-
-# setup zplug
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
-source $ZPLUG_HOME/init.zsh
-
-# zplug "momo-lab/zsh-abbrev-alias"
-zplug "plugins/dotenv", from:oh-my-zsh
-zplug "plugins/direnv", from:oh-my-zsh
-# zplug "plugins/pyenv", from:oh-my-zsh
-
-if ! zplug check; then
-    zplug install
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-zplug load
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+  # If you're using macOS, you'll want this enabled
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
-# set up abbreviations
-alias "c!"="code ~/dotfiles"
-alias "r!"="source ~/.zshenv && source ~/.zprofile && source ~/.zshrc"
-alias wks="cd ~/werk"
-alias ga="git add"
-alias gb="git branch"
-alias gc="git commit"
-alias gk="git checkout"
-alias gs="git status -sb"
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-alias dc="docker compose"
+# Download Zinit, if it's not there yet
+# https://zdharma-continuum.github.io/zinit/wiki/INTRODUCTION/
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-alias tower="gittower"
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
 
-alias tf="terraform"
+# Add in Powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-alias k="kubectl"
-alias kctx="kubectx"
-alias kns="kubens"
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
+zinit light olets/zsh-abbr
 
+# Add in snippets
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
+zinit snippet OMZP::git
+zinit snippet OMZP::aws
+zinit snippet OMZP::kubectl
+zinit snippet OMZP::kubectx
+zinit snippet OMZP::command-not-found
 
-# abbrev-alias -g ga="git add"
-# abbrev-alias -g gb="git branch"
-# abbrev-alias -g gc="git commit"
-# abbrev-alias -g gk="git checkout"
-# abbrev-alias -g gs="git status -sb"
+# Load completions
+autoload -Uz compinit && compinit
+zinit cdreplay -q
 
-# abbrev-alias -g dc="docker compose"
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/config/.p10k.zsh.
+[[ ! -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
 
-# abbrev-alias -g tower="gittower"
+# Keybindings
+bindkey "^[[A" history-beginning-search-backward # Up
+bindkey "^[[B" history-beginning-search-forward # Down
 
-# abbrev-alias -g tf="terraform"
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-# abbrev-alias -g k="kubectl"
-# abbrev-alias -g kctx="kubectx"
-# abbrev-alias -g kns="kubens"
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-export GPG_TTY=$(tty)
+# Aliases
+alias ls='ls --color'
+alias c='clear'
+
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"

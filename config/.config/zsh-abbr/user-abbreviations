@@ -1,0 +1,4 @@
+abbr kctx=kubectx
+abbr kns=kubens
+abbr tf=terraform
+abbr tower=gittower
