@@ -2,3 +2,6 @@ abbr kctx=kubectx
 abbr kns=kubens
 abbr tf=terraform
 abbr tower=gittower
+abbr wks="cd ~/werk"
+abbr "c!"="code ~/dotfiles"
+abbr "r!"="source ~/.zshenv && source ~/.zprofile && source ~/.zshrc"
