@@ -43,6 +43,10 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 zinit light olets/zsh-abbr
 
+# dotenv (source before installing OMZ plugin)
+export ZSH_DOTENV_FILE=$HOME/.config/env
+export ZSH_DOTENV_PROMPT=false
+
 # Add in snippets
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 zinit snippet OMZP::git
@@ -50,6 +54,8 @@ zinit snippet OMZP::aws
 zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
+zinit snippet OMZP::dotenv
+zinit snippet OMZP::direnv
 
 # Load completions
 autoload -Uz compinit && compinit
