@@ -55,6 +55,9 @@ zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::dotenv
 zinit snippet OMZP::direnv
+# zinit snippet OMZP::terraform
+# zinit snippet OMZP::docker
+# zinit snippet OMZP::docker-compose
 
 # Load completions
 autoload -Uz compinit && compinit
@@ -96,7 +99,14 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # Aliases
 alias ls='ls --color'
 alias c='clear'
+alias cat="bat -P --theme Dracula"
 
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+# Setup pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+# . "/Users/allen.leviefnf.com/.deno/env"export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
