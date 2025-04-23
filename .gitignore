@@ -13,3 +13,6 @@
 env
 /config/.aws/sso
 /config/.aws/cli
+/config/.kube/cache
+/config/.kube/kubectx
+/config/.kube/kubens
