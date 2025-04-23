@@ -4,6 +4,9 @@ export PATH=/Users/allen.leviefnf.com/bin:$PATH
 # add krew to path
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
+# add home directory bin to path
+export PATH="$PATH:/Users/larslevie/bin"
+
 # never beep
 setopt NO_BEEP
 
