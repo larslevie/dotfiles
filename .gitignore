@@ -11,3 +11,5 @@
 
 .DS_Store
 env
+/config/.aws/sso
+/config/.aws/cli
