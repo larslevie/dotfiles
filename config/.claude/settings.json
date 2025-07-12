@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(docker:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh:*)",
+      "Bash(git:*)",
+      "Bash(grep:*)",
+      "Bash(just:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(pkill:*)",
+      "Bash(pnpm:*)",
+      "Bash(rm:*)",
+      "Bash(rmdir:*)",
+      "Bash(true)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "LS(*)",
+      "mcp__github__add_issue_comment",
+      "mcp__github__add_pull_request_review_comment_to_pending_review",
+      "mcp__github__create_pending_pull_request_review",
+      "mcp__github__create_pull_request",
+      "mcp__github__get_pull_request_comments",
+      "mcp__github__get_pull_request_reviews",
+      "mcp__github__merge_pull_request",
+      "mcp__github__submit_pending_pull_request_review",
+      "mcp__linear__get_issue",
+      "mcp__linear__list_issues",
+      "MultiEdit(*)",
+      "WebFetch(domain:*)",
+      "WebFetch(domain:github.com)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "model": "sonnet"
+}

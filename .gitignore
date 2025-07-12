@@ -23,3 +23,10 @@ env
 /config/.config/claude/statsig
 /config/.config/claude/todos
 /config/.config/claude/projects
+/config/.claude/statsig
+/config/.claude/todos
+/config/.claude/projects
+/config/.claude/local
+/config/.claude/ide
+/config/.claude/.update.lock
+/config/.claude/shell-snapshots
