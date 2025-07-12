@@ -112,7 +112,7 @@ eval "$(zoxide init --cmd cd zsh)"
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-# . "/Users/allen.leviefnf.com/.deno/env"export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 
 alias claude="/Users/larslevie/.claude/local/claude"
 export PATH="/Users/larslevie/.claude/local:$PATH"
