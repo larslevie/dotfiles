@@ -30,3 +30,4 @@ env
 /config/.claude/ide
 /config/.claude/.update.lock
 /config/.claude/shell-snapshots
+/config/.claude.json
