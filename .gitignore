@@ -16,3 +16,10 @@ env
 /config/.kube/cache
 /config/.kube/kubectx
 /config/.kube/kubens
+/config/.config/zed/prompts
+/config/.config/raycast/extensions
+/config/.config/helm
+/config/.config/github-copilot/apps.json
+/config/.config/claude/statsig
+/config/.config/claude/todos
+/config/.config/claude/projects

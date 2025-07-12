@@ -113,3 +113,13 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 # . "/Users/allen.leviefnf.com/.deno/env"export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+alias claude="/Users/larslevie/.claude/local/claude"
+export PATH="/Users/larslevie/.claude/local:$PATH"
+
+
+export PATH="/Users/larslevie/go/bin:$PATH"
+
+# Task Master aliases added on 7/5/2025
+alias tm='task-master'
+alias taskmaster='task-master'

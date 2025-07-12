@@ -1,14 +1,12 @@
 [user]
 	name = Lars Levie
-	email = lars@realgeeks.com
-	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAy75ioJVBRokPtDH2W9cRAThf/IMsr03AIwEVv1tThR Git Signing Key
+	email = larslevie@gmail.com
 [commit]
 	gpgsign = true
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [gpg]
 	program = /usr/local/bin/gpg
-	format = ssh
 [push]
 	autoSetupRemote = true
 [init]
@@ -16,8 +14,8 @@
 [pull]
 	rebase = true
 [credential]
-	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = cache
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [diff]

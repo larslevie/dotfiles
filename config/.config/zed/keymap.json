@@ -1,0 +1,7 @@
+[
+  {
+    "bindings": {
+      "shift-ctrl-k": "editor::DeleteLine"
+    }
+  }
+]
