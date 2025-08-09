@@ -32,3 +32,11 @@
 	trustExitCode = true
 [mergetool]
 	prompt = false
+[url "git@github-cincpro:"]
+	insteadOf = git@github.com:cincpro/
+[url "git@github-realgeeks:RealGeeks/"]
+	insteadOf = git@github.com:RealGeeks/
+[url "ssh://git@github-cincpro/cincpro/"]
+	insteadOf = ssh://git@github.com/cincpro/
+[url "ssh://git@github-realgeeks/RealGeeks/"]
+	insteadOf = ssh://git@github.com/realgeeks/
