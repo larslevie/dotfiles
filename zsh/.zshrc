@@ -121,3 +121,5 @@ export PATH="/Users/larslevie/go/bin:$PATH"
 # Task Master aliases added on 7/5/2025
 alias tm='task-master'
 alias taskmaster='task-master'
+
+alias awsp='source "$(brew --prefix awsp)/_source-awsp.sh"'
