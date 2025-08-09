@@ -32,3 +32,11 @@
 	trustExitCode = true
 [mergetool]
 	prompt = false
+[url "git@github-workorg-a:"]
+	insteadOf = git@github.com:workorg-a/
+[url "git@github-workorg:WorkOrg/"]
+	insteadOf = git@github.com:WorkOrg/
+[url "ssh://git@github-workorg-a/workorg-a/"]
+	insteadOf = ssh://git@github.com/workorg-a/
+[url "ssh://git@github-workorg/WorkOrg/"]
+	insteadOf = ssh://git@github.com/workorg/
