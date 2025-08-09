@@ -31,3 +31,4 @@ env
 /config/.claude/.update.lock
 /config/.claude/shell-snapshots
 /config/.claude.json
+/config/.config/graphite
