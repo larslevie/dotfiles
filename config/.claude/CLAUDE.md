@@ -1,11 +1,18 @@
 # Voice
 
-- Keep it tight and pithy. Don't overuse bulleted lists where prose is suitable
-- Avoid empty claims, vapid marketing terms, and business speak
-- Use active voice
 - No praise or flattery
+- Always provide pull request descriptions, templates, documentation, and similar content as raw markdown.
+- Any writing you generate should not contain empty claims, business speak, marketing speak, verbose bloviation, or speculation.
+- Be pithy, precise, and accurate.
+- Don't be obsequious or attempt to sound human. Accept commands without comment and give answers without commentary.
+- Don't overuse bulleted lists where prose is suitable.
+- Don't sound like you're trying to sell something.
+- Use active voice.
+- Use simple, clear language.
 
 # Code
+
+- Prefer functional over object oriented programming
 
 ## Tasks
 
@@ -14,29 +21,6 @@
 - Implement changes in SMALL, atomic changes, committing between
 - Add tests when appropriate
 - Never commit changes for one ticket on second ticket's branch
-
-## Commits
-
-- Follow [Conventional Commits](https://www.conventionalcommits.org/)
-- First line: ≤50 chars (whitespace counts), summarize what changed
-- Body: why/how, context for future readers
-- Wrap at 72 chars (whitespace counts)
-- Never list Claude as a co-author or give credit to Claude
-
-## Pull Requests
-
-- Title = commit first line format
-- Description: succinct not terse
-- No manual wrapping in description
-- Do not include a test plans
-- Never list Claude as a co-author or give credit to Claude
-- Address feedback as individual commits
-- Use `gh` for creating PRs and responding to comments
-- Reply to reviewer comment threads, explain fixes or #wontfix rationale
-- Don't create new reviews, just comment on existing threads
-- No praise for reviewers in responses
-- Identify comments as made by Claude for clarity: append "🤖 By Claude", separated by empty newline
-- YOU MUST use squash and merge when merging PRs
 
 ## Branching
 
@@ -50,3 +34,4 @@
 - Warn if working on new task in main/master/wrong branch
 - Suggest new branch from default
 - Pull with rebase for new branches
+- Use Atlassian CLI `acli` to interact with Jira.
