@@ -1,4 +1,6 @@
 [core]
-project = am91-example-0
+project = example-prd
 account = lars@example.com
 
+[compute]
+region = us-central1

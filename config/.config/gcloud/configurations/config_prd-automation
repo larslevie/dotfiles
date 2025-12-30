@@ -1,0 +1,10 @@
+[core]
+project = example-prd
+account = lars@example.com
+
+[compute]
+region = us-central1
+
+[auth]
+impersonate_service_account = automation@example-prd.iam.gserviceaccount.com
+
