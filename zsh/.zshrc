@@ -59,8 +59,8 @@ zinit snippet OMZP::command-not-found
 zinit snippet OMZP::dotenv
 zinit snippet OMZP::direnv
 # zinit snippet OMZP::terraform
-# zinit snippet OMZP::docker
-# zinit snippet OMZP::docker-compose
+zinit snippet OMZP::docker
+zinit snippet OMZP::docker-compose
 
 # Load completions
 autoload -Uz compinit && compinit
@@ -123,3 +123,27 @@ alias tm='task-master'
 alias taskmaster='task-master'
 
 alias awsp='source "$(brew --prefix awsp)/_source-awsp.sh"'
+alias r!='source ~/.zshrc'
+
+
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
+
+# pnpm
+export PNPM_HOME="/Users/larslevie/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+
+. "$HOME/.grit/bin/env"
+
+
+eval "$(logcli --completion-script-zsh)"
