@@ -52,3 +52,5 @@ env
 /config/.config/requestly
 /config/.config/iterm2/AppSupport
 /config/.config/grit/grit-receipt.json
+/config/.claude/cache
+/config/.claude/paste-cache
