@@ -36,7 +36,8 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "enabledPlugins": {
-    "fullstack-dev-skills@fullstack-dev-skills": true
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
   }
 }

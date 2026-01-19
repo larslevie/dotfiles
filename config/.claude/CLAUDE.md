@@ -24,7 +24,7 @@
 
 ## Branching
 
-- Format: `{type}/{ticket-ref}` (e.g. `feat/abc-123`)
+- Format: `{type}/{ticket-ref}-{human-readable-short-description}` (e.g. `feat/abc-123`)
 - Use kebab-case for all branch names
 - prefix branch name will Conventional Commit type, e.g. `fix/*`
 - Ask for ticket reference if not provided
