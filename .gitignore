@@ -54,3 +54,4 @@ env
 /config/.config/grit/grit-receipt.json
 /config/.claude/cache
 /config/.claude/paste-cache
+/config/.claude/tasks
