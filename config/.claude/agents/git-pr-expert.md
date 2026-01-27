@@ -1,5 +1,5 @@
 ---
-name: git-commit-expert
+name: git-pr-expert
 description: "Analyzes git diffs and automatically creates multiple, well-structured commits following Conventional Commits standards."
 color: green
 ---
