@@ -1,3 +1,10 @@
+# OPENSPEC:START
+# OpenSpec shell completions configuration
+fpath=("/Users/larslevie/.zsh/completions" $fpath)
+autoload -Uz compinit
+compinit
+# OPENSPEC:END
+
 # add macOS user bin to path
 export PATH=/Users/allen.leviefnf.com/bin:$PATH
 
@@ -147,3 +154,7 @@ esac
 
 
 eval "$(logcli --completion-script-zsh)"
+export PATH="$HOME/.local/bin:$PATH"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
