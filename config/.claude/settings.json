@@ -1,4 +1,21 @@
 {
+  "awsAuthRefresh": "aws sso login --profile witco-prd",
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "greptile@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "env": {
+    "ANTHROPIC_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/dqsyhuye1t1g",
+    "ANTHROPIC_SMALL_FAST_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/z7ob6jgvgi19",
+    "AWS_PROFILE": "witco-mgt-platform-developer-claude",
+    "AWS_REGION": "us-east-1",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "16384",
+    "CLAUDE_CODE_USE_BEDROCK": "1",
+    "MAX_THINKING_TOKENS": "2048"
+  },
   "permissions": {
     "allow": [
       "Bash(curl:*)",
@@ -35,9 +52,5 @@
       "WebFetch(domain:github.com)"
     ],
     "defaultMode": "acceptEdits"
-  },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true
   }
 }
