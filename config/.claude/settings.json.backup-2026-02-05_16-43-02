@@ -7,8 +7,8 @@
     "typescript-lsp@claude-plugins-official": true
   },
   "env": {
-    "ANTHROPIC_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/kvrcracgb477",
-    "ANTHROPIC_SMALL_FAST_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/1kpl1xcha7e4",
+    "ANTHROPIC_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/dqsyhuye1t1g",
+    "ANTHROPIC_SMALL_FAST_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/z7ob6jgvgi19",
     "AWS_PROFILE": "witco-mgt-platform-developer-claude",
     "AWS_REGION": "us-east-1",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "8192",

@@ -1,20 +1,4 @@
 {
-  "awsAuthRefresh": "aws sso login --profile witco-prd",
-  "enabledPlugins": {
-    "greptile@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
-  },
-  "env": {
-    "ANTHROPIC_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/kvrcracgb477",
-    "ANTHROPIC_SMALL_FAST_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/1kpl1xcha7e4",
-    "AWS_PROFILE": "witco-mgt-platform-developer-claude",
-    "AWS_REGION": "us-east-1",
-    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "8192",
-    "CLAUDE_CODE_USE_BEDROCK": "1",
-    "MAX_THINKING_TOKENS": "1024"
-  },
   "permissions": {
     "allow": [
       "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/fetch_pr_comments.sh:*)",
@@ -50,5 +34,11 @@
       "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)"
     ],
     "defaultMode": "acceptEdits"
+  },
+  "enabledPlugins": {
+    "greptile@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   }
 }
