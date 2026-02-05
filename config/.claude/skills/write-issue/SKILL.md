@@ -5,21 +5,31 @@ description: Writing and maintaining GitHub issues. Use when creating new issues
 
 # Writing and maintaining GitHub issues
 
-Standards for issues in the cincpro organization.
+Standards for writing and maintaining GitHub issues.
+
+## Defaults
+
+This skill expects the following defaults to be provided (e.g. via project CLAUDE.md or skill invocation context):
+
+- **Default label** - the label to apply to new issues (e.g. `needs-triage`)
+- **Default issue type** - the issue type to set when none is specified (e.g. `Task`)
+- **Default project** - the GitHub project to add issues to (e.g. project number `7`)
+
+If defaults are not provided, ask the user before proceeding.
 
 ## Setup script
 
 After creating an issue, run the setup script to apply standard configuration:
 
 ```bash
-./setup-issue.sh <issue-url-or-number> [--type <Bug|Feature|Task>] [--repo <owner/repo>]
+./setup-issue.sh <issue-url-or-number> [--type <type>] [--label <label>]... [--repo <owner/repo>]
 ```
 
 The script:
 
-- Adds the `needs-triage` label
-- Sets the issue type (default: Task)
-- Adds the issue to Platform & Infra project (#7)
+- Applies the specified labels (falls back to the default label if none provided)
+- Sets the issue type (uses the provided default if not overridden)
+- Adds the issue to the default GitHub project
 
 ## Title standards
 
@@ -51,33 +61,13 @@ The script:
 
 ## Issue types
 
-Set via the GitHub GraphQL API after creating the issue (the `--type` flag is not reliably supported):
-
-| Type      | Use for                             |
-| --------- | ----------------------------------- |
-| `Bug`     | Something isn't working as expected |
-| `Feature` | New capability or improvement       |
-| `Example` | Request for a new SDK example       |
-| `Task`    | Internal task or chore              |
+Set via the GitHub GraphQL API after creating the issue (the `--type` flag is not reliably supported). If no explicit type is specified, use the provided default issue type.
 
 ## Labels
 
 Use sparingly (1-2 per issue) for metadata, not categorization.
 
-### Common labels
-
-| Label            | Use for                         |
-| ---------------- | ------------------------------- |
-| `underspecified` | Requires additional information |
-| `sdk`            | Affects the tldraw SDK          |
-| `dotcom`         | Related to tldraw.com           |
-| `a11y`           | Accessibility                   |
-| `performance`    | Performance improvement         |
-| `api`            | API change                      |
-
-### Automation labels (do not apply manually)
-
-`keep`, `stale`, `update-snapshots`, `publish-packages`, `major`, `minor`, `skip-release`, deploy triggers
+Before labeling, run `gh label list` to discover the repo's available labels. Apply labels from that list that match the issue's content. Do not invent labels that don't exist in the repo.
 
 ## Issue body standards
 
@@ -95,13 +85,6 @@ Use sparingly (1-2 per issue) for metadata, not categorization.
 2. Proposed solution - How should it work?
 3. Alternatives considered
 4. Use cases
-
-### Example requests
-
-1. What API/pattern to demonstrate
-2. Why it's useful
-3. Suggested approach
-4. Which example category it belongs to
 
 ## Triage workflow
 
