@@ -55,3 +55,5 @@ env
 /config/.claude/cache
 /config/.claude/paste-cache
 /config/.claude/tasks
+/config/.config/env.secrets
+/config/.claude/plans
