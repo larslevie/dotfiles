@@ -1,0 +1,3 @@
+providers:
+  - kind: vault
+    address: https://vault.rg-infra.com
