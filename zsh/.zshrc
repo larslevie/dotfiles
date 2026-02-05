@@ -56,6 +56,9 @@ zinit light olets/zsh-abbr
 export ZSH_DOTENV_FILE=$HOME/.config/env
 export ZSH_DOTENV_PROMPT=false
 
+# Source 1Password-injected secrets if present
+[[ -f $HOME/.config/env.secrets ]] && source $HOME/.config/env.secrets
+
 # Add in snippets
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 zinit snippet OMZP::git
@@ -110,6 +113,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias ls='ls --color'
 alias c='clear'
 alias cat="bat -P --theme Dracula"
+alias bu="brew update && brew upgrade && brew cleanup"
 
 # Shell integrations
 eval "$(fzf --zsh)"
@@ -158,3 +162,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# OpenClaw Completion (suppress punycode deprecation warning)
+source <(NODE_NO_WARNINGS=1 openclaw completion --shell zsh)
+export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
