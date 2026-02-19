@@ -57,3 +57,8 @@ env
 /config/.claude/tasks
 /config/.config/env.secrets
 /config/.claude/plans
+/config/.claude/backups
+*.bak
+*.backup-*
+gke_gcloud_auth_plugin_cache
+/config/.claude/image-cache
