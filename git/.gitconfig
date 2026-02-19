@@ -5,6 +5,7 @@
 	gpgsign = true
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedSignersFile = /Users/larslevie/.ssh/allowed_signers
 [gpg]
 	program = /usr/local/bin/gpg
 [push]
@@ -40,4 +41,6 @@
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [url "git@github-cincpro:cincpro/"]
-	insteadof = git@github.com:cincpro/
+	insteadOf = git@github.com:cincpro/
+[url "git@github-personal:"]
+	insteadOf = git@github.com:
