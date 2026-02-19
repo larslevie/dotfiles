@@ -156,9 +156,6 @@ esac
 # pnpm end
 
 
-. "$HOME/.grit/bin/env"
-
-
 eval "$(logcli --completion-script-zsh)"
 export PATH="$HOME/.local/bin:$PATH"
 
