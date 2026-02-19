@@ -4,7 +4,7 @@ Implement {issue-url}
 
 ## Setup
 
-- Use a git worktree _only if asked_
+- Always use a git worktree, usless told not to
 - Pull `main` before branching
 - Branch naming: `gh-{issue-number}-human-readable-description`
 
