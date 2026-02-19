@@ -3,3 +3,6 @@ item = "Work - Personal SSH"
 
 [[ssh-keys]]
 item = "Github - Personal"
+
+[[ssh-keys]]
+item = "Git Signing Key"

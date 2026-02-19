@@ -6,5 +6,4 @@ account = lars@example.com
 region = us-central1
 
 [auth]
-impersonate_service_account = automation@example-prd.iam.gserviceaccount.com
 
