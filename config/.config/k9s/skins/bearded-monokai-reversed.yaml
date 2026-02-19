@@ -1,0 +1,101 @@
+# -----------------------------------------------------------------------------
+# Bearded Monokai Reversed skin
+# Based on https://github.com/BeardedBear/bearded-theme (Monokai Reversed)
+# -----------------------------------------------------------------------------
+
+foreground: &foreground "#98a2b5"
+background: &background "#131720"
+background_alt: &background_alt "#171921"
+current_line: &current_line "#1e212b"
+selection: &selection "#2a2d37"
+comment: &comment "#5a6478"
+blue: &blue "#78dce8"
+green: &green "#a9dc76"
+orange: &orange "#fc9867"
+pink: &pink "#ff6188"
+purple: &purple "#ab9df2"
+red: &red "#fc6a67"
+yellow: &yellow "#ffd866"
+turquoise: &turquoise "#78e8c6"
+
+k9s:
+  body:
+    fgColor: *foreground
+    bgColor: *background
+    logoColor: *purple
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *purple
+  info:
+    fgColor: *pink
+    sectionColor: *foreground
+  dialog:
+    fgColor: *foreground
+    bgColor: *background
+    buttonFgColor: *foreground
+    buttonBgColor: *purple
+    buttonFocusFgColor: *yellow
+    buttonFocusBgColor: *pink
+    labelFgColor: *orange
+    fieldFgColor: *foreground
+  frame:
+    border:
+      fgColor: *selection
+      focusColor: *comment
+    menu:
+      fgColor: *foreground
+      keyColor: *pink
+      numKeyColor: *pink
+    crumbs:
+      fgColor: *foreground
+      bgColor: *current_line
+      activeColor: *current_line
+    status:
+      newColor: *blue
+      modifyColor: *purple
+      addColor: *green
+      errorColor: *red
+      highlightColor: *orange
+      killColor: *comment
+      completedColor: *comment
+    title:
+      fgColor: *foreground
+      bgColor: *current_line
+      highlightColor: *orange
+      counterColor: *purple
+      filterColor: *pink
+  views:
+    charts:
+      bgColor: default
+      defaultDialColors:
+        - *purple
+        - *red
+      defaultChartColors:
+        - *purple
+        - *red
+    table:
+      fgColor: *foreground
+      bgColor: *background
+      header:
+        fgColor: *foreground
+        bgColor: *background
+        sorterColor: *blue
+    xray:
+      fgColor: *foreground
+      bgColor: *background
+      cursorColor: *current_line
+      graphicColor: *purple
+      showIcons: false
+    yaml:
+      keyColor: *pink
+      colonColor: *purple
+      valueColor: *foreground
+    logs:
+      fgColor: *foreground
+      bgColor: *background
+      indicator:
+        fgColor: *foreground
+        bgColor: *purple
+        toggleOnColor: *green
+        toggleOffColor: *blue
