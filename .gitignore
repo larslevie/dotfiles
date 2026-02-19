@@ -62,3 +62,4 @@ env
 *.backup-*
 gke_gcloud_auth_plugin_cache
 /config/.claude/image-cache
+/config/.config/graphite
