@@ -114,6 +114,8 @@ alias ls='ls --color'
 alias c='clear'
 alias cat="bat -P --theme Dracula"
 alias bu="brew update && brew upgrade && brew cleanup"
+alias s="witctl"
+alias sali="witctl auth aws login"
 
 # Shell integrations
 eval "$(fzf --zsh)"
@@ -166,3 +168,4 @@ export PATH="$HOME/.local/bin:$PATH"
 # OpenClaw Completion (suppress punycode deprecation warning)
 source <(NODE_NO_WARNINGS=1 openclaw completion --shell zsh)
 export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
