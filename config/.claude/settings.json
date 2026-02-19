@@ -1,5 +1,6 @@
 {
-  "awsAuthRefresh": "aws sso login --profile witco-prd",
+  "awsAuthRefresh": "aws sso login --profile witco-login",
+  "effortLevel": "medium",
   "enabledPlugins": {
     "greptile@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
@@ -11,6 +12,7 @@
     "ANTHROPIC_SMALL_FAST_MODEL": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/1kpl1xcha7e4",
     "AWS_PROFILE": "witco-mgt-platform-developer-claude",
     "AWS_REGION": "us-east-1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "8192",
     "CLAUDE_CODE_USE_BEDROCK": "1",
     "MAX_THINKING_TOKENS": "1024"
@@ -47,8 +49,13 @@
       "WebFetch(domain:*)",
       "WebFetch(domain:developers.realgeeks.com)",
       "WebFetch(domain:github.com)",
-      "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)"
+      "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)",
+      "mcp__pencil"
     ],
     "defaultMode": "acceptEdits"
+  },
+  "statusLine": {
+    "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name'); used=$(echo \"$input\" | jq -r '.context_window.used_percentage // empty'); output=\"$model\"; if [ -n \"$used\" ]; then p=$(printf '%.0f' \"$used\"); if [ $p -le 12 ]; then ch='○'; elif [ $p -le 37 ]; then ch='◔'; elif [ $p -le 62 ]; then ch='◑'; elif [ $p -le 87 ]; then ch='◕'; else ch='●'; fi; if [ $p -le 60 ]; then clr='\\033[90m'; elif [ $p -le 90 ]; then clr='\\033[38;5;172m'; else clr='\\033[38;5;167m'; fi; rst='\\033[0m'; output=\"$output $(printf \"${clr}${ch}${rst}\") ${p}%\"; fi; printf \"%s\" \"$output\"",
+    "type": "command"
   }
 }
