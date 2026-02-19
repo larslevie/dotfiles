@@ -6,5 +6,4 @@ account = lars@beamform.io
 region = us-central1
 
 [auth]
-impersonate_service_account = automation@beamform-prd.iam.gserviceaccount.com
 
