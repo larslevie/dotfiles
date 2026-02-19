@@ -63,3 +63,7 @@ env
 gke_gcloud_auth_plugin_cache
 /config/.claude/image-cache
 /config/.config/graphite
+/config/.ssh/witco_personal
+/config/.ssh/known_hosts
+/config/.ssh/known_hosts.old
+/config/.ssh/old
