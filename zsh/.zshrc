@@ -117,9 +117,6 @@ alias bu="brew update && brew upgrade && brew cleanup"
 alias s="witctl"
 alias sali="witctl auth aws login"
 
-# Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
 
 # Setup pyenv
 export PYENV_ROOT="$HOME/.pyenv"
@@ -166,3 +163,9 @@ export PATH="$HOME/.local/bin:$PATH"
 source <(NODE_NO_WARNINGS=1 openclaw completion --shell zsh)
 export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+
+
+# Must be at end of file
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
