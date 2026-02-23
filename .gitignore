@@ -1,3 +1,5 @@
+tmp
+
 .config/gcloud/*.db
 .config/gcloud/logs
 .config/iTerm/AppSupport
