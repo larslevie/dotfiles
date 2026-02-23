@@ -1,7 +1,45 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {},
-  "plugin": [
-    "opencode-gemini-auth@latest"
-  ]
+  "plugin": ["opencode-gemini-auth@latest"],
+  "provider": {
+    "amazon-bedrock": {
+      "models": {
+        "arn:aws:bedrock:us-east-1:000000000000:application-inference-profile/1kpl1xcha7e4": {
+          "name": "Work Claude Haiku",
+          "options": {
+            "maxTokens": 8192,
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 1024
+            }
+          }
+        },
+        "arn:aws:bedrock:us-east-1:000000000000:application-inference-profile/5zb0oez8ieet": {
+          "name": "Work Claude Sonnet",
+          "options": {
+            "maxTokens": 8192,
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 1024
+            }
+          }
+        },
+        "arn:aws:bedrock:us-east-1:000000000000:application-inference-profile/kvrcracgb477": {
+          "name": "Work Claude Opus",
+          "options": {
+            "maxTokens": 8192,
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 1024
+            }
+          }
+        }
+      },
+      "options": {
+        "region": "us-east-1",
+        "profile": "work-mgt-platform-developer-claude"
+      }
+    }
+  }
 }
