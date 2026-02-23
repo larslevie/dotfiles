@@ -1,7 +1,45 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {},
-  "plugin": [
-    "opencode-gemini-auth@latest"
-  ]
+  "plugin": ["opencode-gemini-auth@latest"],
+  "provider": {
+    "amazon-bedrock": {
+      "models": {
+        "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/1kpl1xcha7e4": {
+          "name": "Witco Claude Haiku",
+          "options": {
+            "maxTokens": 8192,
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 1024
+            }
+          }
+        },
+        "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/5zb0oez8ieet": {
+          "name": "Witco Claude Sonnet",
+          "options": {
+            "maxTokens": 8192,
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 1024
+            }
+          }
+        },
+        "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/kvrcracgb477": {
+          "name": "Witco Claude Opus",
+          "options": {
+            "maxTokens": 8192,
+            "thinking": {
+              "type": "enabled",
+              "budgetTokens": 1024
+            }
+          }
+        }
+      },
+      "options": {
+        "region": "us-east-1",
+        "profile": "witco-mgt-platform-developer-claude"
+      }
+    }
+  }
 }
