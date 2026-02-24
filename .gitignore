@@ -70,3 +70,4 @@ gke_gcloud_auth_plugin_cache
 /config/.ssh/known_hosts.old
 /config/.ssh/old
 /config/.claude/mcp-needs-auth-cache.json
+/config/.config/argocd
