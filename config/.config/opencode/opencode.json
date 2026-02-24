@@ -41,5 +41,10 @@
         "profile": "witco-mgt-platform-developer-claude"
       }
     }
+  },
+  "permission": {
+    "external_directory": {
+      "~/werk/**": "allow"
+    }
   }
 }
