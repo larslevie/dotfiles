@@ -1,8 +1,6 @@
 # OPENSPEC:START
 # OpenSpec shell completions configuration
 fpath=("/Users/larslevie/.zsh/completions" $fpath)
-autoload -Uz compinit
-compinit
 # OPENSPEC:END
 
 # add macOS user bin to path
@@ -22,11 +20,6 @@ setopt NO_BEEP
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  # If you're using macOS, you'll want this enabled
-  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Set the directory we want to store zinit and plugins
@@ -75,9 +68,6 @@ zinit snippet OMZP::docker-compose
 # Load completions
 autoload -Uz compinit && compinit
 zinit cdreplay -q
-
-# To customize prompt, run `p10k configure` or edit ~/dotfiles/config/.p10k.zsh.
-[[ ! -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
 
 # History
 HISTSIZE=5000
@@ -153,14 +143,19 @@ esac
 # pnpm end
 
 
-eval "$(logcli --completion-script-zsh)"
+# logcli completions (cached)
+_logcli_comp="$HOME/.zsh_logcli_comp"
+if [[ ! -f "$_logcli_comp" ]] || [[ "$(which logcli)" -nt "$_logcli_comp" ]]; then
+  logcli --completion-script-zsh > "$_logcli_comp" 2>/dev/null
+fi
+[[ -f "$_logcli_comp" ]] && source "$_logcli_comp"
+unset _logcli_comp
 export PATH="$HOME/.local/bin:$PATH"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/config/.p10k.zsh.
+[[ ! -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
 
-# OpenClaw Completion (suppress punycode deprecation warning)
-source <(NODE_NO_WARNINGS=1 openclaw completion --shell zsh)
+
 export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 
