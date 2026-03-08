@@ -107,13 +107,11 @@ alias bu="brew update && brew upgrade && brew cleanup"
 alias s="witctl"
 alias sali="witctl auth aws login"
 
-
-# Setup pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 
 export PATH="/Users/larslevie/go/bin:$PATH"
 
