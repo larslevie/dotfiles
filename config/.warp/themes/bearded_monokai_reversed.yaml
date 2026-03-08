@@ -1,0 +1,25 @@
+name: Bearded Monokai Reversed
+accent: '#78dce8'
+cursor: '#ffd866'
+background: '#12131a'
+foreground: '#c5c9d7'
+details: darker
+terminal_colors:
+  normal:
+    black: '#171921'
+    red: '#fc6a67'
+    green: '#a9dc76'
+    yellow: '#ffd866'
+    blue: '#78dce8'
+    magenta: '#ab9df2'
+    cyan: '#78e8c6'
+    white: '#c5c9d7'
+  bright:
+    black: '#4b516c'
+    red: '#ff6188'
+    green: '#b7d175'
+    yellow: '#ffd866'
+    blue: '#78dce8'
+    magenta: '#e991e3'
+    cyan: '#78e8c6'
+    white: '#e8eaf2'
