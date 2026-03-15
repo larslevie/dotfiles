@@ -92,17 +92,15 @@ PROJECT_ID=""
 PROJECT_TITLE=""
 if [[ "$SKIP_PROJECT" != true && -n "$PROJECT_NUM" ]]; then
     echo "Looking up project #${PROJECT_NUM} in ${ORG}..."
-    PROJECT_RESULT=$(gh api graphql \
-        -f query='query($org: String!, $num: Int!) { organization(login: $org) { projectV2(number: $num) { id title } } }' \
-        -f org="${ORG}" \
-        -F num="${PROJECT_NUM}")
+    PROJECT_QUERY='query { organization(login: "'"${ORG}"'") { projectV2(number: '"${PROJECT_NUM}"') { id title } } }'
+    PROJECT_RESULT=$(gh api graphql -f "query=${PROJECT_QUERY}" 2>/dev/null || true)
 
     PROJECT_ID=$(echo "$PROJECT_RESULT" | jq -r '.data.organization.projectV2.id')
     PROJECT_TITLE=$(echo "$PROJECT_RESULT" | jq -r '.data.organization.projectV2.title')
 
     if [[ -z "$PROJECT_ID" || "$PROJECT_ID" == "null" ]]; then
-        echo "Error: Could not find project #${PROJECT_NUM} in organization ${ORG}"
-        exit 1
+        echo "Warning: Could not find project #${PROJECT_NUM} in organization ${ORG}"
+        PROJECT_ID=""
     fi
 fi
 
@@ -118,21 +116,48 @@ fi
 
 # 2. Set issue type via GraphQL
 ISSUE_NODE_ID=$(gh api "repos/${REPO}/issues/${ISSUE_NUM}" --jq '.node_id')
+REPO_OWNER="${REPO%%/*}"
+REPO_NAME="${REPO##*/}"
 
 if [[ -n "$ISSUE_TYPE" ]]; then
     echo "Setting issue type to ${ISSUE_TYPE}..."
-    gh api graphql \
-        -f query='mutation($id: ID!, $type: String!) { updateIssue(input: {id: $id, issueTypeId: $type}) { issue { id } } }' \
-        -f id="${ISSUE_NODE_ID}" \
-        -f type="${ISSUE_TYPE}" \
-        2>/dev/null || echo "Warning: Could not set issue type (may require different API)"
+
+    # Look up issue type node ID by name
+    TYPES_QUERY='query { repository(owner: "'"${REPO_OWNER}"'", name: "'"${REPO_NAME}"'") { issueTypes(first: 20) { nodes { id name } } } }'
+    ISSUE_TYPE_ID=$(gh api graphql -f "query=${TYPES_QUERY}" --jq ".data.repository.issueTypes.nodes[] | select(.name == \"${ISSUE_TYPE}\") | .id" 2>/dev/null || true)
+
+    if [[ -z "$ISSUE_TYPE_ID" ]]; then
+        echo "Warning: Issue type '${ISSUE_TYPE}' not found in ${REPO}"
+    else
+        # Use a temp file for the mutation to avoid shell escaping issues with GraphQL variables
+        MUTATION_FILE=$(mktemp)
+        cat > "$MUTATION_FILE" << 'GRAPHQL'
+mutation($id: ID!, $typeId: ID!) {
+  updateIssue(input: {id: $id, issueTypeId: $typeId}) {
+    issue { id }
+  }
+}
+GRAPHQL
+        gh api graphql -F "query=@${MUTATION_FILE}" -f id="${ISSUE_NODE_ID}" -f typeId="${ISSUE_TYPE_ID}" \
+            2>/dev/null || echo "Warning: Could not set issue type"
+        rm -f "$MUTATION_FILE"
+    fi
 fi
 
-# 3. Add to project (if not skipped and project specified)
-if [[ "$SKIP_PROJECT" != true && -n "$PROJECT_NUM" ]]; then
+# 3. Add to project via GraphQL (if not skipped and project was found)
+if [[ "$SKIP_PROJECT" != true && -n "$PROJECT_ID" ]]; then
     echo "Adding to ${PROJECT_TITLE} project..."
-    ISSUE_URL="https://github.com/${REPO}/issues/${ISSUE_NUM}"
-    gh project item-add "${PROJECT_NUM}" --owner "${ORG}" --url "${ISSUE_URL}"
+    MUTATION_FILE=$(mktemp)
+    cat > "$MUTATION_FILE" << 'GRAPHQL'
+mutation($projectId: ID!, $contentId: ID!) {
+  addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+    item { id }
+  }
+}
+GRAPHQL
+    gh api graphql -F "query=@${MUTATION_FILE}" -f projectId="${PROJECT_ID}" -f contentId="${ISSUE_NODE_ID}" \
+        2>/dev/null || echo "Warning: Could not add issue to project"
+    rm -f "$MUTATION_FILE"
 fi
 
 echo "Done! Issue #${ISSUE_NUM} has been set up."
