@@ -107,6 +107,8 @@ alias bu="brew update && brew upgrade && brew cleanup"
 alias s="witctl"
 alias sali="witctl auth aws login"
 
+alias ecr="aws ecr get-login-password --region us-east-1 --profile witco-mgt | docker login --username AWS --password-stdin 558529356944.dkr.ecr.us-east-1.amazonaws.com"
+
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
@@ -133,7 +135,7 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/home
 if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
 # pnpm
-export PNPM_HOME="/Users/larslevie/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
