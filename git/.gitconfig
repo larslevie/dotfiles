@@ -1,13 +1,15 @@
 [user]
 	name = Lars Levie
-	email = larslevie@gmail.com
+	email = lars.levie@fnf.com
+	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAy75ioJVBRokPtDH2W9cRAThf/IMsr03AIwEVv1tThR Git Signing Key
 [commit]
 	gpgsign = true
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-	allowedSignersFile = /Users/larslevie/.ssh/allowed_signers
+	allowedsignersfile = /Users/larslevie/.ssh/allowed_signers
 [gpg]
-	program = /usr/local/bin/gpg
+	program = /usr/local/MacGPG2/bin/gpg2
+	format = ssh
 [push]
 	autoSetupRemote = true
 [init]
