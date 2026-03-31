@@ -65,7 +65,9 @@
     "network": {
       "allowUnixSockets": [
         "~/.gnupg/S.gpg-agent",
-        "~/.gnupg/S.gpg-agent.extra"
+        "~/.gnupg/S.gpg-agent.extra",
+        "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+        "~/.orbstack/run/docker.sock"
       ],
       "allowLocalBinding": true
     },
@@ -87,5 +89,6 @@
       "docker"
     ]
   },
-  "effortLevel": "medium"
+  "effortLevel": "medium",
+  "voiceEnabled": true
 }
