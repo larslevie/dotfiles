@@ -2,9 +2,10 @@ tap "abyss/tools"
 tap "aws/tap"
 tap "derailed/k9s"
 tap "hashicorp/tap"
-tap "homebrew/bundle"
 tap "spacelift-io/spacelift"
 tap "warrensbox/tap"
+tap "witco/witco"
+brew "witco-cli"
 brew "aider"
 brew "ansible"
 brew "awscli"
@@ -57,7 +58,6 @@ brew "abyss/tools/awsp"
 brew "aws/tap/ec2-instance-selector"
 brew "derailed/k9s/k9s"
 brew "hashicorp/tap/vault"
-brew "spacelift-io/spacelift/spacectl"
 brew "warrensbox/tap/tfswitch"
 cask "1password"
 cask "alfred"
@@ -69,7 +69,6 @@ cask "dash"
 cask "datagrip"
 cask "discord"
 cask "dropbox"
-cask "expressvpn"
 cask "figma"
 cask "firefox"
 cask "font-blex-mono-nerd-font"
@@ -119,6 +118,6 @@ mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "OmniGraffle", id: 1142578753
 mas "Pages", id: 409201541
-mas "Paprika Recipe Manager 3", id: 1303222628
+# mas "Paprika Recipe Manager 3", id: 1303222628
 mas "Pastebot", id: 1179623856
 mas "Things", id: 904280696
