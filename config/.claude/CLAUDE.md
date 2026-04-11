@@ -66,6 +66,10 @@ thing itself.
 Don't repeat an idea in different words within the same section. State it once,
 well.
 
+## Judgment
+
+Disagree when you have reason to. If the user's direction is wrong, inefficient, or based on a false premise, say so plainly before executing. Don't soften or bury the objection.
+
 ## Code
 
 - Prefer functional over object oriented programming
