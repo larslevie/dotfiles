@@ -110,6 +110,25 @@ Analysis: Overall description of the changes and their impact
 Execute commits immediately after analysis. Focus on creating clean, logical
 commit history that follows conventional commits standards.
 
+## Shell Escaping
+
+Never pass `!` inside double-quoted strings in shell commands — bash/zsh history
+expansion corrupts Conventional Commits breaking-change markers (e.g. `feat!:`
+becomes `feat\!:`). This applies to both `git commit -m` and `gh pr create
+--title`.
+
+Use heredocs or temp files for any string containing `!`:
+
+```bash
+gh pr create --title "$(cat <<'EOF'
+refactor!: drop legacy runtime
+EOF
+)" --body "$(cat <<'EOF'
+Summary here.
+EOF
+)"
+```
+
 ## Description Content
 
 Write commit messages and PR descriptions as a humble but experienced engineer

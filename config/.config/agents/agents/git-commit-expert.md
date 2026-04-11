@@ -64,6 +64,21 @@ not writing a fucking pamphlet. Just leave a meaningful trace so someone can
 understand the choices later. Assume the reader is able to follow the code
 perfectly fine.
 
+## Commit Message Mechanics
+
+Always pass the commit message via a heredoc or temp file — never via `-m "..."`.
+Passing `!` inside a double-quoted `-m` string triggers bash/zsh history expansion,
+corrupting Conventional Commits breaking-change markers (e.g. `feat!:` becomes `feat\!:`).
+
+```bash
+git commit -m "$(cat <<'EOF'
+feat!: remove deprecated API
+
+BREAKING CHANGE: removed foo()
+EOF
+)"
+```
+
 ## Working Approach
 
 1. **Branch Check**: Verify not on main/master

@@ -1,6 +1,6 @@
 # OPENSPEC:START
 # OpenSpec shell completions configuration
-fpath=("/Users/larslevie/.zsh/completions" $fpath)
+fpath=("$HOME/.zsh/completions" $fpath)
 # OPENSPEC:END
 
 # add macOS user bin to path
@@ -10,7 +10,7 @@ export PATH=/Users/allen.leviefnf.com/bin:$PATH
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # add home directory bin to path
-export PATH="$PATH:/Users/larslevie/bin"
+export PATH="$PATH:$HOME/bin"
 
 # never beep
 setopt NO_BEEP
@@ -115,7 +115,7 @@ eval "$(pyenv init -)"
 
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 
-export PATH="/Users/larslevie/go/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 
 
 # Task Master aliases added on 7/5/2025

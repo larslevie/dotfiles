@@ -1,0 +1,91 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "1",
+        "type": "model",
+        "color": "cyan"
+      },
+      {
+        "id": "3",
+        "type": "context-length",
+        "color": "brightBlack"
+      },
+      {
+        "id": "0ae5588e-49d2-4999-9355-3ff932d36e76",
+        "type": "tokens-input",
+        "backgroundColor": "bgBrightMagenta"
+      },
+      {
+        "id": "bb511a29-04a0-4f41-bcfd-bd54266394ef",
+        "type": "tokens-output",
+        "backgroundColor": "bgMagenta"
+      },
+      {
+        "id": "5a90efa1-b9f6-4930-8675-1739cdc27f30",
+        "type": "tokens-cached",
+        "backgroundColor": "bgBrightGreen"
+      }
+    ],
+    [
+      {
+        "id": "26c56d5c-c1dc-41d3-a4b2-0b51c14d4154",
+        "type": "session-clock",
+        "backgroundColor": "bgRed"
+      },
+      {
+        "id": "76356a49-ed57-4b3c-94b4-fc670931d794",
+        "type": "session-usage",
+        "backgroundColor": "bgBrightYellow"
+      },
+      {
+        "id": "3fc7564c-71c5-49e1-a17f-62ca8cb5d82c",
+        "type": "session-cost",
+        "backgroundColor": "bgBlue"
+      },
+      {
+        "id": "5ffcdea7-d674-43ac-a34f-3d00efe954e2",
+        "type": "weekly-usage",
+        "backgroundColor": "bgGreen"
+      }
+    ],
+    [
+      {
+        "id": "aa50aab2-5ef3-4450-85f4-f64aa3fb05d1",
+        "type": "git-worktree"
+      },
+      {
+        "id": "f25b34e6-016d-49fa-8152-d13bffbdf653",
+        "type": "git-changes"
+      },
+      {
+        "id": "5a47ab92-eb77-4796-b2ec-c3451752b5a5",
+        "type": "git-branch"
+      }
+    ]
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 2,
+  "defaultPadding": " ",
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "powerline": {
+    "enabled": true,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [
+      ""
+    ],
+    "endCaps": [
+      ""
+    ],
+    "theme": "monokai",
+    "autoAlign": false
+  }
+}
