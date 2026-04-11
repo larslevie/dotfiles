@@ -38,16 +38,9 @@
       "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)",
       "mcp__pencil"
     ],
-    "ask": [
-      "Bash(rm *)",
-      "Bash(ln *)",
-      "Bash(mv *)",
-      "Bash(cp *)"
-    ],
+    "ask": ["Bash(rm *)", "Bash(ln *)", "Bash(mv *)", "Bash(cp *)"],
     "defaultMode": "acceptEdits",
-    "additionalDirectories": [
-      "~/werk"
-    ]
+    "additionalDirectories": ["~/werk"]
   },
   "statusLine": {
     "type": "command",
@@ -79,9 +72,7 @@
         "~/.gnupg",
         "**/.git/config"
       ],
-      "allowRead": [
-        "~/werk"
-      ]
+      "allowRead": ["~/werk"]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
