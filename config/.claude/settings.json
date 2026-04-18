@@ -38,9 +38,16 @@
       "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)",
       "mcp__pencil"
     ],
-    "ask": ["Bash(rm *)", "Bash(ln *)", "Bash(mv *)", "Bash(cp *)"],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(ln *)",
+      "Bash(mv *)",
+      "Bash(cp *)"
+    ],
     "defaultMode": "acceptEdits",
-    "additionalDirectories": ["~/werk"]
+    "additionalDirectories": [
+      "~/werk"
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -51,7 +58,9 @@
     "greptile@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "sandbox": {
     "enabled": true,
@@ -72,7 +81,9 @@
         "~/.gnupg",
         "**/.git/config"
       ],
-      "allowRead": ["~/werk"]
+      "allowRead": [
+        "~/werk"
+      ]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
