@@ -1,12 +1,12 @@
 # GitHub Simple Issue Workflow
 
-Implement {issue-url}
+Implement $ARGUMENTS
 
 ## Setup
 
-- Always use a git worktree, usless told not to
+- Always use a git worktree, unless told not to
 - Pull `main` before branching
-- Branch naming: `gh-{issue-number}-human-readable-description`
+- Branch naming: `{type}/gh-{issue-number}-human-readable-description` (e.g. `feat/gh-42-add-oauth-client`)
 
 ## Process
 

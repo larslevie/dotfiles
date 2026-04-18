@@ -1,7 +1,11 @@
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_NO_FLICKER": "1"
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   },
   "permissions": {
     "allow": [
@@ -51,7 +55,16 @@
     "greptile@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "warp@claude-code-warp": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-code-warp": {
+      "source": {
+        "source": "github",
+        "repo": "warpdotdev/claude-code-warp"
+      }
+    }
   },
   "sandbox": {
     "enabled": true,
@@ -70,7 +83,8 @@
         "~/.claude/skills",
         "~/.docker/buildx",
         "~/.gnupg",
-        "**/.git/config"
+        "**/.git/config",
+        "/var/folders/**/T/**"
       ],
       "allowRead": ["~/werk"]
     },
@@ -86,5 +100,6 @@
     ]
   },
   "effortLevel": "medium",
+  "advisorModel": "opus",
   "voiceEnabled": true
 }

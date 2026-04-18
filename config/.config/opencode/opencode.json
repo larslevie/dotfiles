@@ -46,7 +46,7 @@
             "input": 5.0,
             "output": 25.0
           },
-          "id": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/kvrcracgb477",
+          "id": "arn:aws:bedrock:us-east-1:558529356944:application-inference-profile/s0l4jq94enz6",
           "limit": {
             "context": 200000,
             "output": 8192
