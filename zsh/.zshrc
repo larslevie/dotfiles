@@ -160,6 +160,10 @@ export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 
 
+# sentry
+fpath=("$HOME/.local/share/zsh/site-functions" $fpath)
+
+
 # Must be at end of file
 # Shell integrations
 eval "$(fzf --zsh)"

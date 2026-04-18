@@ -1,0 +1,8 @@
+name = "New tab: lars.levie"
+
+[[panes]]
+id = "main"
+type = "terminal"
+directory = "/Users/lars.levie"
+
+[params]
