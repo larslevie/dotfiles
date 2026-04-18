@@ -52,9 +52,11 @@
     "padding": 0
   },
   "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
     "greptile@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "warp@claude-code-warp": true
   },
