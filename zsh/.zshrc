@@ -137,8 +137,8 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/op
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
 
@@ -163,6 +163,22 @@ export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 # sentry
 fpath=("$HOME/.local/share/zsh/site-functions" $fpath)
 
+# gco: git checkout that auto-cd's into a worktree if the branch is checked
+# out in one. Falls through to plain `git checkout` for flags, files, or
+# branches without a worktree.
+unalias gco 2>/dev/null
+gco() {
+  emulate -L zsh
+  if [[ $# -eq 1 && $1 != -* ]]; then
+    local wt
+    wt=$(command git worktree list --porcelain 2>/dev/null | command awk -v b="refs/heads/$1" '/^worktree / {p=$2} $1=="branch" && $2==b {print p; exit}')
+    if [[ -n $wt && $wt != $(command git rev-parse --show-toplevel 2>/dev/null) ]]; then
+      cd "$wt"
+      return
+    fi
+  fi
+  command git checkout "$@"
+}
 
 # Must be at end of file
 # Shell integrations
