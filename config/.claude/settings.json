@@ -92,7 +92,7 @@
     }
   },
   "sandbox": {
-    "enabled": true,
+    "enabled": false,
     "autoAllowBashIfSandboxed": true,
     "network": {
       "allowUnixSockets": [
@@ -126,9 +126,10 @@
       "docker-compose"
     ]
   },
-  "effortLevel": "xhigh",
   "advisorModel": "opus",
   "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "theme": "light"
 }
