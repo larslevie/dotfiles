@@ -72,3 +72,12 @@ gke_gcloud_auth_plugin_cache
 /config/.claude/mcp-needs-auth-cache.json
 /config/.config/argocd
 /config/.claude/sessions
+/config/.claude/daemon
+/config/.claude/daemon.lock
+/config/.claude/daemon.log
+/config/.claude/daemon.status.json
+/config/.claude/jobs
+/config/.claude/.last-cleanup
+/config/.config/stripe
+/config/.config/raycast-x
+/config/.ssh/github-realgeeks-auth
