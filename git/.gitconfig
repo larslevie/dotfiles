@@ -40,9 +40,9 @@
 	insteadOf = ssh://git@github.com/cincpro/
 [url "ssh://git@github-realgeeks/RealGeeks/"]
 	insteadOf = ssh://git@github.com/realgeeks/
-[credential "https://dev.azure.com"]
-	useHttpPath = true
 [url "git@github-cincpro:cincpro/"]
 	insteadOf = git@github.com:cincpro/
 [url "git@github-personal:"]
 	insteadOf = git@github.com:
+[credential "https://dev.azure.com"]
+	useHttpPath = true
