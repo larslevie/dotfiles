@@ -1,7 +1,6 @@
 {
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "attribution": {
     "commit": "",
@@ -40,11 +39,20 @@
       "WebFetch(domain:developers.realgeeks.com)",
       "WebFetch(domain:github.com)",
       "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)",
-      "mcp__pencil"
+      "mcp__pencil",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:cafe.github.com)"
     ],
-    "ask": ["Bash(rm *)", "Bash(ln *)", "Bash(mv *)", "Bash(cp *)"],
-    "defaultMode": "acceptEdits",
-    "additionalDirectories": ["~/werk"]
+    "ask": [
+      "Bash(rm *)",
+      "Bash(ln *)",
+      "Bash(mv *)",
+      "Bash(cp *)"
+    ],
+    "defaultMode": "auto",
+    "additionalDirectories": [
+      "~/werk"
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -52,19 +60,34 @@
     "padding": 0
   },
   "enabledPlugins": {
+    "analyze-usage@witco-plugins": true,
+    "announce-internal@witco-plugins": true,
     "frontend-design@claude-plugins-official": true,
     "greptile@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": false,
     "security-guidance@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "warp@claude-code-warp": true
+    "warp@claude-code-warp": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
     "claude-code-warp": {
       "source": {
         "source": "github",
         "repo": "warpdotdev/claude-code-warp"
+      }
+    },
+    "witco-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "cincpro/claude-plugins"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
       }
     }
   },
@@ -88,7 +111,9 @@
         "**/.git/config",
         "/var/folders/**/T/**"
       ],
-      "allowRead": ["~/werk"]
+      "allowRead": [
+        "~/werk"
+      ]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
@@ -101,7 +126,9 @@
       "docker-compose"
     ]
   },
-  "effortLevel": "medium",
+  "effortLevel": "xhigh",
   "advisorModel": "opus",
+  "tui": "fullscreen",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }
