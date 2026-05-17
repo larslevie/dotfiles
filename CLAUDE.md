@@ -24,7 +24,7 @@ brew bundle  # reads ~/.config/Brewfile via HOMEBREW_BUNDLE_FILE
 | --------- | -------------------------------------------------- | ----------- |
 | `zsh/`    | `.zshenv`, `.zprofile`, `.zshrc`                   | `~/`        |
 | `git/`    | `.gitconfig`                                       | `~/`        |
-| `config/` | `.claude/`, `.config/`, `.aws/`, `.kube/`, `.ssh/` | `~/`        |
+| `config/` | `.agents/`, `.claude/`, `.config/`, `.aws/`, `.kube/`, `.ssh/` | `~/`        |
 
 After editing, re-stow with `stow -R <package>` from the repo root. Use `stow -D
 <package>` to unlink.
