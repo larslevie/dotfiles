@@ -43,16 +43,9 @@
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:cafe.github.com)"
     ],
-    "ask": [
-      "Bash(rm *)",
-      "Bash(ln *)",
-      "Bash(mv *)",
-      "Bash(cp *)"
-    ],
+    "ask": ["Bash(rm *)", "Bash(ln *)", "Bash(mv *)", "Bash(cp *)"],
     "defaultMode": "auto",
-    "additionalDirectories": [
-      "~/werk"
-    ]
+    "additionalDirectories": ["~/werk"]
   },
   "statusLine": {
     "type": "command",
@@ -111,9 +104,7 @@
         "**/.git/config",
         "/var/folders/**/T/**"
       ],
-      "allowRead": [
-        "~/werk"
-      ]
+      "allowRead": ["~/werk"]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
@@ -129,7 +120,9 @@
   "advisorModel": "opus",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "theme": "light"
+  "preferredNotifChannel": "auto",
+  "autoCompactEnabled": false
 }
