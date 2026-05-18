@@ -82,3 +82,17 @@ gke_gcloud_auth_plugin_cache
 /config/.config/raycast-x
 /config/.ssh/github-realgeeks-auth
 /config/.claude/.caveman-active
+/config/.codex/auth.json
+/config/.codex/installation_id
+/config/.codex/.personality_migration
+/config/.codex/models_cache.json
+/config/.codex/session_index.jsonl
+/config/.codex/*.sqlite
+/config/.codex/*.sqlite-shm
+/config/.codex/*.sqlite-wal
+/config/.codex/sessions
+/config/.codex/shell_snapshots
+/config/.codex/cache
+/config/.codex/memories
+/config/.codex/tmp
+/config/.codex/.tmp

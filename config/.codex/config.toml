@@ -1,0 +1,6 @@
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+[mcp_servers]
+
+[projects."/Users/larslevie/werk/beamform/reeve"]
+trust_level = "trusted"
