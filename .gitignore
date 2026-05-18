@@ -81,3 +81,4 @@ gke_gcloud_auth_plugin_cache
 /config/.config/stripe
 /config/.config/raycast-x
 /config/.ssh/github-realgeeks-auth
+/config/.claude/.caveman-active
