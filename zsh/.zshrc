@@ -180,6 +180,9 @@ gco() {
   command git checkout "$@"
 }
 
+# libpq (keg-only) — psql, pg_dump, pg_restore
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
 # Must be at end of file
 # Shell integrations
 eval "$(fzf --zsh)"
