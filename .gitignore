@@ -37,8 +37,9 @@ env
 /config/.claude/file-history
 /config/.claude/history.jsonl
 /config/.claude/security_warnings_*
-/config/.claude/security_warnings_*
-/config/.claude/security_warnings_*
+/config/.claude/security/
+/config/.claude/session-env/
+/config/.claude/.last-update-result.json
 /config/.config/pnpm/rc
 /config/.config/mark.toml
 /config/.config/gcloud/virtenv
