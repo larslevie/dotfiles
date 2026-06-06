@@ -1,7 +1,10 @@
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_NO_FLICKER": "1"
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "HTTPS_PROXY": "http://127.0.0.1:9009",
+    "HTTP_PROXY": "http://127.0.0.1:9009",
+    "NO_PROXY": "localhost,127.0.0.1"
   },
   "attribution": {
     "commit": "",
