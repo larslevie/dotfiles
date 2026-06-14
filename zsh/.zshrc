@@ -183,6 +183,21 @@ gco() {
 # libpq (keg-only) — psql, pg_dump, pg_restore
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
+
+# CodeArtifact: reuse cached token until it nears the 12h expiry, else mint a new one.
+() {
+  local cache=${XDG_CACHE_HOME:-$HOME/.cache}/witctl/codeartifact.token ttl=39600  # 11h
+  if [[ -z $AWS_CODEARTIFACT_TOKEN ]]; then
+    if [[ -f $cache ]] && (( EPOCHSECONDS - $(stat -f %m $cache) < ttl )); then
+      AWS_CODEARTIFACT_TOKEN=$(<$cache)
+    elif AWS_CODEARTIFACT_TOKEN=$(witctl credentials get codeartifact); then
+      mkdir -p ${cache:h} && print -r -- $AWS_CODEARTIFACT_TOKEN >| $cache && chmod 600 $cache
+    fi
+  fi
+  export AWS_CODEARTIFACT_TOKEN
+}
+
+
 # Must be at end of file
 # Shell integrations
 eval "$(fzf --zsh)"
