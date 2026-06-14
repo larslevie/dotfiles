@@ -47,9 +47,16 @@
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:cafe.github.com)"
     ],
-    "ask": ["Bash(rm *)", "Bash(ln *)", "Bash(mv *)", "Bash(cp *)"],
+    "ask": [
+      "Bash(rm *)",
+      "Bash(ln *)",
+      "Bash(mv *)",
+      "Bash(cp *)"
+    ],
     "defaultMode": "auto",
-    "additionalDirectories": ["~/werk"]
+    "additionalDirectories": [
+      "~/werk"
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -66,7 +73,7 @@
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "warp@claude-code-warp": true,
-    "caveman@caveman": true
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-code-warp": {
@@ -79,12 +86,6 @@
       "source": {
         "source": "github",
         "repo": "cincpro/claude-plugins"
-      }
-    },
-    "caveman": {
-      "source": {
-        "source": "github",
-        "repo": "JuliusBrussee/caveman"
       }
     }
   },
@@ -108,7 +109,9 @@
         "**/.git/config",
         "/var/folders/**/T/**"
       ],
-      "allowRead": ["~/werk"]
+      "allowRead": [
+        "~/werk"
+      ]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
@@ -121,12 +124,12 @@
       "docker-compose"
     ]
   },
-  "advisorModel": "opus",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "theme": "auto",
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
   "preferredNotifChannel": "auto",
-  "autoCompactEnabled": false
+  "autoCompactEnabled": false,
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }
