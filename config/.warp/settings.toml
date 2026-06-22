@@ -95,3 +95,6 @@ is_password_prompt_enabled = true
 long_running_threshold = 30
 mode = "enabled"
 play_notification_sound = true
+
+[accessibility]
+accessibility_verbosity = "concise"
