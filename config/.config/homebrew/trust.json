@@ -1,0 +1,13 @@
+{
+  "trustedtaps": [
+    "abyss/tools",
+    "aws/tap",
+    "derailed/k9s",
+    "hashicorp/tap",
+    "https://github.com/witco-oss/homebrew-witco.git",
+    "spacelift-io/spacelift",
+    "stripe/stripe-cli",
+    "terror/tap",
+    "warrensbox/tap"
+  ]
+}
