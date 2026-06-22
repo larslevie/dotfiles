@@ -97,3 +97,5 @@ gke_gcloud_auth_plugin_cache
 /config/.codex/memories
 /config/.codex/tmp
 /config/.codex/.tmp
+/config/.config/homebrew/trust.json.lock
+/config/.claude/teams
