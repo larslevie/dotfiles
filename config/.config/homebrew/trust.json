@@ -9,5 +9,8 @@
     "stripe/stripe-cli",
     "terror/tap",
     "warrensbox/tap"
+  ],
+  "trustedformulae": [
+    "https://github.com/witco-oss/homebrew-witco.git/galactus"
   ]
 }
