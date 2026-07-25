@@ -99,3 +99,6 @@ gke_gcloud_auth_plugin_cache
 /config/.codex/.tmp
 /config/.config/homebrew/trust.json.lock
 /config/.claude/teams
+/config/.claude/gh-pr-status-cache.json
+/config/.claude/daemon-auth-status.json
+/config/.claude/daemon-auth-cooldown

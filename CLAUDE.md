@@ -20,10 +20,10 @@ brew bundle  # reads ~/.config/Brewfile via HOMEBREW_BUNDLE_FILE
 
 ## Stow Packages
 
-| Package   | Contains                                           | Symlinks to |
-| --------- | -------------------------------------------------- | ----------- |
-| `zsh/`    | `.zshenv`, `.zprofile`, `.zshrc`                   | `~/`        |
-| `git/`    | `.gitconfig`                                       | `~/`        |
+| Package   | Contains                                                                  | Symlinks to |
+| --------- | ------------------------------------------------------------------------- | ----------- |
+| `zsh/`    | `.zshenv`, `.zprofile`, `.zshrc`                                          | `~/`        |
+| `git/`    | `.gitconfig`                                                              | `~/`        |
 | `config/` | `.agents/`, `.claude/`, `.codex/`, `.config/`, `.aws/`, `.kube/`, `.ssh/` | `~/`        |
 
 After editing, re-stow with `stow -R <package>` from the repo root. Use `stow -D
