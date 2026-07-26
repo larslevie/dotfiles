@@ -1,12 +1,8 @@
 {
-  "awsAuthRefresh": "aws sso login --profile witco-login",
   "env": {
     "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_NO_FLICKER": "1",
-    "HTTPS_PROXY": "http://127.0.0.1:9009",
-    "HTTP_PROXY": "http://127.0.0.1:9009",
-    "NO_PROXY": "localhost,127.0.0.1"
+    "CLAUDE_CODE_NO_FLICKER": "1"
   },
   "attribution": {
     "commit": "",
@@ -45,9 +41,9 @@
       "WebFetch(domain:developers.realgeeks.com)",
       "WebFetch(domain:github.com)",
       "Bash(/Users/larslevie/.claude/skills/pr-review-workflow/scripts/resolve_thread.sh:*)",
-      "mcp__pencil",
       "WebFetch(domain:api.github.com)",
-      "WebFetch(domain:cafe.github.com)"
+      "WebFetch(domain:cafe.github.com)",
+      "mcp__pencil"
     ],
     "ask": [
       "Bash(rm *)",
@@ -75,6 +71,7 @@
     "security-guidance@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
     "warp@claude-code-warp": true
   },
   "extraKnownMarketplaces": {
@@ -133,5 +130,6 @@
   "preferredNotifChannel": "auto",
   "autoCompactEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "agentPushNotifEnabled": true
 }
