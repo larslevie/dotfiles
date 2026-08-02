@@ -5,27 +5,33 @@ Static files, GNU Stow for placement, layered per machine.
 ## Install on a new machine
 
 ```sh
-xcode-select --install
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install stow
-
-git clone git@github.com:larslevie/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-
-# Register the machine, then link and install.
-printf '%s\twork\n' "$(scutil --get LocalHostName)" >> machines.conf   # or personal
-./bin/dot adopt
-./bin/dot brew
+git clone https://github.com/larslevie/dotfiles.git ~/dotfiles
+~/dotfiles/bin/dot bootstrap work        # or: personal
 ```
 
-`adopt` moves any pre-existing real file aside into `backups/<timestamp>/`
-before linking, so an already-configured machine can be brought under
-management without hand-cleanup. Use `apply` once a machine is set up.
+That is the whole thing. `bootstrap` installs the Xcode Command Line Tools and
+Homebrew if missing, installs stow, registers the machine in `machines.conf`,
+backs up any colliding files, links every layer, rebuilds the skill views, runs
+`brew bundle` for the common and profile Brewfiles, and finishes with `doctor`.
+Omit the profile and it lists the choices and asks.
+
+It is safe to re-run: registration is idempotent and linking is a restow.
+
+Only these need you afterwards, because they are interactive logins:
+
+1. 1Password → Settings → Developer → enable the SSH agent
+   (git signing and every `github-*` host alias depend on it)
+2. `gh auth login`
+3. `aws sso login --profile witco-login` on work machines
+
+Clone over HTTPS, as above — the SSH host aliases don't exist until the config
+is linked, and the 1Password agent isn't running yet on a fresh machine.
 
 ## Commands
 
-| Command      | What it does                                             |
-| ------------ | -------------------------------------------------------- |
+| Command             | What it does                                      |
+| ------------------- | ------------------------------------------------- |
+| `dot bootstrap [p]` | Clone to done: deps, register, link, brew, doctor |
 | `dot info`   | Show this machine's hostname, profile, and active layers |
 | `dot check`  | Dry run — print every link that would be made            |
 | `dot apply`  | Link the layers and rebuild the skill views              |
@@ -62,10 +68,10 @@ layering is not limited to appending.
 
 ## Adding a machine
 
-1. `printf '%s\t<profile>\n' "$(scutil --get LocalHostName)" >> machines.conf`
-2. If it needs anything unique, create `layers/hosts/<hostname>/home/...`.
-   For git, add `.config/git/host.gitconfig` — it is included last and wins.
-3. `./bin/dot adopt`
+`dot bootstrap <profile>` registers it for you. If it needs anything unique
+beyond its profile, add `layers/hosts/<hostname>/home/...` — for git that means
+`.config/git/host.gitconfig`, which is included last and wins — then
+`./bin/dot apply`.
 
 ## Git identity
 

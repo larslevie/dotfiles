@@ -36,7 +36,7 @@ what silently broke git signing and the k9s dump dir before.
 ## Layout
 
 ```
-bin/dot           entry point: info | check | apply | adopt | doctor | brew | unlink
+bin/dot           entry point: bootstrap | info | check | apply | adopt | doctor | brew | unlink
 bin/link-skills   rebuilds the generated skill views (idempotent)
 machines.conf     hostname -> profile
 layers/common/home/

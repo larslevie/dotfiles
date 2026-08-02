@@ -61,7 +61,92 @@ backup_conflicts() {
   return 0
 }
 
+ensure_clt() {
+  xcode-select -p >/dev/null 2>&1 && return 0
+  info "installing Xcode Command Line Tools"
+  # Opens a GUI installer; poll until it finishes rather than racing it.
+  xcode-select --install 2>/dev/null || true
+  until xcode-select -p >/dev/null 2>&1; do
+    printf '    waiting for the Command Line Tools installer to finish...\n'
+    sleep 20
+  done
+}
+
+ensure_brew() {
+  command -v brew >/dev/null && return 0
+  info "installing Homebrew"
+  NONINTERACTIVE=1 /bin/bash -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  local b
+  for b in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    [[ -x $b ]] && { eval "$("$b" shellenv)"; break; }
+  done
+  command -v brew >/dev/null || die "Homebrew installed but not on PATH"
+}
+
+ensure_stow() {
+  command -v stow >/dev/null && return 0
+  info "installing stow"
+  brew install stow
+}
+
+# A new machine isn't in machines.conf yet. Take the profile from argv, or ask.
+register_host() {
+  local host=$1 want=${2:-}
+  profile_for "$host" >/dev/null 2>&1 && return 0
+  if [[ -z $want ]]; then
+    [[ -t 0 ]] || die "host '$host' is unregistered; re-run as: dot bootstrap <profile>"
+    local avail
+    avail=$(find layers/profiles -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort | tr '\n' ' ')
+    printf 'Machine "%s" is not registered.\nProfiles: %s\nProfile: ' "$host" "$avail"
+    read -r want
+  fi
+  [[ -d layers/profiles/$want ]] || die "no such profile: $want"
+  printf '%s\t%s\n' "$host" "$want" >> machines.conf
+  info "registered $host as $want in machines.conf"
+}
+
+do_link() { # do_link <backup?>
+  command -v stow >/dev/null || die "stow not installed: brew install stow"
+  if [[ ${1:-} == backup ]]; then
+    info "backing up existing real files that stow would collide with"
+    backup_conflicts "$(date +%Y%m%d-%H%M%S)"
+  fi
+  stow_layers "--restow" "$HOST" "$PROFILE"
+  info "linking skill views"
+  "$DOTFILES/bin/link-skills"
+}
+
+do_brew() {
+  local f
+  for f in layers/common/home/.config/homebrew/Brewfile \
+           "layers/profiles/$PROFILE/home/.config/homebrew/Brewfile.$PROFILE"; do
+    [[ -f $f ]] || continue
+    info "brew bundle $f"
+    brew bundle --file="$f"
+  done
+}
+
 case ${1:-apply} in
+  bootstrap)
+    ensure_clt
+    ensure_brew
+    ensure_stow
+    register_host "$(host_name)" "${2:-}"
+    resolve
+    do_link backup
+    do_brew
+    "$0" doctor || true
+    cat <<'NEXT'
+
+==> Done. Remaining steps need you:
+    1. Sign in to 1Password and enable Settings > Developer > SSH agent
+       (git signing and every github-* host alias depend on it)
+    2. gh auth login
+    3. aws sso login --profile witco-login   (work machines)
+    4. Open a new shell
+NEXT
+    ;;
   info)
     resolve
     printf 'host     %s\nprofile  %s\nlayers   %s\n' \
@@ -74,19 +159,11 @@ case ${1:-apply} in
     ;;
   adopt)
     resolve
-    command -v stow >/dev/null || die "stow not installed: brew install stow"
-    info "backing up existing real files that stow would collide with"
-    backup_conflicts "$(date +%Y%m%d-%H%M%S)"
-    stow_layers "--restow" "$HOST" "$PROFILE"
-    info "linking skill views"
-    "$DOTFILES/bin/link-skills"
+    do_link backup
     ;;
   apply)
     resolve
-    command -v stow >/dev/null || die "stow not installed: brew install stow"
-    stow_layers "--restow" "$HOST" "$PROFILE"
-    info "linking skill views"
-    "$DOTFILES/bin/link-skills"
+    do_link
     ;;
   unlink)
     resolve
@@ -119,14 +196,9 @@ case ${1:-apply} in
     ;;
   brew)
     resolve
-    for f in layers/common/home/.config/homebrew/Brewfile \
-             "layers/profiles/$PROFILE/home/.config/homebrew/Brewfile.$PROFILE"; do
-      [[ -f $f ]] || continue
-      info "brew bundle $f"
-      brew bundle --file="$f"
-    done
+    do_brew
     ;;
   *)
-    die "usage: dot {info|check|apply|adopt|doctor|unlink|brew}"
+    die "usage: dot {bootstrap|info|check|apply|adopt|doctor|unlink|brew}"
     ;;
 esac
