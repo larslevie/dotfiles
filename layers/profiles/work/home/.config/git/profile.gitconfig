@@ -21,5 +21,10 @@
 [url "git@github-realgeeks:RealGeeks/"]
 	insteadOf = git@github.com:RealGeeks/
 
+# Azure DevOps needs GCM; osxkeychain from the common layer can't do it. The
+# path is where Microsoft's .pkg installs on both architectures, not just Intel.
+# Installed by `dot brew` via the git-credential-manager cask in Brewfile.work.
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true
