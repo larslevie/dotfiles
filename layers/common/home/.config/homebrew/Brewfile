@@ -1,0 +1,84 @@
+tap "abyss/tools"
+
+# CLI
+brew "ansible"
+brew "bat"
+brew "brew-cask-completion"
+brew "deno"
+brew "direnv"
+brew "dust"
+brew "eza"
+brew "fd"
+brew "fzf"
+brew "gh"
+brew "git"
+brew "go"
+brew "grype"
+brew "hub"
+brew "jq"
+brew "just"
+brew "mas"
+brew "mkcert"
+brew "node"
+brew "pandoc"
+brew "pinentry-mac"
+brew "pnpm"
+brew "pwgen"
+brew "pyenv"
+brew "ripgrep"
+brew "spaceship"
+brew "sslscan"
+brew "stow"
+brew "tokei"
+brew "uutils-coreutils"
+brew "uv"
+brew "xh"
+brew "yq"
+brew "yt-dlp"
+brew "zoxide"
+brew "zplug"
+brew "abyss/tools/awsp"
+
+# Apps
+cask "1password"
+cask "alfred"
+cask "appcleaner"
+cask "arc"
+cask "bartender"
+cask "claude"
+cask "dash"
+cask "firefox"
+cask "ghostty"
+cask "google-chrome"
+cask "iterm2"
+cask "monodraw"
+cask "obsidian"
+cask "orbstack"
+cask "raycast"
+cask "setapp"
+cask "slack"
+cask "textexpander"
+cask "tower"
+cask "transmit"
+cask "visual-studio-code"
+cask "warp"
+
+# Fonts
+cask "font-blex-mono-nerd-font"
+cask "font-fira-code"
+cask "font-hack"
+cask "font-ibm-plex-mono"
+cask "font-jetbrains-mono"
+cask "font-monaspace"
+
+mas "1Password for Safari", id: 1569813296
+mas "Amphetamine", id: 937984704
+mas "Bear", id: 1091189122
+mas "Cardhop", id: 1290358394
+mas "Drafts", id: 1435957248
+mas "Fantastical", id: 975937182
+mas "Keynote", id: 409183694
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Pastebot", id: 1179623856
+mas "Things", id: 904280696

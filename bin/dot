@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# Apply dotfiles for this machine: common layer, then its profile, then its host overlay.
+set -euo pipefail
+
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$DOTFILES"
+
+die() { printf '%s\n' "dot: $*" >&2; exit 1; }
+info() { printf '\033[1m==>\033[0m %s\n' "$*"; }
+
+host_name() { scutil --get LocalHostName 2>/dev/null || hostname -s; }
+
+profile_for() {
+  local host=$1 h p
+  while read -r h p; do
+    [[ -z ${h:-} || $h == \#* ]] && continue
+    [[ $h == "$host" ]] && { printf '%s\n' "$p"; return 0; }
+  done < machines.conf
+  return 1
+}
+
+# Layer dirs to stow, in application order. Only those that exist.
+layer_dirs() {
+  local host=$1 profile=$2 d
+  for d in layers/common "layers/profiles/$profile" "layers/hosts/$host"; do
+    [[ -d $d/home ]] && printf '%s\n' "$d"
+  done
+}
+
+# --no-folding keeps directories real so tools writing state (~/.claude/, ~/.config/gcloud/)
+# never land inside the repo. Only tracked leaf files become symlinks.
+stow_layers() {
+  local mode=$1 host=$2 profile=$3 d
+  while read -r d; do
+    info "stow $mode $d"
+    stow --no-folding --dir="$d" --target="$HOME" $mode home
+  done < <(layer_dirs "$host" "$profile")
+}
+
+resolve() {
+  HOST=$(host_name)
+  PROFILE=$(profile_for "$HOST") || die "host '$HOST' not in machines.conf — add '$HOST <work|personal>'"
+  [[ -d layers/profiles/$PROFILE ]] || die "no such profile: layers/profiles/$PROFILE"
+}
+
+# Stow refuses to overwrite a real file. Move pre-existing targets aside once so a
+# fresh machine (or one predating this layout) can be adopted without hand-cleanup.
+backup_conflicts() {
+  local stamp=$1 d rel target moved=0
+  while read -r d; do
+    while IFS= read -r rel; do
+      target="$HOME/$rel"
+      [[ -e $target && ! -L $target ]] || continue
+      mkdir -p "$(dirname "$DOTFILES/backups/$stamp/$rel")"
+      mv "$target" "$DOTFILES/backups/$stamp/$rel"
+      printf '    %s\n' "$rel"
+      moved=1
+    done < <(cd "$d/home" && find . -type f | sed 's|^\./||')
+  done < <(layer_dirs "$HOST" "$PROFILE")
+  [[ $moved == 1 ]] && info "backed up to backups/$stamp"
+  return 0
+}
+
+case ${1:-apply} in
+  info)
+    resolve
+    printf 'host     %s\nprofile  %s\nlayers   %s\n' \
+      "$HOST" "$PROFILE" "$(layer_dirs "$HOST" "$PROFILE" | tr '\n' ' ')"
+    ;;
+  check)
+    resolve
+    command -v stow >/dev/null || die "stow not installed: brew install stow"
+    stow_layers "--simulate --verbose=1" "$HOST" "$PROFILE"
+    ;;
+  adopt)
+    resolve
+    command -v stow >/dev/null || die "stow not installed: brew install stow"
+    info "backing up existing real files that stow would collide with"
+    backup_conflicts "$(date +%Y%m%d-%H%M%S)"
+    stow_layers "--restow" "$HOST" "$PROFILE"
+    info "linking skill views"
+    "$DOTFILES/bin/link-skills"
+    ;;
+  apply)
+    resolve
+    command -v stow >/dev/null || die "stow not installed: brew install stow"
+    stow_layers "--restow" "$HOST" "$PROFILE"
+    info "linking skill views"
+    "$DOTFILES/bin/link-skills"
+    ;;
+  unlink)
+    resolve
+    stow_layers "--delete" "$HOST" "$PROFILE"
+    ;;
+  doctor)
+    resolve
+    # A tool that saves by atomic rename (write temp, mv over) replaces the
+    # symlink with a real file. The repo then silently stops tracking it.
+    bad=0
+    while read -r d; do
+      while IFS= read -r rel; do
+        target="$HOME/$rel"
+        if [[ -e $target && ! -L $target ]]; then
+          printf 'detached  %s\n' "$rel"; bad=$((bad+1))
+        elif [[ ! -e $target ]]; then
+          printf 'missing   %s\n' "$rel"; bad=$((bad+1))
+        fi
+      done < <(cd "$d/home" && find . -type f | sed 's|^\./||')
+    done < <(layer_dirs "$HOST" "$PROFILE")
+    for l in "$HOME"/.claude/skills "$HOME"/.config/agents/skills/*; do
+      [[ -L $l && ! -e $l ]] && { printf 'dangling  %s\n' "${l#"$HOME"/}"; bad=$((bad+1)); }
+    done
+    if [[ $bad == 0 ]]; then
+      info "all links healthy"
+    else
+      printf '\n%s\n' "$bad problem(s). 'dot adopt' backs up detached files and relinks."
+      exit 1
+    fi
+    ;;
+  brew)
+    resolve
+    for f in layers/common/home/.config/homebrew/Brewfile \
+             "layers/profiles/$PROFILE/home/.config/homebrew/Brewfile.$PROFILE"; do
+      [[ -f $f ]] || continue
+      info "brew bundle $f"
+      brew bundle --file="$f"
+    done
+    ;;
+  *)
+    die "usage: dot {info|check|apply|adopt|doctor|unlink|brew}"
+    ;;
+esac

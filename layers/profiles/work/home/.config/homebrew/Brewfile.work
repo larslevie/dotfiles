@@ -1,0 +1,34 @@
+tap "aws/tap"
+tap "derailed/k9s"
+tap "hashicorp/tap"
+tap "spacelift-io/spacelift"
+tap "warrensbox/tap"
+tap "witco/witco"
+
+brew "witco-cli"
+brew "awscli"
+brew "opentofu"
+brew "k6"
+brew "jsonnet-bundler"
+
+# Kubernetes / observability
+brew "kubernetes-cli"
+brew "krew"
+brew "kubectx"
+brew "helm"
+brew "logcli"
+brew "mimirtool"
+brew "grafanactl"
+brew "aws/tap/ec2-instance-selector"
+brew "derailed/k9s/k9s"
+brew "hashicorp/tap/vault"
+
+cask "datagrip"
+cask "postman"
+cask "viscosity"
+cask "kaleidoscope"
+cask "git-credential-manager"
+cask "gpg-suite"
+cask "figma"
+
+mas "OmniGraffle", id: 1142578753
