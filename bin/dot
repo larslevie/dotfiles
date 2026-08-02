@@ -106,15 +106,25 @@ register_host() {
   info "registered $host as $want in machines.conf"
 }
 
-do_link() { # do_link <backup?>
+do_link() { # do_link [backup] [-- <merge-claude-settings args>]
   command -v stow >/dev/null || die "stow not installed: brew install stow"
   if [[ ${1:-} == backup ]]; then
+    shift
     info "backing up existing real files that stow would collide with"
     backup_conflicts "$(date +%Y%m%d-%H%M%S)"
   fi
   stow_layers "--restow" "$HOST" "$PROFILE"
   info "linking skill views"
   "$DOTFILES/bin/link-skills"
+  info "merging Claude settings"
+  do_claude "$@"
+}
+
+# Claude Code reads exactly one user settings file and has no include
+# mechanism, so the layers are merged into it here instead.
+do_claude() {
+  "$DOTFILES/bin/merge-claude-settings" \
+    --root "$DOTFILES" --profile "$PROFILE" --host "$HOST" "$@"
 }
 
 do_brew() {
@@ -163,7 +173,18 @@ NEXT
     ;;
   apply)
     resolve
-    do_link
+    shift || true
+    do_link "$@"
+    ;;
+  claude)
+    resolve
+    case ${2:-apply} in
+      apply)  do_claude ;;
+      force)  do_claude --force ;;
+      adopt)  do_claude --adopt ;;
+      check)  do_claude --check ;;
+      *) die "usage: dot claude {apply|force|adopt|check}" ;;
+    esac
     ;;
   unlink)
     resolve
@@ -187,6 +208,7 @@ NEXT
     for l in "$HOME"/.claude/skills "$HOME"/.config/agents/skills/*; do
       [[ -L $l && ! -e $l ]] && { printf 'dangling  %s\n' "${l#"$HOME"/}"; bad=$((bad+1)); }
     done
+    do_claude --check || bad=$((bad+1))
     if [[ $bad == 0 ]]; then
       info "all links healthy"
     else
@@ -199,6 +221,6 @@ NEXT
     do_brew
     ;;
   *)
-    die "usage: dot {bootstrap|info|check|apply|adopt|doctor|unlink|brew}"
+    die "usage: dot {bootstrap|info|check|apply|adopt|doctor|unlink|brew|claude}"
     ;;
 esac

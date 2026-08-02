@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:developers.realgeeks.com)"
+    ],
+    "additionalDirectories": [
+      "~/werk"
+    ]
+  },
+  "enabledPlugins": {
+    "analyze-usage@witco-plugins": true,
+    "announce-internal@witco-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "witco-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "cincpro/claude-plugins"
+      }
+    }
+  },
+  "sandbox": {
+    "filesystem": {
+      "allowRead": [
+        "~/werk"
+      ]
+    }
+  }
+}

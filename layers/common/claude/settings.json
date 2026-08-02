@@ -36,7 +36,6 @@
       "WebFetch(domain:*)",
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:cafe.github.com)",
-      "WebFetch(domain:developers.realgeeks.com)",
       "WebFetch(domain:github.com)",
       "mcp__pencil"
     ],
@@ -46,10 +45,7 @@
       "Bash(mv *)",
       "Bash(cp *)"
     ],
-    "defaultMode": "auto",
-    "additionalDirectories": [
-      "~/werk"
-    ]
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
@@ -57,8 +53,6 @@
     "padding": 0
   },
   "enabledPlugins": {
-    "analyze-usage@witco-plugins": true,
-    "announce-internal@witco-plugins": true,
     "frontend-design@claude-plugins-official": true,
     "greptile@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": false,
@@ -69,12 +63,6 @@
     "warp@claude-code-warp": true
   },
   "extraKnownMarketplaces": {
-    "witco-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "cincpro/claude-plugins"
-      }
-    },
     "claude-code-warp": {
       "source": {
         "source": "github",
@@ -102,9 +90,7 @@
         "**/.git/config",
         "/var/folders/**/T/**"
       ],
-      "allowRead": [
-        "~/werk"
-      ]
+      "allowRead": []
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [

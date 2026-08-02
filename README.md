@@ -85,6 +85,39 @@ Anonymous `github.com` URLs are rewritten onto 1Password-backed host aliases.
 Longest prefix wins, so `cincpro/` and `RealGeeks/` go to their work aliases and
 everything else goes to `github-personal`.
 
+## Claude settings
+
+Claude Code reads exactly one user settings file and has no include mechanism,
+so this is the one place layering can't be delegated to the tool. The layers are
+merged into `~/.claude/settings.json` by `dot apply`:
+
+```
+layers/common/claude/settings.json              base
+layers/profiles/<profile>/claude/settings.json  profile delta
+layers/hosts/<host>/claude/settings.json        host delta
+```
+
+Objects merge deeply, lists concatenate and de-duplicate (what allow-lists
+want), scalars replace. To replace a list outright instead of extending it, name
+the key with a trailing `!` in the overriding layer.
+
+Note these sit in `claude/`, *not* `home/.claude/` — they are inputs to the
+merge, not files stow places.
+
+Because the result is generated it can't also be a symlink into the repo, and
+Claude Code rewrites `settings.json` when you change options in the app. So the
+generated result is recorded, and drift is detected rather than silently lost:
+
+| Command                    | What it does                                        |
+| -------------------------- | --------------------------------------------------- |
+| `dot claude check`         | Report whether the live file drifted                 |
+| `dot claude adopt`         | Fold your changes back into the common layer         |
+| `dot claude force`         | Discard local changes and regenerate                 |
+
+`dot apply` and `dot doctor` refuse to clobber drift, telling you to pick one.
+`adopt` writes to the *common* layer and drops anything a higher layer already
+supplies, so work-only keys never leak into common.
+
 ## Why directories stay real
 
 Stow runs with `--no-folding`, so directories under `$HOME` are created as real

@@ -25,6 +25,13 @@ directories at the repo, and every tool's runtime state starts landing in git.
 built by `bin/link-skills` and gitignored. Committing them encodes one
 machine's layout and breaks every other machine.
 
+**Claude settings are generated, not stowed.** `~/.claude/settings.json` is
+merged from `layers/*/claude/settings.json` by `bin/merge-claude-settings`,
+because Claude Code reads one user settings file and has no include mechanism.
+Those sources live in `claude/`, not `home/.claude/` — putting one under `home/`
+would make stow link it and defeat the merge. Editing the live file is fine;
+`dot claude adopt` folds the change back into the common layer.
+
 **Never commit tool state.** Session logs, caches, lockfiles, `hosts.yml`,
 sqlite files, gcloud sentinels. If `.gitignore` starts growing again, something
 is being tracked that shouldn't be.
@@ -38,6 +45,7 @@ what silently broke git signing and the k9s dump dir before.
 ```
 bin/dot           entry point: bootstrap | info | check | apply | adopt | doctor | brew | unlink
 bin/link-skills   rebuilds the generated skill views (idempotent)
+bin/merge-claude-settings  merges layered Claude settings into ~/.claude/settings.json
 machines.conf     hostname -> profile
 layers/common/home/
 layers/profiles/{work,personal}/home/
