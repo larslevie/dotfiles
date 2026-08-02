@@ -16,9 +16,14 @@ zinit light olets/zsh-abbr
 export ZSH_DOTENV_FILE=$XDG_CONFIG_HOME/env
 export ZSH_DOTENV_PROMPT=false
 
+# Load a snippet only when the tool backing it exists. Several OMZ plugins
+# print a warning on every shell start otherwise, and a machine is expected to
+# be missing tools before `dot brew` runs, or on purpose.
+snippet_if() { command -v "$1" >/dev/null && zinit snippet "$2"; }
+
 zinit snippet OMZP::git
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::dotenv
-zinit snippet OMZP::direnv
-zinit snippet OMZP::docker
-zinit snippet OMZP::docker-compose
+snippet_if direnv OMZP::direnv
+snippet_if docker OMZP::docker
+snippet_if docker OMZP::docker-compose
