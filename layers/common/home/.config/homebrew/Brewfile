@@ -49,6 +49,9 @@ cask "claude"
 cask "dash"
 cask "firefox"
 cask "ghostty"
+# Everywhere, because ~/.gitconfig resets the helper list and makes GCM the
+# only credential helper on every machine.
+cask "git-credential-manager"
 cask "google-chrome"
 cask "monodraw"
 cask "obsidian"

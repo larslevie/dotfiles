@@ -25,7 +25,6 @@ cask "datagrip"
 cask "postman"
 cask "viscosity"
 cask "kaleidoscope"
-cask "git-credential-manager"
 cask "gpg-suite"
 cask "figma"
 
