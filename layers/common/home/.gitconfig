@@ -8,3 +8,6 @@
 	path = ~/.config/git/host.gitconfig
 [include]
 	path = ~/.config/git/local.gitconfig
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager

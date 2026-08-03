@@ -1,8 +1,6 @@
 tap "aws/tap"
 tap "derailed/k9s"
 tap "hashicorp/tap"
-tap "spacelift-io/spacelift"
-tap "warrensbox/tap"
 tap "witco/witco"
 
 brew "witco-cli"
