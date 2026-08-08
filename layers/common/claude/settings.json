@@ -2,7 +2,8 @@
   "env": {
     "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_NO_FLICKER": "1"
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "ANTHROPIC_BASE_URL": "http://127.0.0.1:8787"
   },
   "attribution": {
     "commit": "",
@@ -39,12 +40,7 @@
       "WebFetch(domain:github.com)",
       "mcp__pencil"
     ],
-    "ask": [
-      "Bash(rm *)",
-      "Bash(ln *)",
-      "Bash(mv *)",
-      "Bash(cp *)"
-    ],
+    "ask": ["Bash(rm *)", "Bash(ln *)", "Bash(mv *)", "Bash(cp *)"],
     "defaultMode": "auto"
   },
   "statusLine": {
