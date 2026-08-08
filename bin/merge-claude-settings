@@ -15,10 +15,13 @@ scalars are replaced. To replace a list outright rather than extend it, name
 the key with a trailing "!" in the overriding layer.
 
 Because the result is generated it cannot also be a symlink into the repo, and
-Claude Code rewrites settings.json itself when you change options in the app.
-So the last generated result is recorded alongside it; if the live file has
-drifted from that, this refuses to overwrite until the change is folded back
-with --adopt (or discarded with --force).
+Claude Code rewrites settings.json itself when you change options in the app
+(model, theme, notification prefs...). So the last generated result is
+recorded alongside it; if the live file has drifted from that, the drift is
+folded into the host layer automatically — not common, since app-driven
+changes are usually per-machine UI state, not something every machine should
+inherit. Promote a change to common by hand if it really is global. --force
+discards local drift instead of adopting it.
 """
 
 import argparse
@@ -76,51 +79,61 @@ def main():
     ap.add_argument("--host", required=True)
     ap.add_argument("--force", action="store_true", help="discard local drift")
     ap.add_argument("--adopt", action="store_true",
-                    help="fold local drift back into the common layer")
+                    help="accepted for compatibility; adopting drift is now the default")
     ap.add_argument("--check", action="store_true", help="report drift, write nothing")
     args = ap.parse_args()
 
     root = Path(args.root)
-    common = root / "layers/common/claude/settings.json"
     sources = [
-        common,
+        root / "layers/common/claude/settings.json",
         root / f"layers/profiles/{args.profile}/claude/settings.json",
         root / f"layers/hosts/{args.host}/claude/settings.json",
     ]
+    target = sources[-1]
     present = [p for p in sources if p.is_file()]
     if not present:
         return
 
     wanted = render(sources)
-    live = LIVE.read_text() if LIVE.is_file() else None
-    stamped = STAMP.read_text() if STAMP.is_file() else None
+    live = None if args.force else (LIVE.read_text() if LIVE.is_file() else None)
 
-    drifted = live is not None and stamped is not None and live != stamped
+    live_obj = None
+    if live is not None:
+        try:
+            live_obj = json.loads(live)
+        except json.JSONDecodeError as exc:
+            sys.exit(f"merge-claude-settings: {LIVE} is not valid JSON: {exc}\n"
+                      f"  discard it:  dot claude apply --force")
+
+    stamped = STAMP.read_text() if STAMP.is_file() else None
+    stamped_obj = json.loads(stamped) if stamped is not None else None
+
+    # A missing stamp means this file was never generated, so treat all of it
+    # as local rather than silently overwriting a hand-edited file.
+    drifted = live_obj is not None and live_obj != stamped_obj
 
     if args.check:
         if drifted:
             print("drift  ~/.claude/settings.json changed since it was generated")
-            print("       fold it in with: dot claude adopt")
+            print(f"       'dot apply' folds it into {target.relative_to(root)}")
             sys.exit(1)
         print("ok     ~/.claude/settings.json matches the layers")
         return
 
-    if drifted and args.adopt:
-        # Whatever the app or you changed becomes part of the common base,
-        # minus anything a higher layer already supplies.
-        higher = {}
-        for path in present[1:]:
-            higher = merge(higher, load(path))
-        delta = subtract(json.loads(live), higher)
-        common.parent.mkdir(parents=True, exist_ok=True)
-        common.write_text(json.dumps(merge(load(common), delta), indent=2) + "\n")
-        print(f"adopted local changes into {common.relative_to(root)}")
-        wanted = render(sources)
-    elif drifted and not args.force:
-        sys.exit(
-            "merge-claude-settings: ~/.claude/settings.json changed since it was "
-            "generated.\n  keep it:     dot claude adopt\n  discard it:  dot claude apply --force"
-        )
+    if drifted:
+        # Claude Code rewrites model/theme/voiceEnabled itself, so this is
+        # routine. Fold into the host layer, not common, so one machine's UI
+        # state doesn't apply to every other machine; promote to common by
+        # hand if a change is really global.
+        base = {}
+        for path in sources[:-1]:
+            base = merge(base, load(path))
+        delta = subtract(live_obj, base)
+        if delta:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(json.dumps(merge(load(target), delta), indent=2) + "\n")
+            print(f"adopted local changes into {target.relative_to(root)}")
+            wanted = render(sources)
 
     if live == wanted:
         STAMP.write_text(wanted)
@@ -137,7 +150,12 @@ def main():
 
 
 def subtract(value, other):
-    """Drop from `value` anything `other` already provides identically."""
+    """Drop from `value` anything `other` already provides identically.
+
+    Note: since merge() concatenates lists, removing an entry from a
+    common-supplied list can't be expressed by adopting — it reappears on the
+    next render. Inherent to the merge model; edit the source layer instead.
+    """
     if isinstance(value, dict) and isinstance(other, dict):
         out = {}
         for key, inner in value.items():

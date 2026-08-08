@@ -2,7 +2,10 @@
 # Apply dotfiles for this machine: common layer, then its profile, then its host overlay.
 set -euo pipefail
 
-DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# -P (not plain pwd) so this agrees with abs_dest()'s physical resolution —
+# /tmp and /var are themselves symlinks on macOS, and a logical/physical
+# mismatch here would make every wronglink check a false positive.
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 cd "$DOTFILES"
 
 die() { printf '%s\n' "dot: $*" >&2; exit 1; }
@@ -19,12 +22,135 @@ profile_for() {
   return 1
 }
 
-# Layer dirs to stow, in application order. Only those that exist.
+# Layer dirs to stow, in application order. Only those with a home/ to stow.
 layer_dirs() {
   local host=$1 profile=$2 d
   for d in layers/common "layers/profiles/$profile" "layers/hosts/$host"; do
     [[ -d $d/home ]] && printf '%s\n' "$d"
   done
+}
+
+# Same order, but includes a layer that has only op-items.conf or
+# unmanaged.conf and no home/ to stow — e.g. a claude-only host layer.
+all_layer_dirs() {
+  local d
+  for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+    [[ -d $d ]] && printf '%s\n' "$d"
+  done
+  return 0
+}
+
+# Absolute, normalized destination of a symlink. Fails on a dangling link,
+# i.e. one whose destination's parent is gone.
+abs_dest() {
+  local l=$1 t d
+  t=$(readlink "$l") || return 1
+  [[ $t == /* ]] || t="$(dirname "$l")/$t"
+  d=$(cd "$(dirname "$t")" 2>/dev/null && pwd -P) || return 1
+  printf '%s/%s\n' "$d" "$(basename "$t")"
+}
+
+# Every rel path (relative to $HOME) any active layer tracks.
+tracked_rels() {
+  local d
+  while read -r d; do
+    (cd "$d/home" && find . -type f | sed 's|^\./||')
+  done < <(layer_dirs "$HOST" "$PROFILE")
+}
+
+# op-items.conf targets across active layers, rel to $HOME. `dot keys` owns
+# these; doctor already reports a missing one as `unpulled`.
+op_targets() {
+  local d rel
+  while read -r d; do
+    [[ -f "$d/op-items.conf" ]] || continue
+    while read -r rel _; do
+      [[ -z $rel || $rel == \#* ]] && continue
+      printf '%s\n' "$rel"
+    done < "$d/op-items.conf"
+  done < <(all_layer_dirs)
+}
+
+# Ancestor directories (rel to $HOME) of a newline list of rel paths on
+# stdin. $HOME itself never appears -- a top-level file like .zshrc has no
+# parent segment below $HOME, and that's deliberate: $HOME's own ~130
+# unrelated entries would drown everything else in noise.
+ancestor_dirs() {
+  local rel dir
+  while IFS= read -r rel; do
+    dir=$(dirname "$rel")
+    while [[ $dir != . ]]; do
+      printf '%s\n' "$dir"
+      dir=$(dirname "$dir")
+    done
+  done | LC_ALL=C sort -u
+}
+
+# unmanaged.conf glob patterns across active layers -- paths under $HOME this
+# repo deliberately doesn't manage (tool state, caches, session logs).
+load_unmanaged() {
+  local d rel
+  UNMANAGED=()
+  while read -r d; do
+    [[ -f "$d/unmanaged.conf" ]] || continue
+    while read -r rel; do
+      [[ -z $rel || $rel == \#* ]] && continue
+      UNMANAGED+=("$rel")
+    done < "$d/unmanaged.conf"
+  done < <(all_layer_dirs)
+}
+
+is_unmanaged() {
+  local rel=$1 pat
+  for pat in ${UNMANAGED[@]+"${UNMANAGED[@]}"}; do
+    case $rel in $pat) return 0 ;; esac
+  done
+  return 1
+}
+
+# Real (non-symlink) entries inside a stowed directory that no layer claims.
+# One level only -- an unknown directory is reported as a single line and
+# never descended into, or ~/.claude/projects alone would be thousands.
+untracked_rels() {
+  local tracked dirs d abs rel
+  tracked=$( (tracked_rels; op_targets) | LC_ALL=C sort -u)
+  dirs=$(printf '%s\n' "$tracked" | ancestor_dirs)
+  while IFS= read -r d; do
+    [[ -n $d && -d "$HOME/$d" ]] || continue
+    while IFS= read -r abs; do
+      printf '%s\n' "${abs#"$HOME"/}"
+    done < <(find "$HOME/$d" -maxdepth 1 -mindepth 1 ! -type l)
+  done <<<"$dirs" |
+    LC_ALL=C sort -u |
+    LC_ALL=C comm -23 - <(printf '%s\n%s\n' "$tracked" "$dirs" | LC_ALL=C sort -u) |
+    while IFS= read -r rel; do
+      is_unmanaged "$rel" || printf '%s\n' "$rel"
+    done
+}
+
+# The layer that already owns a rel path's directory, most specific wins.
+# layer_dirs emits common -> profile -> host, so the last match found is the
+# most specific one -- guessing wrong toward a specific layer breaks one
+# machine, toward common it breaks every machine.
+owning_layer() {
+  local rel=$1 dir=. d found=layers/common
+  [[ $rel == */* ]] && dir=${rel%/*}
+  while read -r d; do
+    [[ -d $d/home/$dir ]] && found=$d
+  done < <(layer_dirs "$HOST" "$PROFILE")
+  printf '%s\n' "$found"
+}
+
+adopt_rel() {
+  local layer=$1 rel=$2 dest="$DOTFILES/$layer/home/$rel"
+  mkdir -p "$(dirname "$dest")"
+  mv "$HOME/$rel" "$dest"
+  printf '    -> %s\n' "$layer/home/$rel"
+  # An adopted file git ignores never shows in git status, which defeats the
+  # point of adopting it.
+  if git -C "$DOTFILES" check-ignore -q "$layer/home/$rel"; then
+    printf '       .gitignore excludes this — git will not track it\n'
+  fi
 }
 
 # --no-folding keeps directories real so tools writing state (~/.claude/, ~/.config/gcloud/)
@@ -144,7 +270,7 @@ do_brew() {
 do_keys() {
   command -v op >/dev/null || { info "1Password CLI not installed, skipping key pull (brew install --cask 1password-cli)"; return 0; }
   local d manifest rel ref target failed=0
-  for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+  while read -r d; do
     manifest="$d/op-items.conf"
     [[ -f $manifest ]] || continue
     info "pulling keys from $manifest"
@@ -161,7 +287,7 @@ do_keys() {
         failed=1
       fi
     done < "$manifest"
-  done
+  done < <(all_layer_dirs)
   [[ $failed == 0 ]] || { info "some keys weren't pulled — approve the 1Password prompt and rerun 'dot keys'"; return 1; }
 }
 
@@ -175,7 +301,7 @@ case ${1:-apply} in
     do_link backup
     do_brew
     do_keys || true
-    "$0" doctor || true
+    "$0" doctor --report || true
     cat <<'NEXT'
 
 ==> Done. Remaining steps need you:
@@ -233,20 +359,71 @@ NEXT
           printf 'detached  %s\n' "$rel"; bad=$((bad+1))
         elif [[ ! -e $target ]]; then
           printf 'missing   %s\n' "$rel"; bad=$((bad+1))
+        else
+          dest=$(abs_dest "$target") || dest=
+          [[ $dest == "$DOTFILES/$d/home/$rel" ]] || {
+            printf 'wronglink %s -> %s\n' "$rel" "${dest:-$(readlink "$target")}"
+            bad=$((bad+1))
+          }
         fi
       done < <(cd "$d/home" && find . -type f | sed 's|^\./||')
     done < <(layer_dirs "$HOST" "$PROFILE")
     for l in "$HOME"/.claude/skills "$HOME"/.config/agents/skills/*; do
       [[ -L $l && ! -e $l ]] && { printf 'dangling  %s\n' "${l#"$HOME"/}"; bad=$((bad+1)); }
     done
-    for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+    while read -r d; do
       [[ -f "$d/op-items.conf" ]] || continue
       while read -r rel _; do
         [[ -z $rel || $rel == \#* ]] && continue
         [[ -e "$HOME/$rel" ]] || { printf 'unpulled  %s (dot keys)\n' "$rel"; bad=$((bad+1)); }
       done < "$d/op-items.conf"
-    done
+    done < <(all_layer_dirs)
     do_claude --check || bad=$((bad+1))
+
+    # Untracked doesn't fail doctor: it's a queue of things the repo doesn't
+    # know about yet, not evidence that $HOME disagrees with the repo. After
+    # the first pass, what remains is exactly what was chosen to skip, and a
+    # permanently-red doctor is a doctor nobody runs.
+    load_unmanaged
+    UNTRACKED=()
+    while IFS= read -r rel; do UNTRACKED+=("$rel"); done < <(untracked_rels)
+
+    if [[ ${#UNTRACKED[@]} -gt 0 ]]; then
+      if [[ ${2:-} == --report || ! -t 0 ]]; then
+        for rel in "${UNTRACKED[@]}"; do printf 'untracked %s\n' "$rel"; done
+      else
+        adopted=0 ignored=0 skipped=0
+        trap 'printf "dot: interrupted — run '\''dot apply'\'' to relink\n" >&2' INT
+        for rel in "${UNTRACKED[@]}"; do
+          layer=$(owning_layer "$rel")
+          printf 'untracked %s\n' "$rel"
+          printf '  [a]dopt into %s  [i]gnore  [s]kip: ' "$layer"
+          read -r ans
+          case $ans in
+            a|A)
+              adopt_rel "$layer" "$rel"
+              adopted=1
+              ;;
+            i|I)
+              printf '%s\n' "$rel" >> layers/common/unmanaged.conf
+              printf '    ignored -> layers/common/unmanaged.conf\n'
+              ignored=$((ignored+1))
+              ;;
+            *)
+              skipped=$((skipped+1))
+              ;;
+          esac
+        done
+        trap - INT
+        if [[ $adopted == 1 ]]; then
+          info "relinking"
+          stow_layers "--restow" "$HOST" "$PROFILE"
+          "$DOTFILES/bin/link-skills"
+        fi
+        [[ $((ignored+skipped)) -gt 0 ]] && printf '%s\n' "$((ignored+skipped)) left untracked."
+      fi
+    fi
+
     if [[ $bad == 0 ]]; then
       info "all links healthy"
     else

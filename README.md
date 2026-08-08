@@ -39,7 +39,7 @@ is linked, and the 1Password agent isn't running yet on a fresh machine.
 | `dot check`  | Dry run — print every link that would be made            |
 | `dot apply`  | Link the layers and rebuild the skill views              |
 | `dot adopt`  | Like `apply`, but backs up colliding real files first    |
-| `dot doctor` | Find detached, missing, or dangling links                |
+| `dot doctor` | Health check: bad links, unpulled keys, drift, untracked files |
 | `dot brew`   | `brew bundle` the common Brewfile, then this profile's   |
 | `dot keys`   | Pull SSH public keys from 1Password into `~/.ssh`         |
 | `dot unlink` | Remove all links for this machine                        |
@@ -109,18 +109,20 @@ Note these sit in `claude/`, *not* `home/.claude/` — they are inputs to the
 merge, not files stow places.
 
 Because the result is generated it can't also be a symlink into the repo, and
-Claude Code rewrites `settings.json` when you change options in the app. So the
-generated result is recorded, and drift is detected rather than silently lost:
+Claude Code rewrites `settings.json` when you change options in the app
+(model, theme, voice, notifications...). So drift is expected, not exceptional:
+`dot apply` folds it into `layers/hosts/<host>/claude/settings.json` — the host
+layer, not common, so one machine's UI state doesn't apply to every other
+machine — and the fold shows up as an ordinary uncommitted diff in `git
+status`. Promote a change to common by hand if it's really global.
 
-| Command                    | What it does                                        |
-| -------------------------- | --------------------------------------------------- |
-| `dot claude check`         | Report whether the live file drifted                 |
-| `dot claude adopt`         | Fold your changes back into the common layer         |
-| `dot claude force`         | Discard local changes and regenerate                 |
+| Command             | What it does                                        |
+| ------------------- | ---------------------------------------------------- |
+| `dot claude check`  | Report whether the live file has drifted              |
+| `dot claude apply`  | Fold drift into the host layer and write (default)    |
+| `dot claude force`  | Discard local changes and regenerate                  |
 
-`dot apply` and `dot doctor` refuse to clobber drift, telling you to pick one.
-`adopt` writes to the *common* layer and drops anything a higher layer already
-supplies, so work-only keys never leak into common.
+`dot claude adopt` is still accepted, as an alias for the default `apply`.
 
 ## Why directories stay real
 
@@ -131,9 +133,25 @@ writes lands inside it — which is what the old ~100-line `.gitignore` was
 fighting. Files you author still edit in place and show up in `git diff`
 immediately.
 
-The one hazard: a tool that saves by writing a temp file and renaming over the
-target replaces the symlink with a real file, and the repo silently goes stale.
-`dot doctor` reports those as `detached`; `dot adopt` re-links them.
+The cost: a *new* file a tool writes into a stowed directory (a skill manager
+installing a skill, a new config file dropped in place) is invisible to both
+`git status` and stow. `dot doctor` closes that gap by scanning one level into
+every directory a tracked file lives in and reporting what the repo doesn't
+know about as `untracked` — never descending into an unknown directory, so
+`~/.claude/projects` is one line, not thousands. Answering the prompt with
+`a` moves the file into the layer that already owns its directory and relinks
+it; `i` records it in that layer's `unmanaged.conf` (same convention as
+`op-items.conf`: one glob per line, outside `home/` so stow never touches it)
+so it isn't asked about again. Non-interactive runs (`dot doctor --report`, or
+any non-tty, which is what `bootstrap` uses) just list them.
+
+Two more hazards `doctor` catches: a tool that saves by writing a temp file and
+renaming over the target replaces the symlink with a real file, reported as
+`detached`; and a symlink that resolves *somewhere*, but not into this repo's
+copy — a stale clone, an old dotfiles manager — reported as `wronglink`. Both
+fail `doctor`'s exit code; `untracked` does not, since it's a queue of things
+to triage, not evidence `$HOME` disagrees with the repo. `dot adopt` re-links
+detached files.
 
 ## Skills
 
