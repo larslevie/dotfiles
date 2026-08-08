@@ -30,11 +30,18 @@ merged from `layers/*/claude/settings.json` by `bin/merge-claude-settings`,
 because Claude Code reads one user settings file and has no include mechanism.
 Those sources live in `claude/`, not `home/.claude/` — putting one under `home/`
 would make stow link it and defeat the merge. Editing the live file is fine;
-`dot claude adopt` folds the change back into the common layer.
+`dot apply` folds the change into `layers/hosts/<host>/claude/settings.json`
+automatically (the host layer, not common — app-driven changes like `model` or
+`theme` are per-machine, not global). Promote a change to `common` by hand if
+it really is one.
 
 **Never commit tool state.** Session logs, caches, lockfiles, `hosts.yml`,
 sqlite files, gcloud sentinels. If `.gitignore` starts growing again, something
-is being tracked that shouldn't be.
+is being tracked that shouldn't be. New tool state that lands inside a stowed
+directory shows up in `dot doctor` as `untracked`; list it in that layer's
+`unmanaged.conf` (same convention as `op-items.conf` — outside `home/`, one
+glob per line) rather than growing `.gitignore`, since these paths were never
+candidates for tracking in the first place.
 
 **No absolute home paths.** Use `~` or `$HOME`. Machines differ:
 `/Users/lars.levie` here, `/Users/larslevie` on another. Hardcoded paths are
@@ -76,7 +83,7 @@ There is no test suite. After editing:
 ```sh
 ./bin/dot check     # dry run, shows every link
 ./bin/dot apply
-./bin/dot doctor    # detached / missing / dangling links
+./bin/dot doctor    # bad links, unpulled keys, settings drift, untracked files
 zsh -i -c 'echo ok' # shell still starts clean
 ```
 
