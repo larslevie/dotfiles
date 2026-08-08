@@ -12,15 +12,18 @@ git clone https://github.com/larslevie/dotfiles.git ~/dotfiles
 That is the whole thing. `bootstrap` installs the Xcode Command Line Tools and
 Homebrew if missing, installs stow, registers the machine in `machines.conf`,
 backs up any colliding files, links every layer, rebuilds the skill views, runs
-`brew bundle` for the common and profile Brewfiles, and finishes with `doctor`.
-Omit the profile and it lists the choices and asks.
+`brew bundle` for the common and profile Brewfiles, pulls SSH public keys from
+1Password, and finishes with `doctor`. Omit the profile and it lists the
+choices and asks.
 
 It is safe to re-run: registration is idempotent and linking is a restow.
 
 Only these need you afterwards, because they are interactive logins:
 
-1. 1Password → Settings → Developer → enable the SSH agent
-   (git signing and every `github-*` host alias depend on it)
+1. 1Password → sign in → Settings → Developer → enable the SSH agent and
+   "Integrate with 1Password CLI" (git signing, every `github-*` host alias,
+   and `dot keys` depend on it). If you signed in after `bootstrap` ran,
+   follow up with `dot keys`.
 2. `gh auth login`
 3. `aws sso login --profile witco-login` on work machines
 
@@ -38,6 +41,7 @@ is linked, and the 1Password agent isn't running yet on a fresh machine.
 | `dot adopt`  | Like `apply`, but backs up colliding real files first    |
 | `dot doctor` | Find detached, missing, or dangling links                |
 | `dot brew`   | `brew bundle` the common Brewfile, then this profile's   |
+| `dot keys`   | Pull SSH public keys from 1Password into `~/.ssh`         |
 | `dot unlink` | Remove all links for this machine                        |
 
 ## Layout
@@ -146,5 +150,19 @@ reproducible from `.agents/.skill-lock.json`.
 
 ## Secrets
 
-Private keys, tokens, and `~/.config/env.secrets` are never committed.
-1Password holds the SSH keys and injects secrets at runtime; AWS uses SSO.
+Private keys, tokens, and `~/.config/env.secrets` are never committed. AWS
+uses SSO.
+
+SSH public keys aren't tracked either — they're pulled from 1Password by
+`dot keys` (part of `bootstrap`, safe to re-run standalone). Each layer that
+needs one lists it in an `op-items.conf` file, outside `home/` so stow never
+touches it:
+
+```
+# <path relative to $HOME>   <op:// reference>
+.ssh/github_personal.pub     op://Private/GitHub - Personal/public key
+```
+
+Private key material never touches disk — matching identities in 1Password's
+SSH agent sign on the public key's behalf. Add a new SSH identity by adding a
+line here, not by committing a `.pub` file.
