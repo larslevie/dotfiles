@@ -15,11 +15,11 @@ layers/*/home/.config/opencode/skills
 layers/*/home/.config/opencode/agents
 layers/*/home/.config/opencode/commands
 
-# Private key material. Public keys and allowed_signers are tracked on purpose.
+# Key material. Public keys are pulled from 1Password by `dot keys` (see
+# op-items.conf), not tracked here. allowed_signers is tracked on purpose.
 layers/*/home/.ssh/*
 !layers/*/home/.ssh/config
 !layers/*/home/.ssh/config.d/
-!layers/*/home/.ssh/*.pub
 !layers/*/home/.ssh/allowed_signers
 
 # Runtime secrets, injected by 1Password.
