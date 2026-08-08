@@ -7,23 +7,25 @@ tmp/
 
 # Generated skill views — see bin/link-skills. Committed symlinks encode one
 # machine's layout and fight every other machine's skill manager.
-layers/*/home/.claude/skills
-layers/*/home/.claude/agents
-layers/*/home/.claude/commands
-layers/*/home/.config/goose/skills
-layers/*/home/.config/opencode/skills
-layers/*/home/.config/opencode/agents
-layers/*/home/.config/opencode/commands
+# layers/**/ (not layers/*/) so this also covers profile and host layers, not
+# just common.
+layers/**/home/.claude/skills
+layers/**/home/.claude/agents
+layers/**/home/.claude/commands
+layers/**/home/.config/goose/skills
+layers/**/home/.config/opencode/skills
+layers/**/home/.config/opencode/agents
+layers/**/home/.config/opencode/commands
 
 # Key material. Public keys are pulled from 1Password by `dot keys` (see
 # op-items.conf), not tracked here. allowed_signers is tracked on purpose.
-layers/*/home/.ssh/*
-!layers/*/home/.ssh/config
-!layers/*/home/.ssh/config.d/
-!layers/*/home/.ssh/allowed_signers
+layers/**/home/.ssh/*
+!layers/**/home/.ssh/config
+!layers/**/home/.ssh/config.d/
+!layers/**/home/.ssh/allowed_signers
 
 # Runtime secrets, injected by 1Password.
-layers/*/home/.config/env.secrets
+layers/**/home/.config/env.secrets
 
 .DS_Store
 *.zwc
