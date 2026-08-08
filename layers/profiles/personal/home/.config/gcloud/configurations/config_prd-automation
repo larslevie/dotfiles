@@ -1,0 +1,9 @@
+[core]
+project = example-prd
+account = lars@example.com
+
+[compute]
+region = us-central1
+
+[auth]
+
