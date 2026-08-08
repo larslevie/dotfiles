@@ -2,7 +2,10 @@
 # Apply dotfiles for this machine: common layer, then its profile, then its host overlay.
 set -euo pipefail
 
-DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# -P (not plain pwd) so this agrees with abs_dest()'s physical resolution —
+# /tmp and /var are themselves symlinks on macOS, and a logical/physical
+# mismatch here would make every wronglink check a false positive.
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 cd "$DOTFILES"
 
 die() { printf '%s\n' "dot: $*" >&2; exit 1; }
@@ -19,12 +22,32 @@ profile_for() {
   return 1
 }
 
-# Layer dirs to stow, in application order. Only those that exist.
+# Layer dirs to stow, in application order. Only those with a home/ to stow.
 layer_dirs() {
   local host=$1 profile=$2 d
   for d in layers/common "layers/profiles/$profile" "layers/hosts/$host"; do
     [[ -d $d/home ]] && printf '%s\n' "$d"
   done
+}
+
+# Same order, but includes a layer that has only op-items.conf or
+# unmanaged.conf and no home/ to stow — e.g. a claude-only host layer.
+all_layer_dirs() {
+  local d
+  for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+    [[ -d $d ]] && printf '%s\n' "$d"
+  done
+  return 0
+}
+
+# Absolute, normalized destination of a symlink. Fails on a dangling link,
+# i.e. one whose destination's parent is gone.
+abs_dest() {
+  local l=$1 t d
+  t=$(readlink "$l") || return 1
+  [[ $t == /* ]] || t="$(dirname "$l")/$t"
+  d=$(cd "$(dirname "$t")" 2>/dev/null && pwd -P) || return 1
+  printf '%s/%s\n' "$d" "$(basename "$t")"
 }
 
 # --no-folding keeps directories real so tools writing state (~/.claude/, ~/.config/gcloud/)
@@ -144,7 +167,7 @@ do_brew() {
 do_keys() {
   command -v op >/dev/null || { info "1Password CLI not installed, skipping key pull (brew install --cask 1password-cli)"; return 0; }
   local d manifest rel ref target failed=0
-  for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+  while read -r d; do
     manifest="$d/op-items.conf"
     [[ -f $manifest ]] || continue
     info "pulling keys from $manifest"
@@ -161,7 +184,7 @@ do_keys() {
         failed=1
       fi
     done < "$manifest"
-  done
+  done < <(all_layer_dirs)
   [[ $failed == 0 ]] || { info "some keys weren't pulled — approve the 1Password prompt and rerun 'dot keys'"; return 1; }
 }
 
@@ -233,19 +256,25 @@ NEXT
           printf 'detached  %s\n' "$rel"; bad=$((bad+1))
         elif [[ ! -e $target ]]; then
           printf 'missing   %s\n' "$rel"; bad=$((bad+1))
+        else
+          dest=$(abs_dest "$target") || dest=
+          [[ $dest == "$DOTFILES/$d/home/$rel" ]] || {
+            printf 'wronglink %s -> %s\n' "$rel" "${dest:-$(readlink "$target")}"
+            bad=$((bad+1))
+          }
         fi
       done < <(cd "$d/home" && find . -type f | sed 's|^\./||')
     done < <(layer_dirs "$HOST" "$PROFILE")
     for l in "$HOME"/.claude/skills "$HOME"/.config/agents/skills/*; do
       [[ -L $l && ! -e $l ]] && { printf 'dangling  %s\n' "${l#"$HOME"/}"; bad=$((bad+1)); }
     done
-    for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+    while read -r d; do
       [[ -f "$d/op-items.conf" ]] || continue
       while read -r rel _; do
         [[ -z $rel || $rel == \#* ]] && continue
         [[ -e "$HOME/$rel" ]] || { printf 'unpulled  %s (dot keys)\n' "$rel"; bad=$((bad+1)); }
       done < "$d/op-items.conf"
-    done
+    done < <(all_layer_dirs)
     do_claude --check || bad=$((bad+1))
     if [[ $bad == 0 ]]; then
       info "all links healthy"
