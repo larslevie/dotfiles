@@ -1,0 +1,30 @@
+# Work machines. Identity is scoped by directory, not set globally, so a personal
+# repo cloned onto a work laptop still gets the personal address.
+#
+# Personal is the DEFAULT and work is opt-in by location: leaking a personal
+# address into a work repo is awkward, leaking a work address into a public
+# repo is worse.
+[include]
+	path = ~/.config/git/identity-personal.gitconfig
+
+[includeIf "gitdir:~/werk/"]
+	path = ~/.config/git/identity-work.gitconfig
+[includeIf "gitdir:~/personal/"]
+	path = ~/.config/git/identity-personal.gitconfig
+
+[url "ssh://git@github-cincpro/cincpro/"]
+	insteadOf = ssh://git@github.com/cincpro/
+[url "git@github-cincpro:cincpro/"]
+	insteadOf = git@github.com:cincpro/
+[url "ssh://git@github-realgeeks/RealGeeks/"]
+	insteadOf = ssh://git@github.com/realgeeks/
+[url "git@github-realgeeks:RealGeeks/"]
+	insteadOf = git@github.com:RealGeeks/
+
+# Azure DevOps needs GCM; osxkeychain from the common layer can't do it. The
+# path is where Microsoft's .pkg installs on both architectures, not just Intel.
+# Installed by `dot brew` via the git-credential-manager cask in Brewfile.work.
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true

@@ -1,0 +1,6 @@
+cask "discord"
+cask "dropbox"
+cask "spotify"
+cask "steam"
+
+mas "American Airlines AAdvantage eShopping℠", id: 6479809449

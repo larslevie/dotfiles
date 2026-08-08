@@ -1,104 +1,30 @@
-tmp
+# Layers hold config only. Tool state never lands here because `dot` stows with
+# --no-folding: directories in $HOME stay real, and only tracked leaf files
+# become symlinks. That is what replaced the ~100 lines of cache/session/sqlite
+# exclusions this file used to need.
+backups/
+tmp/
 
-.config/gcloud/*.db
-.config/gcloud/logs
-.config/iTerm/AppSupport
+# Generated skill views — see bin/link-skills. Committed symlinks encode one
+# machine's layout and fight every other machine's skill manager.
+layers/*/home/.claude/skills
+layers/*/home/.claude/agents
+layers/*/home/.claude/commands
+layers/*/home/.config/goose/skills
+layers/*/home/.config/opencode/skills
+layers/*/home/.config/opencode/agents
+layers/*/home/.config/opencode/commands
 
-.zsh_history
-.zsh_sessions
+# Private key material. Public keys and allowed_signers are tracked on purpose.
+layers/*/home/.ssh/*
+!layers/*/home/.ssh/config
+!layers/*/home/.ssh/config.d/
+!layers/*/home/.ssh/*.pub
+!layers/*/home/.ssh/allowed_signers
 
-*_credentials/
-
-*.zwc
+# Runtime secrets, injected by 1Password.
+layers/*/home/.config/env.secrets
 
 .DS_Store
-env
-/config/.aws/sso
-/config/.aws/cli
-/config/.kube/cache
-/config/.kube/kubectx
-/config/.kube/kubens
-/config/.config/zed/prompts
-/config/.config/raycast/extensions
-/config/.config/helm
-/config/.config/github-copilot/apps.json
-/config/.config/claude/statsig
-/config/.config/claude/todos
-/config/.config/claude/projects
-/config/.claude/statsig
-/config/.claude/todos
-/config/.claude/projects
-/config/.claude/local
-/config/.claude/ide
-/config/.claude/.update.lock
-/config/.claude/shell-snapshots
-/config/.claude.json
-/config/.claude/debug
-/config/.claude/file-history
-/config/.claude/history.jsonl
-/config/.claude/security_warnings_*
-/config/.claude/security/
-/config/.claude/session-env/
-/config/.claude/.last-update-result.json
-/config/.config/pnpm/rc
-/config/.config/mark.toml
-/config/.config/gcloud/virtenv
-/config/.config/gcloud/logs
-/config/.config/gcloud/*.db
-/config/.config/gcloud/application_default_credentials.json
-/config/.config/gcloud/.last_*
-/config/.config/configstore
-/config/.config/acli
-/config/.claude/telemetry
-/config/.claude/stats-cache.json
-/config/.claude/plugins
-/config/.config/requestly
-/config/.config/iterm2/AppSupport
-/config/.config/grit/grit-receipt.json
-/config/.claude/cache
-/config/.claude/paste-cache
-/config/.claude/tasks
-/config/.config/env.secrets
-/config/.claude/plans
-/config/.claude/backups
+*.zwc
 *.bak
-*.backup-*
-gke_gcloud_auth_plugin_cache
-/config/.claude/image-cache
-/config/.config/graphite
-/config/.ssh/witco_personal
-/config/.ssh/known_hosts
-/config/.ssh/known_hosts.old
-/config/.ssh/old
-/config/.claude/mcp-needs-auth-cache.json
-/config/.config/argocd
-/config/.claude/sessions
-/config/.claude/daemon
-/config/.claude/daemon.lock
-/config/.claude/daemon.log
-/config/.claude/daemon.status.json
-/config/.claude/jobs
-/config/.claude/.last-cleanup
-/config/.config/stripe
-/config/.config/raycast-x
-/config/.ssh/github-realgeeks-auth
-/config/.claude/.caveman-active
-/config/.codex/auth.json
-/config/.codex/installation_id
-/config/.codex/.personality_migration
-/config/.codex/models_cache.json
-/config/.codex/session_index.jsonl
-/config/.codex/*.sqlite
-/config/.codex/*.sqlite-shm
-/config/.codex/*.sqlite-wal
-/config/.codex/sessions
-/config/.codex/shell_snapshots
-/config/.codex/cache
-/config/.codex/memories
-/config/.codex/tmp
-/config/.codex/.tmp
-/config/.config/homebrew/trust.json.lock
-/config/.claude/teams
-/config/.claude/gh-pr-status-cache.json
-/config/.claude/daemon-auth-status.json
-/config/.claude/daemon-auth-cooldown

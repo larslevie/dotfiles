@@ -1,0 +1,13 @@
+# Stub only. Real settings live in the layered includes below; later includes win.
+# `local` is untracked — use it for one-off machine tweaks not worth committing.
+[include]
+	path = ~/.config/git/common.gitconfig
+[include]
+	path = ~/.config/git/profile.gitconfig
+[include]
+	path = ~/.config/git/host.gitconfig
+[include]
+	path = ~/.config/git/local.gitconfig
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
