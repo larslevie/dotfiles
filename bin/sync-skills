@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Pull skill content from the `skills` CLI (skills.sh) and surface what
+# changed so it can be reviewed and committed like any other edit.
+#
+# `npx skills` detects that ~/.agents/skills is symlinked into this repo and
+# writes new/updated skill content straight into
+# layers/common/home/.agents/skills -- the same place hand-written skills
+# live. That makes manager-installed skills first-class dotfiles content: a
+# fresh machine gets them from `git clone` + `dot apply`, no npx required.
+# npx is only needed here, to pull upstream updates or add a new package.
+#
+# With no args: updates every skill already tracked in .skill-lock.json.
+# With args: forwards to `npx skills add`, e.g.
+#   bin/sync-skills mattpocock/skills -s tdd -s prototype
+set -euo pipefail
+
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+
+if [[ $# -gt 0 ]]; then
+  npx --yes skills@latest add "$@" --global -y
+else
+  npx --yes skills@latest update --global -y
+fi
+
+cd "$DOTFILES"
+changes=$(git status --porcelain -- \
+  layers/common/home/.agents/skills \
+  layers/common/home/.agents/.skill-lock.json)
+
+if [[ -n $changes ]]; then
+  printf '\nchanged:\n%s\n\nreview with git diff, then commit.\n' "$changes"
+else
+  printf '\nno changes.\n'
+fi

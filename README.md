@@ -155,16 +155,26 @@ detached files.
 
 ## Skills
 
-`~/.agents/skills` is the single canonical store. Everything else —
-`~/.claude/skills`, `~/.config/agents/skills`, `~/.config/goose/skills`,
-`~/.codex/skills` — is a **generated view**, rebuilt by `bin/link-skills` and
-never committed.
+`~/.agents/skills` is the single canonical store, and everything in it is
+committed — hand-written skills and skills installed by the `skills` CLI
+(skills.sh) alike. Everything else — `~/.claude/skills`,
+`~/.config/agents/skills`, `~/.config/goose/skills`, `~/.codex/skills` — is a
+**generated view**, rebuilt by `bin/link-skills` and never committed.
 
 Those views used to be 59 committed symlinks, 15 of them broken: 8 with the
 wrong `../` depth and 7 pointing at skills renamed upstream. Committed links
 encode one machine's layout, so every other machine's skill manager fought
-them. Only hand-written skills are tracked now; manager-installed ones are
-reproducible from `.agents/.skill-lock.json`.
+them. Generating the views from disk fixed that, and separately, `npx skills`
+already detects that `~/.agents/skills` is symlinked into this repo and writes
+skill content straight into `layers/common/home/.agents/skills` — so a
+manager-installed skill becomes ordinary dotfiles content the moment it's
+added, no separate adoption step. `.agents/.skill-lock.json` just records
+where each one came from, for `bin/sync-skills` to pull updates later.
+
+Run `bin/sync-skills` to pull upstream updates for skills already in the
+lockfile, or `bin/sync-skills <package>` to add a new one (forwards to
+`npx skills add`). Either way it prints what changed under
+`layers/common/home/.agents/skills` for review before committing.
 
 ## Secrets
 
