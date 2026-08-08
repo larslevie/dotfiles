@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""Merge layered Claude Code settings into ~/.claude/settings.json.
+
+Claude Code reads exactly one user settings file and offers no include
+mechanism, so layering has to happen before it starts. Sources, merged in
+order, each optional:
+
+    layers/common/claude/settings.json
+    layers/profiles/<profile>/claude/settings.json
+    layers/hosts/<host>/claude/settings.json
+
+Merge rules: objects merge deeply, lists concatenate and de-duplicate
+(preserving first-seen order, which is what permission allow-lists want),
+scalars are replaced. To replace a list outright rather than extend it, name
+the key with a trailing "!" in the overriding layer.
+
+Because the result is generated it cannot also be a symlink into the repo, and
+Claude Code rewrites settings.json itself when you change options in the app.
+So the last generated result is recorded alongside it; if the live file has
+drifted from that, this refuses to overwrite until the change is folded back
+with --adopt (or discarded with --force).
+"""
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+HOME = Path.home()
+LIVE = HOME / ".claude" / "settings.json"
+STAMP = HOME / ".claude" / ".settings.generated.json"
+
+
+def merge(base, over):
+    if isinstance(base, dict) and isinstance(over, dict):
+        out = dict(base)
+        for key, value in over.items():
+            if key.endswith("!"):
+                out[key[:-1]] = value
+            elif key in out:
+                out[key] = merge(out[key], value)
+            else:
+                out[key] = value
+        return out
+    if isinstance(base, list) and isinstance(over, list):
+        seen, out = set(), []
+        for item in base + over:
+            marker = json.dumps(item, sort_keys=True)
+            if marker not in seen:
+                seen.add(marker)
+                out.append(item)
+        return out
+    return over
+
+
+def load(path):
+    if not path.is_file():
+        return {}
+    try:
+        return json.loads(path.read_text())
+    except json.JSONDecodeError as exc:
+        sys.exit(f"merge-claude-settings: {path} is not valid JSON: {exc}")
+
+
+def render(sources):
+    result = {}
+    for path in sources:
+        result = merge(result, load(path))
+    return json.dumps(result, indent=2) + "\n"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--root", required=True, help="dotfiles repo root")
+    ap.add_argument("--profile", required=True)
+    ap.add_argument("--host", required=True)
+    ap.add_argument("--force", action="store_true", help="discard local drift")
+    ap.add_argument("--adopt", action="store_true",
+                    help="fold local drift back into the common layer")
+    ap.add_argument("--check", action="store_true", help="report drift, write nothing")
+    args = ap.parse_args()
+
+    root = Path(args.root)
+    common = root / "layers/common/claude/settings.json"
+    sources = [
+        common,
+        root / f"layers/profiles/{args.profile}/claude/settings.json",
+        root / f"layers/hosts/{args.host}/claude/settings.json",
+    ]
+    present = [p for p in sources if p.is_file()]
+    if not present:
+        return
+
+    wanted = render(sources)
+    live = LIVE.read_text() if LIVE.is_file() else None
+    stamped = STAMP.read_text() if STAMP.is_file() else None
+
+    drifted = live is not None and stamped is not None and live != stamped
+
+    if args.check:
+        if drifted:
+            print("drift  ~/.claude/settings.json changed since it was generated")
+            print("       fold it in with: dot claude adopt")
+            sys.exit(1)
+        print("ok     ~/.claude/settings.json matches the layers")
+        return
+
+    if drifted and args.adopt:
+        # Whatever the app or you changed becomes part of the common base,
+        # minus anything a higher layer already supplies.
+        higher = {}
+        for path in present[1:]:
+            higher = merge(higher, load(path))
+        delta = subtract(json.loads(live), higher)
+        common.parent.mkdir(parents=True, exist_ok=True)
+        common.write_text(json.dumps(merge(load(common), delta), indent=2) + "\n")
+        print(f"adopted local changes into {common.relative_to(root)}")
+        wanted = render(sources)
+    elif drifted and not args.force:
+        sys.exit(
+            "merge-claude-settings: ~/.claude/settings.json changed since it was "
+            "generated.\n  keep it:     dot claude adopt\n  discard it:  dot claude apply --force"
+        )
+
+    if live == wanted:
+        STAMP.write_text(wanted)
+        return
+
+    LIVE.parent.mkdir(parents=True, exist_ok=True)
+    # A generated file cannot also be a symlink into the repo — writing through
+    # one would edit a layer instead of the result.
+    if LIVE.is_symlink():
+        LIVE.unlink()
+    LIVE.write_text(wanted)
+    STAMP.write_text(wanted)
+    print(f"wrote ~/.claude/settings.json from {len(present)} layer(s)")
+
+
+def subtract(value, other):
+    """Drop from `value` anything `other` already provides identically."""
+    if isinstance(value, dict) and isinstance(other, dict):
+        out = {}
+        for key, inner in value.items():
+            if key not in other:
+                out[key] = inner
+            else:
+                pruned = subtract(inner, other[key])
+                if pruned not in (None, {}, []):
+                    out[key] = pruned
+        return out
+    if isinstance(value, list) and isinstance(other, list):
+        marks = {json.dumps(i, sort_keys=True) for i in other}
+        return [i for i in value if json.dumps(i, sort_keys=True) not in marks]
+    return None if value == other else value
+
+
+if __name__ == "__main__":
+    main()

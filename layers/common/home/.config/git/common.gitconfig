@@ -1,0 +1,30 @@
+# Settings that hold on every machine. No identity, no absolute paths.
+[user]
+	name = Lars
+	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAy75ioJVBRokPtDH2W9cRAThf/IMsr03AIwEVv1tThR Git Signing Key
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+	allowedsignersfile = ~/.ssh/allowed_signers
+[credential]
+	helper = osxkeychain
+[core]
+	excludesfile = ~/.config/git/ignore
+[push]
+	autoSetupRemote = true
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[difftool]
+	prompt = false
+	trustExitCode = true
+[mergetool]
+	prompt = false
+# Rewrite anonymous GitHub URLs onto the 1Password-backed personal key by default.
+# Work profiles add longer-prefix rewrites; git applies the longest match.
+[url "git@github-personal:"]
+	insteadOf = git@github.com:

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# Fan the canonical skill store out to every agent tool that wants its own dir.
+#
+# ~/.agents/skills is the ONE store. Two things live there: skills committed to
+# this repo, and skills a manager installs from .skill-lock.json. Everything
+# else (~/.claude/skills, ~/.config/agents/skills, ~/.config/goose/skills,
+# ~/.codex/skills) is a generated view of it.
+#
+# This used to be 59 committed symlinks, of which 15 were broken: 8 had the
+# wrong ../ depth and 7 pointed at skills renamed upstream (to-prd, to-issues,
+# write-a-skill). Committed links also encode one machine's layout, so every
+# machine's skill manager fought them. Generating from disk fixes both.
+#
+# Safe to re-run. Only touches symlinks it owns; never deletes a real directory.
+set -euo pipefail
+
+CANON="$HOME/.agents/skills"
+[[ -d $CANON ]] || { echo "link-skills: missing $CANON — run 'dot apply' first" >&2; exit 1; }
+
+# Views built as one symlink per skill. These dirs also hold tool-owned content
+# (codex keeps .system/ here), so we link the leaves, not the directory.
+PER_SKILL_VIEWS=(
+  "$HOME/.config/agents/skills"
+  "$HOME/.config/goose/skills"
+  "$HOME/.codex/skills"
+)
+
+# Views that are a single whole-directory symlink.
+WHOLE_VIEWS=(
+  "$HOME/.claude/skills:$HOME/.config/agents/skills"
+  "$HOME/.claude/agents:$HOME/.config/agents/agents"
+  "$HOME/.claude/commands:$HOME/.config/agents/commands"
+  "$HOME/.config/opencode/skills:$HOME/.config/agents/skills"
+  "$HOME/.config/opencode/agents:$HOME/.config/agents/agents"
+  "$HOME/.config/opencode/commands:$HOME/.config/agents/commands"
+)
+
+rel() { printf '%s' "${1/#$HOME\//~/}"; }
+
+link_to() { # link_to <link> <target>
+  local link=$1 target=$2
+  [[ -d $target ]] || return 0
+  if [[ -L $link ]]; then
+    [[ $(readlink "$link") == "$target" ]] && return 0   # already correct
+    rm "$link"
+  elif [[ -e $link ]]; then
+    printf '  skip %s (real file/dir, not touching)\n' "$(rel "$link")" >&2
+    return 0
+  fi
+  mkdir -p "$(dirname "$link")"
+  ln -s "$target" "$link"
+  printf '  + %s\n' "$(rel "$link")"
+}
+
+# Remove links we previously created that no longer resolve, or that point at a
+# skill that has since been removed from the canonical store.
+prune() { # prune <dir>
+  local dir=$1 entry tgt
+  [[ -d $dir ]] || return 0
+  for entry in "$dir"/*; do
+    [[ -L $entry ]] || continue
+    tgt=$(readlink "$entry")
+    case "$tgt" in
+      "$CANON"/*|*/.agents/skills/*) ;;
+      *) continue ;;                        # not ours
+    esac
+    if [[ ! -d $entry ]]; then
+      rm "$entry"; printf '  - %s (dangling)\n' "$(rel "$entry")"
+    elif [[ ! -d $CANON/$(basename "$entry") ]]; then
+      rm "$entry"; printf '  - %s (gone from store)\n' "$(rel "$entry")"
+    fi
+  done
+}
+
+for view in "${PER_SKILL_VIEWS[@]}"; do
+  printf '%s\n' "$(rel "$view")"
+  mkdir -p "$view"
+  prune "$view"
+  for skill in "$CANON"/*/; do
+    link_to "$view/$(basename "${skill%/}")" "${skill%/}"
+  done
+done
+
+printf 'whole-directory views\n'
+for pair in "${WHOLE_VIEWS[@]}"; do
+  link_to "${pair%%:*}" "${pair#*:}"
+done
