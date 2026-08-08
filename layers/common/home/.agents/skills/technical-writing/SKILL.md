@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: Professional technical documentation writing for software projects. Use for README files, user guides, migration guides, changelogs, and general documentation. Triggers: documentation, docs, readme, guide, tutorial, changelog, migration guide, write docs, document code.
+description: "Professional technical documentation writing for software projects. Use for README files, user guides, migration guides, changelogs, and general documentation. Triggers: documentation, docs, readme, guide, tutorial, changelog, migration guide, write docs, document code."
 ---
 
 # Technical Writing
