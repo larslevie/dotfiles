@@ -43,7 +43,7 @@ what silently broke git signing and the k9s dump dir before.
 ## Layout
 
 ```
-bin/dot           entry point: bootstrap | info | check | apply | adopt | doctor | brew | unlink
+bin/dot           entry point: bootstrap | info | check | apply | adopt | doctor | brew | keys | unlink
 bin/link-skills   rebuilds the generated skill views (idempotent)
 bin/merge-claude-settings  merges layered Claude settings into ~/.claude/settings.json
 machines.conf     hostname -> profile
@@ -86,5 +86,8 @@ and outside it — with `git config --get user.email`.
 ## Secrets
 
 1Password holds SSH keys and injects `~/.config/env.secrets` at runtime; AWS
-uses SSO. Public keys and `allowed_signers` are tracked deliberately. Never
-commit private keys, tokens, or credential files.
+uses SSO. `allowed_signers` is tracked deliberately. SSH public keys are not
+tracked — `dot keys` (part of `dot bootstrap`) pulls them from 1Password per
+each layer's `op-items.conf`; add an entry there for any new IdentityFile
+instead of committing a `.pub`. Never commit private keys, tokens, or
+credential files.

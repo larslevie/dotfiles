@@ -137,6 +137,34 @@ do_brew() {
   done
 }
 
+# SSH public keys live in 1Password, not in this repo (only the private
+# material is secret, but keeping the pair together avoids a second source of
+# truth). Each layer may list its own in op-items.conf, outside home/ so stow
+# never touches it. Safe to re-run; each pull just overwrites the target.
+do_keys() {
+  command -v op >/dev/null || { info "1Password CLI not installed, skipping key pull (brew install --cask 1password-cli)"; return 0; }
+  local d manifest rel ref target failed=0
+  for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+    manifest="$d/op-items.conf"
+    [[ -f $manifest ]] || continue
+    info "pulling keys from $manifest"
+    while read -r rel ref; do
+      [[ -z $rel || $rel == \#* ]] && continue
+      target="$HOME/$rel"
+      mkdir -p "$(dirname "$target")"
+      if op read "$ref" > "$target" 2>/dev/null; then
+        chmod 644 "$target"
+        printf '    %s\n' "$rel"
+      else
+        rm -f "$target"
+        printf '    %s FAILED\n' "$rel"
+        failed=1
+      fi
+    done < "$manifest"
+  done
+  [[ $failed == 0 ]] || { info "some keys weren't pulled — approve the 1Password prompt and rerun 'dot keys'"; return 1; }
+}
+
 case ${1:-apply} in
   bootstrap)
     ensure_clt
@@ -146,12 +174,15 @@ case ${1:-apply} in
     resolve
     do_link backup
     do_brew
+    do_keys || true
     "$0" doctor || true
     cat <<'NEXT'
 
 ==> Done. Remaining steps need you:
     1. Sign in to 1Password and enable Settings > Developer > SSH agent
-       (git signing and every github-* host alias depend on it)
+       and "Integrate with 1Password CLI"
+       (git signing, every github-* host alias, and 'dot keys' depend on it;
+       if you signed in just now, run 'dot keys' to pull SSH public keys)
     2. gh auth login
     3. aws sso login --profile witco-login   (work machines)
     4. Open a new shell
@@ -208,6 +239,13 @@ NEXT
     for l in "$HOME"/.claude/skills "$HOME"/.config/agents/skills/*; do
       [[ -L $l && ! -e $l ]] && { printf 'dangling  %s\n' "${l#"$HOME"/}"; bad=$((bad+1)); }
     done
+    for d in layers/common "layers/profiles/$PROFILE" "layers/hosts/$HOST"; do
+      [[ -f "$d/op-items.conf" ]] || continue
+      while read -r rel _; do
+        [[ -z $rel || $rel == \#* ]] && continue
+        [[ -e "$HOME/$rel" ]] || { printf 'unpulled  %s (dot keys)\n' "$rel"; bad=$((bad+1)); }
+      done < "$d/op-items.conf"
+    done
     do_claude --check || bad=$((bad+1))
     if [[ $bad == 0 ]]; then
       info "all links healthy"
@@ -220,7 +258,11 @@ NEXT
     resolve
     do_brew
     ;;
+  keys)
+    resolve
+    do_keys
+    ;;
   *)
-    die "usage: dot {bootstrap|info|check|apply|adopt|doctor|unlink|brew|claude}"
+    die "usage: dot {bootstrap|info|check|apply|adopt|doctor|unlink|brew|keys|claude}"
     ;;
 esac
