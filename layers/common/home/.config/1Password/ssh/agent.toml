@@ -6,3 +6,6 @@ item = "Github - Personal"
 
 [[ssh-keys]]
 item = "Git Signing Key"
+
+[[ssh-keys]]
+item = "GitHub SSH Real Geeks"
