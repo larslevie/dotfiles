@@ -35,9 +35,14 @@ export ZSH_DOTENV_PROMPT=false
 snippet_if() { command -v "$1" >/dev/null && zinit wait lucid for "$2"; }
 
 zinit wait lucid for \
-  OMZP::git \
   OMZP::command-not-found \
   OMZP::dotenv
+
+# OMZP::git's `gco` alias loads in turbo, after the `gco` function in
+# 70-functions.zsh — the alias wins and shadows it. Unalias once the plugin
+# lands so the function (worktree-aware) takes over again.
+zinit wait lucid atload'unalias gco 2>/dev/null' for \
+  OMZP::git
 
 snippet_if direnv OMZP::direnv
 snippet_if docker OMZP::docker
