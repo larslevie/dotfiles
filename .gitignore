@@ -24,7 +24,8 @@ layers/**/home/.ssh/*
 !layers/**/home/.ssh/config.d/
 !layers/**/home/.ssh/allowed_signers
 
-# Runtime secrets, injected by 1Password.
+# Superseded by secrets.d/*.env pointer files, which hold no values. Kept as a
+# backstop in case anything still writes the old plaintext file.
 layers/**/home/.config/env.secrets
 
 .DS_Store

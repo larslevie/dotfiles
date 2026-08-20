@@ -178,8 +178,19 @@ lockfile, or `bin/sync-skills <package>` to add a new one (forwards to
 
 ## Secrets
 
-Private keys, tokens, and `~/.config/env.secrets` are never committed. AWS
-uses SSO.
+Private keys and tokens are never committed. AWS uses SSO.
+
+Environment secrets never touch the disk at all. `~/.config/zsh/secrets.d/*.env`
+holds `op://` references rather than values, so those files are safe to commit:
+
+```
+GRAFANA_URL=https://grafana.witco.net
+GRAFANA_TOKEN=op://Witco/kwcoxvjq6t7slaeaoy7ye2ccja/password
+```
+
+Run `opload` to resolve them into the current shell, `opload work` for a single
+file, and `opunload` to drop the values again. Nothing loads at shell startup —
+that would prompt for Touch ID on every new terminal.
 
 SSH public keys aren't tracked either — they're pulled from 1Password by
 `dot keys` (part of `bootstrap`, safe to re-run standalone). Each layer that
