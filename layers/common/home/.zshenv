@@ -4,6 +4,8 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 export ZDOTDIR_CONF="$XDG_CONFIG_HOME/zsh"
 
+export VAULT_ADDR=https://vault.rg-infra.com
+
 # 1Password SSH agent, only if this machine actually has it.
 _op_sock="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 [[ -S $_op_sock ]] && export SSH_AUTH_SOCK="$_op_sock"
