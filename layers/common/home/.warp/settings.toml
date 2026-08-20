@@ -72,6 +72,7 @@ keybinding_hint = true
 [general]
 default_session_mode = "terminal"
 show_warning_before_quitting = false
+login_item = false
 
 [agents]
 cloud_conversation_storage_enabled = true
