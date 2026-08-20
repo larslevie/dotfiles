@@ -1,6 +1,6 @@
 #!/bin/bash
 # Hacker-themed Claude Code statusline
-# [Model] │ [Bar] [%] [Dir] ⎇ [branch] ⚡ [cache] ⏳ [cache-left] ⏱ [duration]
+# [Model] │ [Bar] [%] [Dir] ⎇ [branch] ⚡ [cache] ⏳ [cache-left] ⏱ [duration] 💲 [cost]
 #
 # Displayed % is scaled to the usable window ((raw / 80) * 100) so the bar
 # hits 100% as auto-compact kicks in. The bar color fades green->yellow->red.
@@ -76,6 +76,16 @@ duration_display=$(awk -v ms="$duration_ms" 'BEGIN{
   else if(m>0) printf "%dm%ds", m, sec;
   else printf "%ds", sec;
 }')
+
+# Session cost: dollars billed so far, reported by the harness. Sub-cent
+# sessions round to $0.00, so show three decimals under a dime.
+cost_usd=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+cost_seg=""
+if [ -n "$cost_usd" ]; then
+  cost_seg=$(awk -v c="$cost_usd" 'BEGIN{
+    if(c<0.1) printf " 💲 $%.3f", c; else printf " 💲 $%.2f", c
+  }')
+fi
 
 mode="REALTIME"
 
@@ -154,6 +164,6 @@ else
   COLOR="\033[1;32m"
 fi
 
-printf "${DIM}%s${RESET} │ ${COLOR}%s %d%%${RESET} ${DIM}%s%s ⚡ %s%s ⏱ %s${RESET}\n" \
+printf "${DIM}%s${RESET} │ ${COLOR}%s %d%%${RESET} ${DIM}%s%s ⚡ %s%s ⏱ %s%s${RESET}\n" \
   "$model" "$bar" "$pct_int" "$dir_display" "$git_seg" \
-  "$cache_display" "$cache_left_seg" "$duration_display"
+  "$cache_display" "$cache_left_seg" "$duration_display" "$cost_seg"
