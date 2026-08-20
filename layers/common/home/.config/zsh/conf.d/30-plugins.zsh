@@ -34,8 +34,12 @@ export ZSH_DOTENV_PROMPT=false
 # be missing tools before `dot brew` runs, or on purpose.
 snippet_if() { command -v "$1" >/dev/null && zinit wait lucid for "$2"; }
 
+# OMZP::git's `alias gco='git checkout'` loads after 70-functions.zsh (turbo
+# defers it past the first prompt) and clobbers the worktree-aware gco()
+# function there. Unalias it back on load so the function wins.
+zinit wait lucid atload'unalias gco 2>/dev/null' for OMZP::git
+
 zinit wait lucid for \
-  OMZP::git \
   OMZP::command-not-found \
   OMZP::dotenv
 
