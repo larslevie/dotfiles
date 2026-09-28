@@ -1,6 +1,4 @@
 [core]
-project = beamform-prd
-account = lars@beamform.io
+account = larslevie@gmail.com
+project = levieindustries-prd
 
-[compute]
-region = us-central1
