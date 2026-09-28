@@ -1,3 +1,4 @@
 {
-  "model": "opusplan"
+  "model": "sonnet[1m]",
+  "autoCompactEnabled": true
 }
