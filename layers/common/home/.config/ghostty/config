@@ -1,10 +1,10 @@
 # Run `ghostty +show-config --default --docs` to view a list of
 # all available config options and their default values.
 
-font-family = BlexMono Nerd Font Mono
+font-family = IBM Plex Mono
 font-size = 13
 
-theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+theme = Dracula
 
 macos-option-as-alt = true
 
