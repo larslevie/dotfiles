@@ -31,3 +31,4 @@ layers/**/home/.config/env.secrets
 .DS_Store
 *.zwc
 *.bak
+__pycache__
