@@ -1,6 +1,4 @@
 [core]
-project = example-prd
-account = lars@example.com
+account = larslevie@gmail.com
+project = levieindustries-prd
 
-[compute]
-region = us-central1
