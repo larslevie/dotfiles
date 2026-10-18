@@ -129,35 +129,27 @@ if [[ -n "$ISSUE_TYPE" ]]; then
     if [[ -z "$ISSUE_TYPE_ID" ]]; then
         echo "Warning: Issue type '${ISSUE_TYPE}' not found in ${REPO}"
     else
-        # Use a temp file for the mutation to avoid shell escaping issues with GraphQL variables
-        MUTATION_FILE=$(mktemp)
-        cat > "$MUTATION_FILE" << 'GRAPHQL'
-mutation($id: ID!, $typeId: ID!) {
+        # Single quotes keep GraphQL $variables from shell expansion
+        MUTATION='mutation($id: ID!, $typeId: ID!) {
   updateIssue(input: {id: $id, issueTypeId: $typeId}) {
     issue { id }
   }
-}
-GRAPHQL
-        gh api graphql -F "query=@${MUTATION_FILE}" -f id="${ISSUE_NODE_ID}" -f typeId="${ISSUE_TYPE_ID}" \
+}'
+        gh api graphql -f query="$MUTATION" -f id="${ISSUE_NODE_ID}" -f typeId="${ISSUE_TYPE_ID}" \
             2>/dev/null || echo "Warning: Could not set issue type"
-        rm -f "$MUTATION_FILE"
     fi
 fi
 
 # 3. Add to project via GraphQL (if not skipped and project was found)
 if [[ "$SKIP_PROJECT" != true && -n "$PROJECT_ID" ]]; then
     echo "Adding to ${PROJECT_TITLE} project..."
-    MUTATION_FILE=$(mktemp)
-    cat > "$MUTATION_FILE" << 'GRAPHQL'
-mutation($projectId: ID!, $contentId: ID!) {
+    MUTATION='mutation($projectId: ID!, $contentId: ID!) {
   addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
     item { id }
   }
-}
-GRAPHQL
-    gh api graphql -F "query=@${MUTATION_FILE}" -f projectId="${PROJECT_ID}" -f contentId="${ISSUE_NODE_ID}" \
+}'
+    gh api graphql -f query="$MUTATION" -f projectId="${PROJECT_ID}" -f contentId="${ISSUE_NODE_ID}" \
         2>/dev/null || echo "Warning: Could not add issue to project"
-    rm -f "$MUTATION_FILE"
 fi
 
 echo "Done! Issue #${ISSUE_NUM} has been set up."
