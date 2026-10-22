@@ -1,6 +1,6 @@
 ---
 name: sentry-cli-alert
-version: 0.38.0
+version: 0.44.1
 description: Manage Sentry alert rules
 requires:
   bins: ["sentry"]
@@ -57,11 +57,10 @@ Create an issue alert rule
 - `--name <value> - Rule name`
 - `-c, --condition <value>... - Condition object JSON (repeatable, or pass one JSON array)`
 - `-a, --action <value>... - Action object JSON (repeatable, or pass one JSON array)`
-- `-m, --action-match <value> - Condition/action match mode: all or any`
 - `--frequency <value> - Frequency in minutes (default: 30) - (default: 30)`
 - `--environment <value> - Environment filter`
 - `--filter <value>... - Filter object JSON (repeatable, or pass one JSON array)`
-- `--filter-match <value> - Filter match mode: all or any`
+- `-m, --filter-match <value> - Filter match mode: all or any`
 - `--owner <value> - Owner (team:user style value accepted by Sentry API)`
 - `-n, --dry-run - Show what would happen without making changes`
 
@@ -71,9 +70,8 @@ Create an issue alert rule
 # Create an issue alert rule with inline JSON condition/action
 sentry alert issues create my-org/my-project \
   --name "Error Spike" \
-  --condition '{"id":"sentry.rules.conditions.first_seen_event.FirstSeenEventCondition"}' \
-  --action '{"id":"sentry.mail.actions.NotifyEmailAction","targetType":"Team","targetIdentifier":1}' \
-  --action-match any
+  --condition '{"type":"first_seen_event","comparison":true,"conditionResult":true}' \
+  --action '{"type":"email","data":{},"config":{"targetType":"team","targetIdentifier":"1"}}'
 ```
 
 ### `sentry alert issues delete <org/project/rule-id-or-name>`
@@ -101,11 +99,10 @@ Edit an issue alert rule
 - `--status <value> - Rule status: active or disabled`
 - `-c, --condition <value>... - Condition object JSON (repeatable, or pass one JSON array)`
 - `-a, --action <value>... - Action object JSON (repeatable, or pass one JSON array)`
-- `-m, --action-match <value> - Condition/action match mode: all or any`
 - `--frequency <value> - Frequency in minutes`
 - `--environment <value> - Environment value (pass empty string to clear)`
 - `--filter <value>... - Filter object JSON (repeatable, or pass one JSON array)`
-- `--filter-match <value> - Filter match mode: all or any`
+- `-m, --filter-match <value> - Filter match mode: all or any`
 - `--owner <value> - Owner value (pass empty string to clear)`
 
 **Examples:**
@@ -158,7 +155,7 @@ Create a metric alert rule
 - `--name <value> - Rule name`
 - `--query <value> - Metric query filter string`
 - `--aggregate <value> - Aggregate expression (for example count(), p95(transaction.duration))`
-- `--dataset <value> - Dataset (errors, transactions, sessions, events, spans, metrics)`
+- `--dataset <value> - Dataset: errors (error-events), transactions (transaction-like), sessions, events, spans, metrics`
 - `--time-window <value> - Evaluation window in minutes`
 - `-t, --trigger <value>... - Trigger object JSON (repeatable, or pass one JSON array)`
 - `-p, --project <value>... - Project slug filter (repeatable or comma-separated)`
@@ -204,7 +201,7 @@ Edit a metric alert rule
 - `--status <value> - active or disabled`
 - `--query <value> - Metric query filter`
 - `--aggregate <value> - Aggregate expression`
-- `--dataset <value> - Dataset (errors, transactions, sessions, events, spans, metrics)`
+- `--dataset <value> - Dataset: errors (error-events), transactions (transaction-like), sessions, events, spans, metrics`
 - `--time-window <value> - Evaluation window in minutes`
 - `-t, --trigger <value>... - Trigger object JSON (repeatable, or pass one JSON array)`
 - `-p, --project <value>... - Project slug filter (repeatable or comma-separated)`
