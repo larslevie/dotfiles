@@ -53,7 +53,7 @@ what silently broke git signing and the k9s dump dir before.
 bin/dot           entry point: bootstrap | info | check | apply | adopt | doctor | brew | keys | unlink
 bin/link-skills   rebuilds the generated skill views (idempotent)
 bin/merge-claude-settings  merges layered Claude settings into ~/.claude/settings.json
-machines.conf     hostname -> profile
+machines.conf     hostname -> profile (machines.local.conf, untracked, for private hostnames)
 layers/common/home/
 layers/profiles/{work,personal}/home/
 layers/hosts/<hostname>/home/

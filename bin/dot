@@ -14,11 +14,14 @@ info() { printf '\033[1m==>\033[0m %s\n' "$*"; }
 host_name() { scutil --get LocalHostName 2>/dev/null || hostname -s; }
 
 profile_for() {
-  local host=$1 h p
-  while read -r h p; do
-    [[ -z ${h:-} || $h == \#* ]] && continue
-    [[ $h == "$host" ]] && { printf '%s\n' "$p"; return 0; }
-  done < machines.conf
+  local host=$1 f h p
+  for f in machines.conf machines.local.conf; do
+    [[ -f $f ]] || continue
+    while read -r h p; do
+      [[ -z ${h:-} || $h == \#* ]] && continue
+      [[ $h == "$host" ]] && { printf '%s\n' "$p"; return 0; }
+    done < "$f"
+  done
   return 1
 }
 
