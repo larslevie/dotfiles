@@ -185,7 +185,7 @@ holds `op://` references rather than values, so those files are safe to commit:
 
 ```
 GRAFANA_URL=https://grafana.example.net
-GRAFANA_TOKEN=op://Work/Grafana/password
+GRAFANA_TOKEN=op://Work/Grafana/credential
 ```
 
 Run `opload` to resolve them into the current shell, `opload work` for a single
