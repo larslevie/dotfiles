@@ -4,7 +4,6 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 export ZDOTDIR_CONF="$XDG_CONFIG_HOME/zsh"
 
-export VAULT_ADDR=https://vault.example.com
 
 _voice_memos="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Voice Memos"
 export VMP_IN_DIR="$_voice_memos/audio"
