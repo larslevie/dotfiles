@@ -6,6 +6,11 @@ export ZDOTDIR_CONF="$XDG_CONFIG_HOME/zsh"
 
 export VAULT_ADDR=https://vault.example.com
 
+_voice_memos="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Voice Memos"
+export VMP_IN_DIR="$_voice_memos/audio"
+export VMP_OUT_DIR="$_voice_memos/transcripts"
+unset _voice_memos
+
 # 1Password SSH agent, only if this machine actually has it.
 _op_sock="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 [[ -S $_op_sock ]] && export SSH_AUTH_SOCK="$_op_sock"

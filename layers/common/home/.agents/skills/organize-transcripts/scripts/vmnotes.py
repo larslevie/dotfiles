@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Helpers for summarizing voice-memo transcripts into subject-based notes.
+"""Helpers for summarizing voice memos and meeting transcripts into subject-based notes.
 
-  segment <folder> <from> <to> [--relative-to DIR]   print numbered paragraphs and citation labels
-  refs <note.md>                                      regenerate the note's reference definitions
-  verify <note.md> [<note.md>…]                       check citations, quotes, coverage and links
+  segment <from> <to> <folder>… [--relative-to DIR]   print sources with numbered paragraphs and citation labels
+  refs <note.md>                                       regenerate the note's reference definitions
+  verify <note.md> [<note.md>…]                        check citations, quotes, coverage and links
+
+Voice memos are `YYYY-MM-DD-slug.md`; meetings are `YYYY-MM-DD_HH-MM-slug-<meeting id>.md` with a
+`## Summary` and a `## Transcript` of `**[HH:MM:SS] Name:** text` lines.
 """
 import argparse
 import os
@@ -12,17 +15,21 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-# A citation `[10-23 ¶5][1023-thinking-about]` or `[10-23 ¶5-7][…]`, optionally right after a
-# double-quoted excerpt it vouches for.
+# A citation `[10-23 ¶5][1023-thinking-about]`, `[10-23 ¶5-7][…]`, or for a meeting transcript
+# `[10-14 @00:12:34][…]` / `[10-14 @00:12:34-00:13:10][…]`, optionally right after a double-quoted
+# excerpt it vouches for.
 CITE_RE = re.compile(
     r'(?:["“](?P<quote>[^"”\n]+)["”][\s—–-]*)?'
-    r"\[(?P<date>\d\d-\d\d) ¶(?P<a>\d+)(?:-(?P<b>\d+))?\]\[(?P<key>[^\]\s]+)\]"
+    r"\[(?P<date>\d\d-\d\d) (?:¶(?P<a>\d+)(?:-(?P<b>\d+))?|@(?P<t1>\d\d:\d\d:\d\d)(?:-(?P<t2>\d\d:\d\d:\d\d))?)\]"
+    r"\[(?P<key>[^\]\s]+)\]"
 )
+STEM_RE = re.compile(r"(\d{4})-(\d\d)-(\d\d)(?:_(\d\d)-(\d\d))?-(.*?)(?:-\d{9,})?$")
+LINE_RE = re.compile(r"^\*\*\[(\d\d:\d\d:\d\d)\] ([^:*]+):\*\* ?(.*)$", re.M)
 INLINE_LINK_RE = re.compile(r"\]\(([^)\s]+)\)")
 REF_LINK_RE = re.compile(r"\]\[([^\]\s]+)\]")
 ANCHOR_RE = re.compile(r'<a id="([^"]+)"></a>')
 REFS_RE = re.compile(r"\n*<!-- refs -->.*?<!-- /refs -->\n*", re.S)
-REF_DEF_RE = re.compile(r"^\[([^\]]+)\]:\s*(\S+)", re.M)
+REF_DEF_RE = re.compile(r"^\[([^\]]+)\]:\s*<?([^<>\n]+?)>?\s*$", re.M)
 MAX_QUOTE_WORDS = 50
 
 
@@ -39,6 +46,22 @@ def source_paragraphs(path):
     return paragraphs(split_frontmatter(Path(path).read_text())[1])
 
 
+def split_meeting(body):
+    """(summary part, transcript part); transcript is empty for voice memos."""
+    head, sep, transcript = body.partition("\n## Transcript")
+    return (head, transcript) if sep else (body, "")
+
+
+def transcript_lines(path):
+    """[(timestamp, speaker, text)] for a meeting transcript."""
+    return LINE_RE.findall(split_meeting(split_frontmatter(Path(path).read_text())[1])[1])
+
+
+def is_empty_meeting(body):
+    head, transcript = split_meeting(body)
+    return bool(transcript) and not LINE_RE.search(transcript) and "_No summary content._" in head
+
+
 def frontmatter_list(frontmatter, key):
     m = re.search(rf"^{key}:\s*\n((?:[ \t]+-.*\n?)+)", frontmatter, re.M)
     if not m:
@@ -47,12 +70,17 @@ def frontmatter_list(frontmatter, key):
 
 
 def source_key(path):
-    """Citation label: `MMDD-` plus the fewest slug words that are unique among same-day transcripts."""
+    """Citation label: `MMDD-` plus the fewest slug words unique among same-day sources in the folder;
+    meetings that still collide (e.g. two "zoom-meeting"s) get their start time: `1016-1327-zoom-meeting`."""
     path = Path(path)
-    date, words = path.stem[:10], path.stem[11:].split("-")
-    siblings = [p.stem[11:].split("-") for p in path.parent.glob(f"{date}-*.md") if p.name != path.name]
-    n = next((n for n in range(2, len(words) + 1) if all(s[:n] != words[:n] for s in siblings)), len(words))
-    return f"{date[5:7]}{date[8:10]}-{'-'.join(words[:n])}"
+    _, mm, dd, hh, mi, slug = STEM_RE.match(path.stem).groups()
+    words = slug.split("-")
+    siblings = [STEM_RE.match(p.stem).group(6).split("-")
+                for p in path.parent.glob(f"{path.name[:10]}[-_]*.md") if p.name != path.name and STEM_RE.match(p.stem)]
+    n = next((n for n in range(2, len(words) + 1) if all(s[:n] != words[:n] for s in siblings)), None)
+    if n is None:
+        return f"{mm}{dd}-{hh}{mi}-{'-'.join(words[:2])}" if hh else f"{mm}{dd}-{slug}"
+    return f"{mm}{dd}-{'-'.join(words[:n])}"
 
 
 def codebook_section(note, heading):
@@ -111,16 +139,29 @@ def in_range(path, start, end):
 
 
 def segment(args):
-    files = sorted(p for p in Path(args.folder).glob("*.md") if in_range(p, args.start, args.end))
+    """Voice memos print in full. Meetings print their summary paragraphs and a transcript outline;
+    read transcript passages from the file itself."""
+    files = sorted((p for folder in args.folders for p in Path(folder).glob("*.md") if in_range(p, args.start, args.end)),
+                   key=lambda p: p.name)
     for path in files:
         frontmatter, body = split_frontmatter(path.read_text())
-        title = re.search(r'^title:\s*"?(.*?)"?\s*$', frontmatter, re.M)
+        if is_empty_meeting(body):
+            print(f"<!-- skipped empty meeting {path.name} -->", file=sys.stderr)
+            continue
+        field = lambda k: (re.search(rf'^{k}:\s*"?(.*?)"?\s*$', frontmatter, re.M) or [None, ""])[1]
+        head, transcript = split_meeting(body)
         rel = os.path.relpath(path, args.relative_to)
-        cite = f"[{path.name[5:10]} ¶N][{source_key(path)}]"
-        print(f"## {path.stem}\nsrc: {rel}\ncite: {cite}\ntitle: {title.group(1) if title else ''}\n")
-        for i, para in enumerate(paragraphs(body), 1):
+        ref = "@HH:MM:SS" if transcript else "¶N"
+        print(f"## {path.stem}\nsrc: {rel}\ncite: [{path.name[5:10]} {ref}][{source_key(path)}]\ntitle: {field('title')}")
+        if transcript:
+            lines = LINE_RE.findall(transcript)
+            print(f"participants: {field('participants')}\nsummary cite: [{path.name[5:10]} ¶N][{source_key(path)}]")
+            if lines:
+                print(f"transcript: {len(lines)} lines, {lines[0][0]}–{lines[-1][0]}")
+        print()
+        for i, para in enumerate(paragraphs(head), 1):
             print(f"[p{i:02d}] {para}\n")
-    print(f"<!-- {len(files)} transcripts -->", file=sys.stderr)
+    print(f"<!-- {len(files)} sources -->", file=sys.stderr)
 
 
 def render_refs(note, text):
@@ -131,7 +172,7 @@ def render_refs(note, text):
     if len(defs) != len(sources):
         sys.exit("citation label collision among sources")
     defs |= {a: f"#{a}" for a in ANCHOR_RE.findall(text)}
-    lines = "\n".join(f"[{k}]: {v}" for k, v in defs.items())
+    lines = "\n".join(f"[{k}]: <{v}>" if " " in v else f"[{k}]: {v}" for k, v in defs.items())
     return f"\n\n<!-- refs -->\n\n{lines}\n\n<!-- /refs -->\n"
 
 
@@ -175,7 +216,7 @@ def verify_note(note, sources):
     defs = dict(REF_DEF_RE.findall(body))
     cited = Counter()
     for m in CITE_RE.finditer(body):
-        where = f"[{m['date']} ¶{m['a']}{'-' + m['b'] if m['b'] else ''}][{m['key']}]"
+        where = m.group(0)[m.group(0).index("[" + m["date"]):]
         target = defs.get(m["key"])
         path = (base / target).resolve() if target else None
         if path not in listed:
@@ -184,15 +225,24 @@ def verify_note(note, sources):
         cited[path] += 1
         if path.name[5:10] != m["date"]:
             errors.append(f"{where}: date doesn't match {path.name}")
-        source = source_paragraphs(path)
-        a, b = int(m["a"]), int(m["b"] or m["a"])
-        if not 1 <= a <= b <= len(source):
-            errors.append(f"{where}: source has {len(source)} paragraphs")
-            continue
+        if m["t1"]:
+            t1, t2 = m["t1"], m["t2"] or m["t1"]
+            lines = transcript_lines(path)
+            if not any(t == t1 for t, _, _ in lines):
+                errors.append(f"{where}: no transcript line at {t1}")
+                continue
+            cited_text = " ".join(f"{text}" for t, _, text in lines if t1 <= t <= t2)
+        else:
+            source = paragraphs(split_meeting(split_frontmatter(path.read_text())[1])[0])
+            a, b = int(m["a"]), int(m["b"] or m["a"])
+            if not 1 <= a <= b <= len(source):
+                errors.append(f"{where}: source has {len(source)} paragraphs")
+                continue
+            cited_text = " ".join(source[a - 1:b])
         if m["quote"]:
             if len(m["quote"].split()) > MAX_QUOTE_WORDS:
                 errors.append(f"{where}: quote over {MAX_QUOTE_WORDS} words; trim it with …")
-            if not quote_found(m["quote"], correct(" ".join(source[a - 1:b]), corrections)):
+            if not quote_found(m["quote"], correct(cited_text, corrections)):
                 errors.append(f'{where}: quote not in source: "{m["quote"][:60]}"')
 
     errors += [f"source never cited: {src}" for path, src in listed.items() if not cited[path]]
@@ -218,9 +268,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("segment")
-    s.add_argument("folder")
     s.add_argument("start", help="YYYY-MM-DD, inclusive")
     s.add_argument("end", help="YYYY-MM-DD, inclusive")
+    s.add_argument("folders", nargs="+", help="voice-memo and meeting folders")
     s.add_argument("--relative-to", default=".", help="directory the note will live in")
     s.set_defaults(fn=segment)
     r = sub.add_parser("refs")
